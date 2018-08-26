@@ -36,5 +36,5 @@ export const saveSettings = async (settings: Settings) => {
     JSON.stringify(settings, null, 2),
   );
 
-  return await getSavedSettings();
+  return getSavedSettings();
 };
