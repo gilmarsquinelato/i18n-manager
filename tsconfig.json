@@ -62,6 +62,9 @@
     "paths": {
       "~/*": ["./*"]
     },
-    "outDir": "build"
+    "outDir": "build",
+    "types": [
+      "jest"
+    ]
   }
 }

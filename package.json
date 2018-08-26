@@ -6,6 +6,8 @@
   "scripts": {
     "start": "yarn clean && concurrently \"yarn watch-electron\" \"BROWSER=none yarn start-web\" \"wait-on http://localhost:1234 && electron .\"",
     "build": "yarn build-all && electron-builder",
+    "test": "jest --watch",
+    "test:ci": "jest --ci",
     "start-web": "parcel ./renderer/index.html -d build/view",
     "build-web": "parcel build ./renderer/index.html -d build/view",
     "build-electron": "tsc --outDir ./build -d -p ./electron",
@@ -15,8 +17,10 @@
     "clean": "rimraf build dist"
   },
   "devDependencies": {
+    "@sentry/cli": "^1.35.1",
     "@types/color": "^3.0.0",
     "@types/electron-is-dev": "^0.3.0",
+    "@types/jest": "^23.3.1",
     "@types/lodash": "^4.14.116",
     "@types/react": "^16.4.11",
     "@types/react-dom": "^16.0.7",
@@ -24,14 +28,18 @@
     "cross-env": "^5.2.0",
     "electron": "^2.0.8",
     "electron-builder": "^20.28.2",
+    "electron-download": "^4.1.1",
+    "jest": "^23.5.0",
     "parcel-bundler": "^1.9.7",
     "rimraf": "^2.6.2",
+    "ts-jest": "^23.1.4",
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.10.0",
     "typescript": "^3.0.1",
     "wait-on": "^2.1.0"
   },
   "dependencies": {
+    "@sentry/electron": "^0.8.1",
     "bootstrap": "4.1.3",
     "color": "^3.0.0",
     "electron-is-dev": "^0.3.0",
@@ -62,9 +70,23 @@
       "build/**/*",
       "node_modules/**/*",
       "package.json"
-    ],
-    "directories": {
-      "buildResources": "assets"
-    }
+    ]
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^~/(.*)$": "<rootDir>/renderer/$1"
+    },
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json"
+      }
+    },
+    "projects": [
+      "./electron",
+      "./renderer"
+    ]
   }
 }

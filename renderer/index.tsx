@@ -6,10 +6,17 @@ import * as ipcMessages from '../common/ipcMessages';
 
 import App from './components/App';
 
+
+const Sentry = window.require('@sentry/electron');
 const electron = window.require('electron');
 const { ipcRenderer } = electron;
 
 ipcRenderer.on(ipcMessages.open, console.log);
+
+
+Sentry.init({
+  dsn: 'https://f55d7c8072cd44d7897d43c9b5294d3d@sentry.io/1268922',
+});
 
 
 injectGlobal`
