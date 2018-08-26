@@ -1,6 +1,6 @@
 # i18n Manager
 
-[![Build Status](https://travis-ci.com/gilmarsquinelato/i18n-manager.svg?branch=master)](https://travis-ci.com/gilmarsquinelato/i18n-manager)
+[![Build Status](https://travis-ci.com/gilmarsquinelato/i18n-manager.svg?branch=master)](https://travis-ci.com/gilmarsquinelato/i18n-manager) [![Greenkeeper badge](https://badges.greenkeeper.io/gilmarsquinelato/i18n-manager.svg)](https://greenkeeper.io/)
 
 This app was developed with the objective to help the developers to manage
 this app translations.
