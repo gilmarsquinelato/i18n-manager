@@ -26,8 +26,8 @@ Any type of contributions are welcome.
 - [x] Internal Plugin support
 - [x] Unit test structure
 - [x] CI integration
-- [ ] Code Coverage
-- [ ] PRs blocking based on Unit Tests and Code Coverage
+- [x] Code Coverage
+- [x] PRs blocking based on Unit Tests and Code Coverage
 - [ ] Render openned folder
 - [ ] Save files
 - [ ] Detect missing translations
