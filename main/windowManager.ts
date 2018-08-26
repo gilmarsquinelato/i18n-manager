@@ -5,6 +5,7 @@ import isDev from 'electron-is-dev';
 
 import * as ipcMessages from '../common/ipcMessages';
 import * as Settings from './settings';
+import { ParsedFile } from './pluginManager';
 
 
 export const hasWindows = (): boolean => BrowserWindow.getAllWindows().length > 0;
@@ -31,8 +32,8 @@ export const createWindow = (): BrowserWindow => {
   return window;
 };
 
-export const sendOpen = (window: Electron.BrowserWindow, path: string) => {
-  window.webContents.send(ipcMessages.open, path);
+export const sendOpen = (window: Electron.BrowserWindow, files: ParsedFile[]) => {
+  window.webContents.send(ipcMessages.open, files);
 };
 
 export enum SaveResponse {
@@ -85,16 +86,20 @@ const registerEvents = (window: Electron.BrowserWindow) => {
 };
 
 const onClose = (window: Electron.BrowserWindow) => async (e: Electron.Event) => {
-  if (window.isDocumentEdited()) {
+  if (!window.isDocumentEdited()) {
+    return;
+  }
+
+  if (e) {
     e.preventDefault();
+  }
 
-    const response = await showSaveDialog(window);
+  const response = await showSaveDialog(window);
 
-    if (response === SaveResponse.Save) {
-      window.webContents.send(ipcMessages.save, { close: true });
-    } else if (response === SaveResponse.DontSave) {
-      window.destroy();
-    }
+  if (response === SaveResponse.Save) {
+    window.webContents.send(ipcMessages.save, { close: true });
+  } else if (response === SaveResponse.DontSave) {
+    window.destroy();
   }
 };
 

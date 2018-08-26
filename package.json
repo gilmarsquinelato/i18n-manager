@@ -1,7 +1,7 @@
 {
   "name": "i18n-manager",
   "version": "1.0.0",
-  "main": "build/electron/index.js",
+  "main": "build/main/index.js",
   "license": "MIT",
   "scripts": {
     "start": "yarn clean && concurrently \"yarn watch-electron\" \"BROWSER=none yarn start-web\" \"wait-on http://localhost:1234 && electron .\"",
@@ -10,8 +10,8 @@
     "test": "jest --ci --coverage && cat ./coverage/lcov.info | codacy-coverage --language typescript",
     "start-web": "parcel ./renderer/index.html -d build/view",
     "build-web": "parcel build ./renderer/index.html -d build/view",
-    "build-electron": "tsc --outDir ./build -d -p ./electron",
-    "watch-electron": "tsc --outDir ./build -w -p ./electron",
+    "build-electron": "tsc --outDir ./build -d -p ./main",
+    "watch-electron": "tsc --outDir ./build -w -p ./main",
     "build-all": "yarn clean && concurrently \"yarn build-electron\" \"yarn build-web\"",
     "postinstall": "electron-builder install-app-deps",
     "clean": "rimraf build dist"
@@ -37,6 +37,7 @@
     "jest": "^23.5.0",
     "parcel-bundler": "^1.9.7",
     "rimraf": "^2.6.2",
+    "spectron": "^3.8.0",
     "ts-jest": "^23.1.4",
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.10.0",
@@ -90,12 +91,14 @@
       }
     },
     "projects": [
-      "./electron",
+      "./main",
       "./renderer"
     ],
     "collectCoverageFrom": [
       "**/*.{ts,tsx,js}",
-      "!**/*.d.ts"
+      "!**/*.d.ts",
+      "!**/jest.setup.ts",
+      "!**/jest.config.js"
     ]
   }
 }

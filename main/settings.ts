@@ -11,7 +11,7 @@ type Settings = {
   },
 };
 
-const defaultSettings: Settings = {
+export const defaultSettings: Settings = {
   window: {
     width: 800,
     height: 600,

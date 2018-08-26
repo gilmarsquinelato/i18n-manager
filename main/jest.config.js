@@ -1,6 +1,6 @@
 module.exports = {
-  name: 'electron',
-  displayName: 'electron',
+  name: 'main',
+  displayName: 'main',
   rootDir: './',
   testEnvironment: 'node',
   testMatch: [
