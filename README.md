@@ -1,5 +1,7 @@
 # i18n Manager
 
+[![Build Status](https://travis-ci.com/gilmarsquinelato/i18n-manager.svg?branch=master)](https://travis-ci.com/gilmarsquinelato/i18n-manager)
+
 This app was developed with the objective to help the developers to manage
 this app translations.
 
