@@ -62,6 +62,6 @@
     "paths": {
       "~/*": ["./*"]
     },
-    "outDir": "build",
+    "outDir": "build"
   }
 }
