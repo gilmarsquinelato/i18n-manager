@@ -6,8 +6,8 @@
   "scripts": {
     "start": "yarn clean && concurrently \"yarn watch-electron\" \"BROWSER=none yarn start-web\" \"wait-on http://localhost:1234 && electron .\"",
     "build": "yarn build-all && electron-builder",
-    "test": "jest --watch",
-    "test:ci": "jest --ci",
+    "test:watch": "jest --watch",
+    "test": "jest --ci",
     "start-web": "parcel ./renderer/index.html -d build/view",
     "build-web": "parcel build ./renderer/index.html -d build/view",
     "build-electron": "tsc --outDir ./build -d -p ./electron",
