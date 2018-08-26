@@ -21,8 +21,8 @@ Any type of contributions are welcome.
 ## Todo
 
 - [x] Internal Plugin support
-- [ ] Unit test structure
-- [ ] CI integration
+- [x] Unit test structure
+- [x] CI integration
 - [ ] Code Coverage
 - [ ] PRs blocking based on Unit Tests and Code Coverage
 - [ ] Render openned folder
