@@ -1,5 +1,4 @@
 import * as jsonPlugin from './json';
-import { parse } from 'url';
 
 interface Plugin {
   fileExtension: string;

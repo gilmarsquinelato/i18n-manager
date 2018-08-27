@@ -64,3 +64,4 @@ build
 .cache
 dist
 .electron-symbols
+.vscode
