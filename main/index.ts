@@ -1,16 +1,14 @@
+import * as Sentry from '@sentry/electron';
 import _ from 'lodash';
 import { app } from 'electron';
 import * as path from 'path';
 import isDev from 'electron-is-dev';
 
+import { setupSentry } from '../common/sentry';
 import loadMenu from './menu';
 import { hasWindows, createWindow } from './windowManager';
 
-const Sentry = require('@sentry/electron');
-
-Sentry.init({
-  dsn: 'https://f55d7c8072cd44d7897d43c9b5294d3d@sentry.io/1268922',
-});
+setupSentry(Sentry);
 
 
 if (isDev) {

@@ -1,5 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import styled from 'react-emotion';
+
+import Routes from './Routes';
 
 
 const Container = styled('div')`
@@ -9,7 +11,7 @@ const Container = styled('div')`
 
 const App: React.SFC = () => (
   <Container className="container-fluid">
-
+    <Routes />
   </Container>
 );
 

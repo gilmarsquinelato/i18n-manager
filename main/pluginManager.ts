@@ -24,9 +24,14 @@ export const openFile = async (path: string): Promise<ParsedFile> => {
     return null;
   }
 
+  const data = await plugin.parse(path);
+  if (!data) {
+    return null;
+  }
+
   return {
     path,
-    data: await plugin.parse(path),
+    data,
   };
 };
 
