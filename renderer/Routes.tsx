@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Provider } from 'react-redux';
+import { createBrowserHistory } from 'history';
+import { ConnectedRouter } from 'connected-react-router/immutable';
 import {
-  HashRouter as Router,
   Switch,
   Route,
 } from 'react-router-dom';
@@ -10,16 +11,16 @@ import createStore from './config/redux';
 
 import { FolderContainer } from './folder';
 
-
-const store = createStore();
+const history = createBrowserHistory();
+const store = createStore(history);
 
 const Routes: React.SFC = () => (
   <Provider store={store}>
-    <Router>
+    <ConnectedRouter history={history}>
       <Switch>
         <Route path="/" exact component={FolderContainer} />
       </Switch>
-    </Router>
+    </ConnectedRouter>
   </Provider>
 );
 
