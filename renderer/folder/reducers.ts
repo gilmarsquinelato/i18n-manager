@@ -6,7 +6,6 @@ const initialState = Immutable.fromJS({
 });
 
 const reducerMap: ReducerMap<any, any> = {
-
 };
 
 export default handleActions(reducerMap, initialState);
