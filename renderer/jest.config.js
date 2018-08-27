@@ -12,7 +12,7 @@ module.exports = {
     'js'
   ],
   moduleNameMapper: {
-    '^~/(.*)$': './renderer/$1'
+    '^~/(.*)$': '<rootDir>/$1'
   },
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest'
