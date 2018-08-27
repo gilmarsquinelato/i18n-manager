@@ -1,15 +1,33 @@
-import { combineReducers, createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-import folder from '~/folder/reducers';
+import rootReducer from './rootReducer';
+import rootSaga from './rootSaga';
+
 
 export default () => {
-  const rootReducer = combineReducers({
-    folder
-  });
+  const sagaMiddleware = createSagaMiddleware()
+  const enhancer = composeWithDevTools(
+    applyMiddleware(sagaMiddleware),
+  );
 
-  const enhancer = composeWithDevTools();
   const store = createStore(rootReducer, enhancer);
+  let sagaTask = sagaMiddleware.run(rootSaga);
+
+  const hot = (module as any).hot;
+  if(hot) {
+    hot.accept('./rootReducer', () => {
+      store.replaceReducer(require('./rootReducer').default);
+    });
+
+    hot.accept('./rootSaga', () => {
+      sagaTask.cancel();
+      sagaTask.done.then(() => {
+        sagaTask = sagaMiddleware.run(require('./rootSaga').default);
+      });
+    });
+}
 
   return store;
 };
