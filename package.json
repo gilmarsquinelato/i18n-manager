@@ -87,9 +87,6 @@
     ]
   },
   "jest": {
-    "moduleNameMapper": {
-      "^~/(.*)$": "<rootDir>/renderer/$1"
-    },
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest"
     },
