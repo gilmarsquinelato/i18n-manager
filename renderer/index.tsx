@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { injectGlobal } from 'emotion';
+import _ from 'lodash';
 
 import * as ipcMessages from '../common/ipcMessages';
 import { setupSentry } from '../common/sentry';
@@ -15,20 +15,11 @@ ipcRenderer.on(ipcMessages.open, console.log);
 
 setupSentry(Sentry);
 
-injectGlobal`
-  html, body {
-    position: relative;
-    display: flex;
-    width: 100%;
-    height: 100%;
-  }
-
-  #app {
-    width: 100%;
-    height: 100%;
-  }
-`;
-
+if (process.env.NODE_ENV !== 'production') {
+  const Immutable = require('immutable');
+  const installDevTools = require('immutable-devtools');
+  installDevTools(Immutable);
+}
 
 const element = document.getElementById('app');
 
