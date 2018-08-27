@@ -1,7 +1,11 @@
-import { handleActions } from 'redux-actions';
+import Immutable from 'immutable';
+import { handleActions, ReducerMap } from 'redux-actions';
 
-const initialState = {};
+const initialState = Immutable.fromJS({
 
-export default handleActions({
+});
 
-}, initialState);
+const reducerMap: ReducerMap<any, any> = {
+};
+
+export default handleActions(reducerMap, initialState);

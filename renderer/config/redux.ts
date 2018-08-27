@@ -27,7 +27,7 @@ export default () => {
         sagaTask = sagaMiddleware.run(require('./rootSaga').default);
       });
     });
-}
+  }
 
   return store;
 };
