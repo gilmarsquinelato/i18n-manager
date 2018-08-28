@@ -9,12 +9,12 @@ import loadMenu from './menu';
 import { hasWindows, createWindow } from './windowManager';
 import installExtensions from './devtoolsInstaller';
 
-setupSentry(Sentry);
+
+if (isDev) {
+  setupSentry(Sentry);
+}
 
 app.on('ready', () => {
-  loadMenu();
-  createWindow();
-
   if (isDev) {
     const reload = require('electron-reload');
     const electronPath = path.join(__dirname, '../..', 'node_modules', '.bin', 'electron');
@@ -22,6 +22,9 @@ app.on('ready', () => {
 
     installExtensions();
   }
+
+  loadMenu();
+  createWindow();
 });
 
 app.on('window-all-closed', () => {

@@ -1,3 +1,6 @@
 {
-  "hello": "Hello World!"
+  "hello": "Hello World!",
+  "nested": {
+    "anotherNested": "value"
+  }
 }

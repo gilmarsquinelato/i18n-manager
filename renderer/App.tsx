@@ -2,6 +2,7 @@ import * as React from 'react';
 import { injectGlobal } from 'emotion';
 import styled from 'react-emotion';
 
+import { darkBlack } from './lib/palette';
 import Routes from './Routes';
 
 
@@ -11,9 +12,12 @@ injectGlobal`
     display: flex;
     width: 100%;
     height: 100%;
+    overflow: hidden;
+    background-color: ${darkBlack.toString()};
   }
 
   #app {
+    display: flex;
     flex: 1;
 
     -webkit-user-select: none;
@@ -34,6 +38,7 @@ injectGlobal`
 const Container = styled('div')`
   height: 100%;
   padding: 0;
+  display: flex;
 `;
 
 const App: React.SFC = () => (

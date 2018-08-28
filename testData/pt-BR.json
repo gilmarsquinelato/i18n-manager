@@ -1,3 +1,6 @@
 {
-  "hello": "Olá Mundo!"
+  "hello": "Olá Mundo!",
+  "nested": {
+    "anotherNested": "valor"
+  }
 }

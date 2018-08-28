@@ -4,8 +4,8 @@ import _ from 'lodash';
 import isDev from 'electron-is-dev';
 
 import * as ipcMessages from '../common/ipcMessages';
+import { ParsedFile } from '../common/types';
 import * as Settings from './settings';
-import { ParsedFile } from './pluginManager';
 
 
 export const hasWindows = (): boolean => BrowserWindow.getAllWindows().length > 0;
@@ -22,10 +22,6 @@ export const createWindow = (): BrowserWindow => {
   });
 
   window.loadURL(getUrl());
-
-  if (isDev) {
-    window.webContents.openDevTools();
-  }
 
   registerEvents(window);
 

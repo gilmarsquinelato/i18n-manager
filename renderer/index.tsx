@@ -2,16 +2,11 @@ import React from 'react';
 import { render } from 'react-dom';
 import _ from 'lodash';
 
-import * as ipcMessages from '../common/ipcMessages';
 import { setupSentry } from '../common/sentry';
 
 import App from './App';
 
 const Sentry = window.require('@sentry/electron');
-const electron = window.require('electron');
-const { ipcRenderer } = electron;
-
-ipcRenderer.on(ipcMessages.open, console.log);
 
 setupSentry(Sentry);
 

@@ -5,15 +5,15 @@
   "license": "MIT",
   "module": "commonjs",
   "scripts": {
-    "start": "yarn clean && concurrently \"yarn watch-electron\" \"BROWSER=none yarn start-web\" \"wait-on http://localhost:1234 && electron .\"",
+    "start": "yarn clean && concurrently \"yarn watch-main\" \"BROWSER=none yarn start-web\" \"wait-on http://localhost:1234 && electron --inspect=9229 --remote-debugging-port=9222 .\"",
     "build": "yarn build-all && electron-builder",
     "test:watch": "jest --watch",
     "test": "jest --ci --coverage && cat ./coverage/lcov.info | codacy-coverage --language typescript",
     "start-web": "parcel ./renderer/index.html -d build/view",
     "build-web": "parcel build ./renderer/index.html -d build/view --public-url '.'",
-    "build-electron": "tsc --outDir ./build -d -p ./main",
-    "watch-electron": "tsc --outDir ./build -w -p ./main",
-    "build-all": "yarn clean && concurrently \"yarn build-electron\" \"yarn build-web\"",
+    "build-main": "tsc --outDir ./build -d -p ./main",
+    "watch-main": "tsc --outDir ./build -w -p ./main",
+    "build-all": "yarn clean && concurrently \"yarn build-main\" \"yarn build-web\"",
     "postinstall": "electron-builder install-app-deps",
     "clean": "rimraf build dist"
   },
@@ -38,6 +38,7 @@
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.10.0",
     "typescript": "^3.0.1",
+    "typescript-styled-plugin": "^0.10.0",
     "wait-on": "^2.1.0"
   },
   "dependencies": {
@@ -107,6 +108,7 @@
     "collectCoverageFrom": [
       "**/*.{ts,tsx,js}",
       "!**/*.d.ts",
+      "!**/assets/*",
       "!**/jest.setup.ts",
       "!**/jest.config.js"
     ]

@@ -1,3 +1,19 @@
-import Folder from '../views/Folder';
+import { bindActionCreators, Dispatch } from 'redux';
+import { connect } from 'react-redux';
 
-export default Folder;
+import Folder from '../views/Folder';
+import { getFolder } from '../selectors';
+
+
+const mapStateToProps = (state: any) => ({
+  folder: getFolder(state),
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(
+  {
+
+  },
+  dispatch,
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Folder);
