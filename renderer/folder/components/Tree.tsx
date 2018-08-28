@@ -44,11 +44,9 @@ class Tree extends React.Component<TreeProps, typeof initialState> {
   getPath = (key: string) => [...this.props.parentPath, key];
   isSamePath = (path1: string[], path2: string[]) => _.isEqual(path1, path2);
 
+  getCollapsedClass = (key: string) => this.state.itemState[key] ? 'collapsed' : '';
   getSelectedPathClass = (key: string) =>
     this.isSamePath(this.props.openedPath, this.getPath(key)) ? 'selected' : ''
-
-  getCollapsedClass = (key: string) =>
-    this.state.itemState[key] ? 'collapsed' : ''
 
   renderItem = (key: string): React.ReactElement<any> => (
     <li
@@ -60,10 +58,7 @@ class Tree extends React.Component<TreeProps, typeof initialState> {
         onClick={this.onClick(key)}
       >
         {this.props.tree[key] &&
-          <i
-            className={'icon fa fa-chevron-right'}
-          />
-        }
+          <i className={'icon fa fa-chevron-right'} />}
         {key}
       </span>
 

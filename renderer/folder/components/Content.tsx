@@ -37,7 +37,6 @@ interface IContentProps {
   onChange: OnChange;
 }
 
-
 const Content: React.SFC<IContentProps> = ({ openedPath, folder, onChange }) => (
   <ContentWrapper className="resizeable-item">
     {folder && openedPath.length > 0 &&
