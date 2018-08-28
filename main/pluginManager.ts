@@ -1,10 +1,7 @@
+import * as path from 'path';
+import { ParsedFile } from '../common/types';
 import getPlugins from './plugins';
 
-
-export type ParsedFile = {
-  path: string,
-  data: any,
-};
 
 export const getParsedFiles = async (files: string[]): Promise<ParsedFile[]> => {
   const parsedFiles: ParsedFile[] = [];
@@ -18,19 +15,27 @@ export const getParsedFiles = async (files: string[]): Promise<ParsedFile[]> => 
   return parsedFiles;
 };
 
-export const openFile = async (path: string): Promise<ParsedFile> => {
-  const plugin = getPluginForFile(path);
+export const openFile = async (filePath: string): Promise<ParsedFile> => {
+  const plugin = getPluginForFile(filePath);
   if (!plugin) {
     return null;
   }
 
-  const data = await plugin.parse(path);
+  const fileName = path.basename(filePath);
+  const language = fileName.split('.')[0];
+  if (!language) {
+    return null;
+  }
+
+  const data = await plugin.parse(filePath);
   if (!data) {
     return null;
   }
 
   return {
-    path,
+    fileName,
+    language,
+    filePath,
     data,
   };
 };

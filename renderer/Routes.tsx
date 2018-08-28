@@ -9,7 +9,7 @@ import {
 
 import createStore from './config/redux';
 
-import { FolderContainer } from './folder';
+import { HomeContainer, FolderContainer } from './folder';
 
 const history = createBrowserHistory();
 const store = createStore(history);
@@ -18,7 +18,8 @@ const Routes: React.SFC = () => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <Switch>
-        <Route path="/" exact component={FolderContainer} />
+        <Route path="/" exact component={HomeContainer} />
+        <Route path="/folder" component={FolderContainer} />
       </Switch>
     </ConnectedRouter>
   </Provider>

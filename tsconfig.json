@@ -65,6 +65,11 @@
     "outDir": "build",
     "types": [
       "jest"
+    ],
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin"
+      }
     ]
   }
 }
