@@ -23,4 +23,15 @@ describe('plugins/json', () => {
     const data = await json.parse(`${basePath}/wrong.json`);
     expect(data).toBeNull();
   });
+
+  it('saving file', async () => {
+    const newLanguage = 'en-US';
+    const data = await json.parse(`${basePath}/en.json`);
+    data.language = newLanguage;
+    const result = await json.save(`${basePath}/en.json`, data);
+    const newData = await json.parse(`${basePath}/en.json`);
+
+    expect(result).toBeTruthy();
+    expect(newData.language).toBe(newLanguage);
+  });
 });

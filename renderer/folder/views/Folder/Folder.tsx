@@ -14,6 +14,8 @@ const resizerWidth = 8;
 
 interface IProps {
   folder?: Immutable.List<any>;
+  isSaveRequested: boolean;
+  saveFolder: Function;
 }
 
 interface IState {
@@ -32,12 +34,18 @@ class Folder extends React.Component<IProps, IState> {
   };
 
   static getDerivedStateFromProps = ({ folder }: IProps, prevState: IState) =>
-    !prevState.folder || prevState.folder.size !== folder.size ? { folder } : null
+    !prevState.folder && folder && folder.size > 0 ? { folder } : null
 
   componentDidMount() {
     document.addEventListener('mouseleave', () => {
       this.setState({ isDragging: false });
     });
+  }
+
+  componentDidUpdate(prevProps: IProps, prevState: IState) {
+    if (this.props.isSaveRequested && !prevProps.isSaveRequested) {
+      this.props.saveFolder(this.state.folder.toJS());
+    }
   }
 
   setIsDragging = (isDragging: boolean) => this.setState({ isDragging });
@@ -102,6 +110,12 @@ class Folder extends React.Component<IProps, IState> {
             onChange={this.onChange}
           />
         </div>
+        <div className="status-bar">
+          <span className={`save ${!this.props.isSaveRequested ? 'hidden' : ''}`}>
+            <i className="fas fa-spinner fa-spin icon" />
+            Saving...
+          </span>
+        </div>
       </FolderRoot >
     );
   }
@@ -113,10 +127,7 @@ export default Folder;
 const FolderRoot = styled('div')`
   display: flex;
   flex: 1;
-
-  .content-pane {
-    padding: 32px;
-  }
+  flex-direction: column;
 
   .resizeable-panel {
     display: flex;
@@ -135,6 +146,24 @@ const FolderRoot = styled('div')`
       width: ${resizerWidth}px;
       background: ${lightBlack.toString()};
       cursor: col-resize;
+    }
+  }
+
+  .status-bar {
+    display: flex;
+    height: 24px;
+    font-size: 14px;
+
+    > span {
+      transition: opacity 1s;
+
+      &.hidden {
+        opacity: 0;
+      }
+    }
+
+    .icon {
+      margin-right: 4px;
     }
   }
 `;

@@ -3,6 +3,7 @@ import { eventChannel } from 'redux-saga';
 let ipcRenderer = {
   on: (message: string, cb: Function) => {},
   removeListener: (message: string, cb: Function) => {},
+  send: (message: string, data: any) => {},
 };
 
 if (window.require) {
@@ -26,3 +27,6 @@ export const createIpcChannel = (message: string) =>
       ipcRenderer.removeListener(message, onMessage);
     };
   });
+
+export const sendToIpc = (message: string, data: any) =>
+  ipcRenderer.send(message, data);

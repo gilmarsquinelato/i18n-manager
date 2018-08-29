@@ -8,6 +8,7 @@ import { setupSentry } from '../common/sentry';
 import loadMenu from './menu';
 import { hasWindows, createWindow } from './windowManager';
 import installExtensions from './devtoolsInstaller';
+import registerAppEvents from './events';
 
 
 if (isDev) {
@@ -25,6 +26,7 @@ app.on('ready', () => {
 
   loadMenu();
   createWindow();
+  registerAppEvents();
 });
 
 app.on('window-all-closed', () => {
