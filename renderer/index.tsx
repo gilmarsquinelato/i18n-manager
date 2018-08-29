@@ -6,11 +6,11 @@ import { setupSentry } from '../common/sentry';
 
 import App from './App';
 
-const Sentry = window.require('@sentry/electron');
 
-setupSentry(Sentry);
-
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
+  const Sentry = window.require('@sentry/electron');
+  setupSentry(Sentry);
+} else {
   const Immutable = require('immutable');
   const installDevTools = require('immutable-devtools');
   installDevTools(Immutable);

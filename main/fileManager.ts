@@ -5,6 +5,7 @@ import { getOrCreateAvailableWindow, sendOpen } from './windowManager';
 import { getParsedFiles, saveFile } from './pluginManager';
 import { ParsedFile } from '../common/types';
 
+
 export const openFolder = async (folderPath: string) => {
   const files = await getFiles(folderPath);
   const parsedFiles = await getParsedFiles(files);

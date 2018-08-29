@@ -1,6 +1,7 @@
 import Immutable from 'immutable';
 import _ from 'lodash';
 
+
 const getTreePaths = (contents: Immutable.Iterable<number, any>): Immutable.Iterable<number, any> =>
   contents.map((value, key) => {
     return _.isObject(value) ?

@@ -138,10 +138,6 @@ const FolderRoot = styled('div')`
       cursor: col-resize;
     }
 
-    .resizeable-item {
-
-    }
-
     .drag-item {
       width: ${resizerWidth}px;
       background: ${lightBlack.toString()};
