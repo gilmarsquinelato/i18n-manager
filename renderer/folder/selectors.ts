@@ -1,2 +1,2 @@
 export const getFolder = (state: any) => state.getIn(['folder', 'folder']);
-export const getOriginalFolder = (state: any) => state.getIn(['folder', 'originalFolder']);
+export const isSaveRequested = (state: any) => state.getIn(['folder', 'isSaveRequested']);

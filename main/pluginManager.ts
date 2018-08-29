@@ -40,6 +40,11 @@ export const openFile = async (filePath: string): Promise<ParsedFile> => {
   };
 };
 
+export const saveFile = async (parsedFile: ParsedFile): Promise<boolean> => {
+  const plugin = getPluginForFile(parsedFile.filePath);
+  return await plugin.save(parsedFile.filePath, parsedFile.data);
+};
+
 const getPluginForFile = (path: string) =>
-getPlugins()
+  getPlugins()
     .filter(plugin => path.endsWith(plugin.fileExtension))[0];

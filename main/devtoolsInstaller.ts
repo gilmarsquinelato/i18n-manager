@@ -2,7 +2,7 @@ const installExtensions = async () => {
   const {
     default: installExtension,
     REDUX_DEVTOOLS,
-    REACT_DEVELOPER_TOOLS
+    REACT_DEVELOPER_TOOLS,
   } = require('electron-devtools-installer');
 
   try {

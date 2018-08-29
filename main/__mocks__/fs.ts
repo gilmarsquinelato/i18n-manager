@@ -57,5 +57,6 @@ const lstatSync = (path: string) => ({
 (fs as any).readFile = readFile;
 (fs as any).existsSync = (path: string) => mockFiles[path] !== undefined;
 (fs as any).readFileSync = (path: string) => Buffer.from(mockFiles[path], 'utf-8');
+(fs as any).getFiles = () => mockFiles;
 
 module.exports = fs;

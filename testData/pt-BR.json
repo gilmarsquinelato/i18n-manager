@@ -2,5 +2,6 @@
   "hello": "Olá Mundo!",
   "nested": {
     "anotherNested": "valor"
-  }
+  },
+  "special": "pt-BR"
 }

@@ -12,6 +12,11 @@ export const parse = async (path: string): Promise<any> => {
   }
 };
 
-export const save = (path: string, data: object): boolean => {
-  return true;
+export const save = async (path: string, data: object): Promise<boolean> => {
+  try {
+    await util.promisify(fs.writeFile)(path, JSON.stringify(data, null, 2));
+    return true;
+  } catch (e) {
+    return false;
+  }
 };

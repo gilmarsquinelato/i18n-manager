@@ -1,9 +1,10 @@
 import * as testUtils from './testUtils';
 import * as fileManager from '../fileManager';
 import * as pluginManager from '../pluginManager';
+import { ParsedFile } from '../../common/types';
 
 
-const validateParsedFile = (parsedFile: pluginManager.ParsedFile, language: string) => {
+const validateParsedFile = (parsedFile: ParsedFile, language: string) => {
   expect(parsedFile.filePath).toBe(`${testUtils.basePath}/${language}.json`);
   expect(parsedFile.fileName).toBe(`${language}.json`);
   expect(parsedFile.language).toBe(language);

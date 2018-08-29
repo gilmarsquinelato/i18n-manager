@@ -1,6 +1,6 @@
 import { dialog } from 'electron';
 import { openFolder } from '../fileManager';
-import { createWindow } from '../windowManager';
+import { createWindow, getCurrentWindow, sendSave } from '../windowManager';
 
 
 const openDirectory = () => {
@@ -10,6 +10,10 @@ const openDirectory = () => {
   if (result) {
     openFolder(result[0]);
   }
+};
+
+const saveDirectory = () => {
+  sendSave(getCurrentWindow());
 };
 
 
@@ -26,6 +30,12 @@ const fileMenu: Electron.MenuItemConstructorOptions = {
       label: 'Open',
       click: openDirectory,
       accelerator: 'CommandOrControl+O',
+    },
+    { type: 'separator' },
+    {
+      label: 'Save',
+      click: saveDirectory,
+      accelerator: 'CommandOrControl+S',
     },
   ],
 };

@@ -28,8 +28,18 @@ export const createWindow = (): BrowserWindow => {
   return window;
 };
 
+export const getCurrentWindow = (): BrowserWindow => BrowserWindow.getFocusedWindow();
+
 export const sendOpen = (window: Electron.BrowserWindow, files: ParsedFile[]) => {
   window.webContents.send(ipcMessages.open, files);
+};
+
+export const sendSave = (window: Electron.BrowserWindow, data: any = {}) => {
+  window.webContents.send(ipcMessages.save, data);
+};
+
+export const sendSaveComplete = (window: Electron.BrowserWindow, data: any = {}) => {
+  window.webContents.send(ipcMessages.saveComplete, data);
 };
 
 export enum SaveResponse {
@@ -93,7 +103,7 @@ const onClose = (window: Electron.BrowserWindow) => async (e: Electron.Event) =>
   const response = await showSaveDialog(window);
 
   if (response === SaveResponse.Save) {
-    window.webContents.send(ipcMessages.save, { close: true });
+    sendSave(window, { close: true });
   } else if (response === SaveResponse.DontSave) {
     window.destroy();
   }

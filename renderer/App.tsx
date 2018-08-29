@@ -6,6 +6,21 @@ import { darkBlack } from './lib/palette';
 import Routes from './Routes';
 
 
+const Container = styled('div')`
+  height: 100%;
+  padding: 0;
+  display: flex;
+`;
+
+const App: React.SFC = () => (
+  <Container className="container-fluid">
+    <Routes />
+  </Container>
+);
+
+export default App;
+
+
 injectGlobal`
   html, body {
     position: relative;
@@ -34,17 +49,3 @@ injectGlobal`
     }
   }
 `;
-
-const Container = styled('div')`
-  height: 100%;
-  padding: 0;
-  display: flex;
-`;
-
-const App: React.SFC = () => (
-  <Container className="container-fluid">
-    <Routes />
-  </Container>
-);
-
-export default App;

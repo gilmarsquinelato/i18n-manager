@@ -3,6 +3,7 @@ import Immutable from 'immutable';
 import styled from 'react-emotion';
 import { lightBlack } from '~/lib/palette';
 
+
 type OnChange = (language: string, value: string) => any;
 
 interface IContentInputProps {
