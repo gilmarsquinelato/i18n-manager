@@ -22,6 +22,9 @@ describe('fileManager', () => {
     const parsedFiles = await pluginManager.getParsedFiles(files);
 
     await fileManager.openFolder(testUtils.basePath);
+    expect(electron.BrowserWindow.getAllWindows()).toHaveLength(1);
+    (electron.BrowserWindow.getAllWindows()[0] as any).trigger('ready-to-show');
+
     expect((electron as any).webContentsSendFunction).toBeCalledWith(ipcMessages.open, parsedFiles);
   });
 

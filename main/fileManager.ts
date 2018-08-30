@@ -1,17 +1,25 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as util from 'util';
-import { getOrCreateAvailableWindow, sendOpen } from './windowManager';
+import { getAvailableWindow, sendOpen, createWindow } from './windowManager';
 import { getParsedFiles, saveFile } from './pluginManager';
 import { ParsedFile } from '../common/types';
 
 
 export const openFolder = async (folderPath: string) => {
-  const files = await getFiles(folderPath);
-  const parsedFiles = await getParsedFiles(files);
+  const parsedFiles = await parseFolder(folderPath);
 
-  const window = getOrCreateAvailableWindow();
-  sendOpen(window, parsedFiles);
+  const window = getAvailableWindow();
+  if (window) {
+    sendOpen(window, parsedFiles);
+  } else {
+    createWindow(parsedFiles);
+  }
+};
+
+export const parseFolder =  async (folderPath: string): Promise<ParsedFile[]> => {
+  const files = await getFiles(folderPath);
+  return await getParsedFiles(files);
 };
 
 export const getFiles = async (folderPath: string): Promise<string[]> => {

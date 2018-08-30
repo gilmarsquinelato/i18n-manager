@@ -3,6 +3,8 @@ import { openFolder } from '../fileManager';
 import { createWindow, getCurrentWindow, sendSave } from '../windowManager';
 
 
+const newWindow = () => createWindow();
+
 const openDirectory = () => {
   const result = dialog.showOpenDialog({
     properties: ['openDirectory'],
@@ -22,7 +24,7 @@ const fileMenu: Electron.MenuItemConstructorOptions = {
   submenu: [
     {
       label: 'New Window',
-      click: createWindow,
+      click: newWindow,
       accelerator: 'CommandOrControl+Shift+N',
     },
     { type: 'separator' },

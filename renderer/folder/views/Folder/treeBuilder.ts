@@ -3,11 +3,9 @@ import _ from 'lodash';
 
 
 const getTreePaths = (contents: Immutable.Iterable<number, any>): Immutable.Iterable<number, any> =>
-  contents.map((value, key) => {
-    return _.isObject(value) ?
-      getTreePaths(contents.get(key)) :
-      null;
-  });
+  contents
+    .filter((_value: any, key: any) => key.length > 0)
+    .map((value: any, key: any) => _.isObject(value) ? getTreePaths(contents.get(key)) : null);
 
 const buildTree = (folder: Immutable.List<any>): any => {
   if (!folder || folder.size === 0) {

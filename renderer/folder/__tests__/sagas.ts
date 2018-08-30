@@ -17,10 +17,13 @@ describe('folder/sagas', () => {
     testSaga(openFolderAsync, { data })
       .next()
 
-      .put(actions.loadFolder(data))
+      .put(actions.loadFolder(null))
       .next()
 
       .put(push('/folder'))
+      .next()
+
+      .put(actions.loadFolder(data))
       .next()
 
       .isDone();

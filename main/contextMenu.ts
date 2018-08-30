@@ -1,0 +1,114 @@
+import { BrowserWindow, Menu, dialog } from 'electron';
+import isDev from 'electron-is-dev';
+
+import { IContextMenuOptions } from '../common/types';
+import * as windowManager from './windowManager';
+
+
+const webContents = (win: any) => win.webContents || win.getWebContents();
+
+export const showContextMenu = (window: BrowserWindow, options: IContextMenuOptions) => {
+  const menuTemplate: any[] = [];
+  menuTemplate.push(...getTreeMenuItems(window, options));
+  menuTemplate.push(...getDefaultMenuItems(window, options));
+
+  const menu = Menu.buildFromTemplate(menuTemplate);
+  menu.popup({
+    window,
+    x: options.x,
+    y: options.y,
+  });
+};
+
+export const getTreeMenuItems = (window: BrowserWindow, options: IContextMenuOptions): any[] => {
+  const menuTemplate: any[] = [];
+
+  if (!options.isFromTree) {
+    return menuTemplate;
+  }
+
+  if (!options.isNode) {
+    menuTemplate.push(
+      { type: 'separator' },
+      {
+        label: 'Add Item',
+        click() {
+          windowManager.sendAddTreeItem(window, {
+            path: options.path,
+            isNode: true,
+          });
+        },
+      },
+      {
+        label: 'Add Folder',
+        click() {
+          windowManager.sendAddTreeItem(window, {
+            path: options.path,
+            isNode: false,
+          });
+        },
+      },
+    );
+  }
+
+  if (options.path.length > 0) {
+    menuTemplate.push(
+      { type: 'separator' },
+      {
+        label: 'Delete',
+        click() {
+          dialog.showMessageBox(
+            window,
+            {
+              type: 'question',
+              buttons: ['Delete', 'Cancel'],
+              message: `Are you sure to delete the item ${options.path.join('/')}?`,
+            },
+            (response: number) => {
+              if (response === 0) {
+                windowManager.sendRemoveTreeItem(window, {
+                  path: options.path,
+                });
+              }
+            },
+          );
+        },
+      },
+    );
+  }
+
+  return menuTemplate;
+};
+
+export const getDefaultMenuItems = (window: BrowserWindow, options: IContextMenuOptions): any[] => {
+  const menuTemplate: any[] = [];
+
+  if (options.enableCut) {
+    menuTemplate.push({ role: 'cut' });
+  }
+
+  if (options.enableCopy) {
+    menuTemplate.push({ role: 'copy' });
+  }
+
+  if (options.enablePaste) {
+    menuTemplate.push({ role: 'paste' });
+  }
+
+  if (isDev) {
+    menuTemplate.push(
+      { type: 'separator' },
+      {
+        label: 'Inspect Element',
+        click() {
+          webContents(window).inspectElement(options.x, options.y);
+
+          if (webContents(window).isDevToolsOpened()) {
+            webContents(window).devToolsWebContents.focus();
+          }
+        },
+      },
+    );
+  }
+  return menuTemplate;
+};

@@ -15,7 +15,7 @@ export const getOrCreateAvailableWindow = (): BrowserWindow => {
   return window ? window : createWindow();
 };
 
-export const createWindow = (): BrowserWindow => {
+export const createWindow = (files?: ParsedFile[]): BrowserWindow => {
   const window = new BrowserWindow({
     ...Settings.getSavedSettings().window,
     show: false,
@@ -23,24 +23,34 @@ export const createWindow = (): BrowserWindow => {
 
   window.loadURL(getUrl());
 
-  registerEvents(window);
+  registerEvents(window, files);
 
   return window;
 };
 
 export const getCurrentWindow = (): BrowserWindow => BrowserWindow.getFocusedWindow();
 
-export const sendOpen = (window: Electron.BrowserWindow, files: ParsedFile[]) => {
+
+export const sendOpen = async (window: BrowserWindow, files: ParsedFile[]) => {
   window.webContents.send(ipcMessages.open, files);
 };
 
-export const sendSave = (window: Electron.BrowserWindow, data: any = {}) => {
+export const sendSave = (window: BrowserWindow, data: any = {}) => {
   window.webContents.send(ipcMessages.save, data);
 };
 
-export const sendSaveComplete = (window: Electron.BrowserWindow, data: any = {}) => {
+export const sendSaveComplete = (window: BrowserWindow, data: any = {}) => {
   window.webContents.send(ipcMessages.saveComplete, data);
 };
+
+export const sendAddTreeItem = (window: BrowserWindow, data: any = {}) => {
+  window.webContents.send(ipcMessages.addTreeItem, data);
+};
+
+export const sendRemoveTreeItem = (window: BrowserWindow, data: any = {}) => {
+  window.webContents.send(ipcMessages.removeTreeItem, data);
+};
+
 
 export enum SaveResponse {
   Save,
@@ -48,7 +58,7 @@ export enum SaveResponse {
   DontSave,
 }
 
-export const showSaveDialog = (window: Electron.BrowserWindow): Promise<SaveResponse> =>
+export const showSaveDialog = (window: BrowserWindow): Promise<SaveResponse> =>
   new Promise((resolve) => {
     dialog.showMessageBox(
       window,
@@ -74,7 +84,7 @@ export const showSaveDialog = (window: Electron.BrowserWindow): Promise<SaveResp
   });
 
 
-const getAvailableWindow = (): BrowserWindow =>
+export const getAvailableWindow = (): BrowserWindow =>
   BrowserWindow.getAllWindows()
     .filter(w => !w.isDocumentEdited())[0];
 
@@ -85,13 +95,13 @@ const getUrl = () => (
 );
 
 
-const registerEvents = (window: Electron.BrowserWindow) => {
+const registerEvents = (window: BrowserWindow, files?: ParsedFile[]) => {
   window.on('close', onClose(window));
   window.on('resize', _.debounce(onResize(window), 1000));
-  window.once('ready-to-show', onReadyToShow(window));
+  window.once('ready-to-show', onReadyToShow(window, files));
 };
 
-const onClose = (window: Electron.BrowserWindow) => async (e: Electron.Event) => {
+const onClose = (window: BrowserWindow) => async (e: Electron.Event) => {
   if (!window.isDocumentEdited()) {
     return;
   }
@@ -109,12 +119,15 @@ const onClose = (window: Electron.BrowserWindow) => async (e: Electron.Event) =>
   }
 };
 
-const onReadyToShow = (window: Electron.BrowserWindow) => () => {
+const onReadyToShow = (window: BrowserWindow, files?: ParsedFile[]) => () => {
   window.show();
   window.focus();
+  if (files) {
+    sendOpen(window, files);
+  }
 };
 
-const onResize = (window: Electron.BrowserWindow) => () => {
+const onResize = (window: BrowserWindow) => () => {
   const settings = Settings.getSavedSettings();
   const [width, height] = window.getSize();
 

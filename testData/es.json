@@ -1,4 +1,17 @@
 {
+  "anotherItem": "",
   "hello": "Hello World!",
+  "nested": {
+    "nestNest": {
+      "nNest": {
+        "item": ""
+      }
+    },
+    "newItem": "a"
+  },
+  "newFolder": {
+    "item": "s"
+  },
+  "newItem": "",
   "special": "es"
 }
