@@ -1,4 +1,6 @@
 import { eventChannel } from 'redux-saga';
+import * as ipcMessages from '../../common/ipcMessages';
+
 
 let ipcRenderer = {
   on: (message: string, cb: Function) => {},
@@ -28,5 +30,12 @@ export const createIpcChannel = (message: string) =>
     };
   });
 
-export const sendToIpc = (message: string, data: any) =>
+
+export const openFolderChannel = createIpcChannel(ipcMessages.open);
+export const saveFolderChannel = createIpcChannel(ipcMessages.save);
+export const saveFolderCompleteChannel = createIpcChannel(ipcMessages.saveComplete);
+export const addTreeItemChannel = createIpcChannel(ipcMessages.addTreeItem);
+export const removeTreeItemChannel = createIpcChannel(ipcMessages.removeTreeItem);
+
+export const sendToIpc = (message: string, data?: any) =>
   ipcRenderer.send(message, data);

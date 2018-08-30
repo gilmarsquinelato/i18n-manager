@@ -19,7 +19,16 @@ const folder = Immutable.fromJS([
 
 describe('folder/components/Content', () => {
   it('mounting', () => {
-    const component = mount(<Content openedPath={openedPath} onChange={onChange} />);
+    const component = mount(
+      <Content
+        openedPath={openedPath}
+        onChange={onChange}
+        isChangedValue={jest.fn()}
+        isMissingPath={jest.fn()}
+        isNewPath={false}
+      />,
+    );
+
     expect(component).toBeDefined();
     expect(component.children().first().hasClass('resizeable-item')).toBeTruthy();
   });
@@ -30,6 +39,9 @@ describe('folder/components/Content', () => {
         openedPath={openedPath}
         onChange={onChange}
         folder={folder}
+        isChangedValue={jest.fn()}
+        isMissingPath={jest.fn()}
+        isNewPath={false}
       />,
     );
 
@@ -45,6 +57,9 @@ describe('folder/components/Content', () => {
         openedPath={openedPath}
         onChange={onChange}
         folder={folder}
+        isChangedValue={jest.fn()}
+        isMissingPath={jest.fn()}
+        isNewPath={false}
       />,
     );
 

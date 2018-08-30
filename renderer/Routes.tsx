@@ -6,6 +6,7 @@ import {
   Switch,
   Route,
 } from 'react-router-dom';
+import { hot } from 'react-hot-loader';
 
 import createStore from './config/redux';
 
@@ -26,4 +27,4 @@ const Routes: React.SFC = () => (
   </Provider>
 );
 
-export default Routes;
+export default hot(module)(Routes);

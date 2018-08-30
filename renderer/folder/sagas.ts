@@ -1,14 +1,19 @@
-import { takeEvery, call, put, take } from 'redux-saga/effects';
+import { takeLatest, call, put, take } from 'redux-saga/effects';
 import { push } from 'connected-react-router/immutable';
 import * as ipcMessages from '../../common/ipcMessages';
-import { createIpcChannel, sendToIpc } from '~/lib/electron';
+import {
+  sendToIpc, openFolderChannel,
+  saveFolderChannel, saveFolderCompleteChannel,
+  addTreeItemChannel, removeTreeItemChannel,
+} from '~/lib/electron';
 
 import { ACTION_TYPES, actions } from './actions';
 
 
 export function* openFolderAsync({ data }: any) {
-  yield put(actions.loadFolder(data));
+  yield put(actions.loadFolder(null));
   yield put(push('/folder'));
+  yield put(actions.loadFolder(data));
 }
 
 export function* saveFolderAsync({ data }: any) {
@@ -22,13 +27,31 @@ export function* saveFolderCompleteAsync() {
   yield put(actions.saveRequested(false));
 }
 
+export function* addTreeItemAsync({ data }: any) {
+  yield put(actions.addTreeItemRequested(data));
+}
+
+export function* removeTreeItemAsync({ data }: any) {
+  console.log(data);
+  yield put(actions.removeTreeItemRequested(data));
+}
+
+export function dataChangedAsync({ payload }: any) {
+  sendToIpc(ipcMessages.dataChanged, payload);
+}
+
+export function showContextMenuAsync({ payload }: any) {
+  sendToIpc(ipcMessages.showContextMenu, payload);
+}
+
+
 export default function* folderSagas(): any {
-  const openFolderChannel = yield call(createIpcChannel, ipcMessages.open);
-  yield takeEvery(openFolderChannel, openFolderAsync);
+  yield takeLatest(openFolderChannel, openFolderAsync);
+  yield takeLatest(saveFolderChannel, saveFolderAsync);
+  yield takeLatest(saveFolderCompleteChannel, saveFolderCompleteAsync);
+  yield takeLatest(addTreeItemChannel, addTreeItemAsync);
+  yield takeLatest(removeTreeItemChannel, removeTreeItemAsync);
 
-  const saveFolderChannel = yield call(createIpcChannel, ipcMessages.save);
-  yield takeEvery(saveFolderChannel, saveFolderAsync);
-
-  const saveFolderCompleteChannel = yield call(createIpcChannel, ipcMessages.saveComplete);
-  yield takeEvery(saveFolderCompleteChannel, saveFolderCompleteAsync);
+  yield takeLatest(ACTION_TYPES.DATA_CHANGED as any, dataChangedAsync);
+  yield takeLatest(ACTION_TYPES.SHOW_CONTEXT_MENU as any, showContextMenuAsync);
 }

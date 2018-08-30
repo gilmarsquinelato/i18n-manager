@@ -1,7 +1,16 @@
 {
+  "anotherItem": "",
   "hello": "Olá Mundo!",
   "nested": {
-    "anotherNested": "valor"
+    "nestNest": {
+      "nNest": {
+        "item": ""
+      }
+    }
   },
+  "newFolder": {
+    "item": "d"
+  },
+  "newItem": "",
   "special": "pt-BR"
 }

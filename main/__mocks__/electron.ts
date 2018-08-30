@@ -6,6 +6,7 @@ const windowList: BrowserWindow[] = [];
 
 export class BrowserWindow {
   static getAllWindows = jest.fn().mockReturnValue(windowList);
+  static fromWebContents = jest.fn(w => w);
 
   options: any;
 
@@ -71,6 +72,17 @@ export const dialog = {
 export const Menu = {
   buildFromTemplate: jest.fn(),
   setApplicationMenu: jest.fn(),
+};
+
+export const ipcEvents: any = {};
+export const ipcMain = {
+  on: (event: string, cb: any) => {
+    ipcEvents[event] = jest.fn(cb);
+  },
+  async trigger(eventName: string, event: Electron.Event, data: any) {
+    const fn = ipcEvents[eventName];
+    await fn(event, data);
+  },
 };
 
 export default {
