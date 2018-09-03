@@ -93,7 +93,17 @@
       "build/**/*",
       "node_modules/**/*",
       "package.json"
-    ]
+    ],
+    "mac": {
+      "extendInfo": {
+        "CFBundleDocumentTypes": [{
+          "CFBundleTypeName": "Folder",
+          "CFBundleTypeOSTypes": ["fold"],
+          "CFBundleTypeRole": "Editor",
+          "LSIsAppleDefaultForType": true
+        }]
+      }
+    }
   },
   "jest": {
     "transform": {

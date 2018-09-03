@@ -6,6 +6,7 @@ import isDev from 'electron-is-dev';
 import * as ipcMessages from '../common/ipcMessages';
 import { ParsedFile } from '../common/types';
 import * as settings from './settings';
+import { getFormattedFoldersPaths } from './pathUtils';
 
 
 export const hasWindows = (): boolean => BrowserWindow.getAllWindows().length > 0;
@@ -15,8 +16,7 @@ export const getOrCreateAvailableWindow = (): BrowserWindow => {
   return window ? window : createWindow();
 };
 
-export const createWindow = (
-  folderPath?: string, files?: ParsedFile[]): BrowserWindow => {
+export const createWindow = (): BrowserWindow => {
   const window = new BrowserWindow({
     ...settings.getSavedSettings().window,
     show: false,
@@ -24,7 +24,8 @@ export const createWindow = (
 
   window.loadURL(getUrl());
 
-  registerEvents(window, folderPath, files);
+  registerEvents(window);
+  sendRecentFolders(window, settings.getRecentFolders());
 
   return window;
 };
@@ -33,33 +34,46 @@ export const getCurrentWindow = (): BrowserWindow => BrowserWindow.getFocusedWin
 
 
 export const sendOpen = async (window: BrowserWindow, folderPath: string, folder: ParsedFile[]) => {
-  window.webContents.send(ipcMessages.open, { folder, folderPath });
+  sendToIpc(window, ipcMessages.open, { folder, folderPath });
 };
 
 export const sendSave = (window: BrowserWindow, data: any = {}) => {
-  window.webContents.send(ipcMessages.save, data);
+  sendToIpc(window, ipcMessages.save, data);
 };
 
 export const sendSaveComplete = (window: BrowserWindow, data: any = {}) => {
-  window.webContents.send(ipcMessages.saveComplete, data);
+  sendToIpc(window, ipcMessages.saveComplete, data);
 };
 
 export const sendAddTreeItem = (window: BrowserWindow, data: any = {}) => {
-  window.webContents.send(ipcMessages.addTreeItem, data);
+  sendToIpc(window, ipcMessages.addTreeItem, data);
 };
 
 export const sendRemoveTreeItem = (window: BrowserWindow, data: any = {}) => {
-  window.webContents.send(ipcMessages.removeTreeItem, data);
+  sendToIpc(window, ipcMessages.removeTreeItem, data);
 };
 
 export const sendNavigateTo = (window: BrowserWindow, data: any = {}) => {
-  window.webContents.send(ipcMessages.navigateTo, data);
+  sendToIpc(window, ipcMessages.navigateTo, data);
 };
 
 export const sendSettings = (window: BrowserWindow, data: any = {}) => {
-  window.webContents.send(ipcMessages.settings, data);
+  sendToIpc(window, ipcMessages.settings, data);
 };
 
+export const sendRecentFolders = (window: BrowserWindow, data: string[]) => {
+  sendToIpc(window, ipcMessages.recentFolders, getFormattedFoldersPaths(data));
+};
+
+const sendToIpc = (window: BrowserWindow, message: string, data: any) => {
+  const send = () => window.webContents.send(message, data);
+
+  if (window.webContents.isLoading()) {
+    window.once('ready-to-show', send);
+  } else {
+    send();
+  }
+};
 
 export enum SaveResponse {
   Save,
@@ -104,10 +118,10 @@ const getUrl = () => (
 );
 
 
-const registerEvents = (window: BrowserWindow, folderPath?: string, files?: ParsedFile[]) => {
+const registerEvents = (window: BrowserWindow) => {
   window.on('close', onClose(window));
   window.on('resize', _.debounce(onResize(window), 1000));
-  window.once('ready-to-show', onReadyToShow(window, folderPath, files));
+  window.once('ready-to-show', onReadyToShow(window));
 };
 
 const onClose = (window: BrowserWindow) => async (e: Electron.Event) => {
@@ -128,15 +142,10 @@ const onClose = (window: BrowserWindow) => async (e: Electron.Event) => {
   }
 };
 
-const onReadyToShow = (
-  window: BrowserWindow, folderPath?: string, files?: ParsedFile[]) => () => {
-    window.show();
-    window.focus();
-    if (files) {
-      sendSettings(window, settings.getCustomSettings());
-      sendOpen(window, folderPath, files);
-    }
-  };
+const onReadyToShow = (window: BrowserWindow) => () => {
+  window.show();
+  window.focus();
+};
 
 const onResize = (window: BrowserWindow) => () => {
   const settingsConfig = settings.getSavedSettings();

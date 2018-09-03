@@ -1,5 +1,5 @@
 import * as path from 'path';
-import { ipcMain, BrowserWindow, dialog } from 'electron';
+import { app, ipcMain, BrowserWindow, dialog } from 'electron';
 
 import { ParsedFile, IContextMenuOptions } from '../common/types';
 import * as ipcMessages from '../common/ipcMessages';
@@ -17,8 +17,7 @@ const onSave = async (e: any, data: any) => {
   const result = await fileManager.saveFolder(folder);
 
   const folderPath = path.dirname((folder as ParsedFile[])[0].filePath);
-  const parsedFolder = await fileManager.parseFolder(folderPath);
-  windowManager.sendOpen(window, folderPath, parsedFolder);
+  await fileManager.openFolderInWindow(folderPath, window);
 
   window.setDocumentEdited(false);
   windowManager.sendSaveComplete(window, result);
@@ -31,6 +30,11 @@ const onSave = async (e: any, data: any) => {
   if (closeWindow) {
     window.close();
   }
+};
+
+const onOpen = (e: any, data: string) => {
+  const window = BrowserWindow.fromWebContents(e.sender);
+  fileManager.openFolderInWindow(data, window);
 };
 
 const onDataChanged = (e: any, data: boolean) => {
@@ -47,11 +51,20 @@ const onSaveSettings = (e: any, data: any) => {
   settings.saveCustomSettings(data);
 };
 
+const onOpenFile = (e: any, data: any) => {
+  fileManager.openFolder(data);
+};
+
 const registerAppEvents = () => {
+  ipcMain.on(ipcMessages.open as any, onOpen);
   ipcMain.on(ipcMessages.save as any, onSave);
   ipcMain.on(ipcMessages.dataChanged as any, onDataChanged);
   ipcMain.on(ipcMessages.showContextMenu as any, onShowContextMenu);
   ipcMain.on(ipcMessages.settings as any, onSaveSettings);
+  app.on('open-file', onOpenFile);
+  app.on('will-finish-launching', () => {
+    app.on('open-file', onOpenFile);
+  });
 };
 
 export default registerAppEvents;

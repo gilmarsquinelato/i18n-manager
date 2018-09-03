@@ -16,3 +16,6 @@ export interface IContextMenuOptions {
   isNode: boolean;
   path?: string[];
 }
+
+export interface IMenuOptions {
+}

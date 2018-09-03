@@ -18,20 +18,22 @@ export class BrowserWindow {
 
   webContents = {
     send: webContentsSendFunction,
+    isLoading: () => false,
   };
 
   loadURL = jest.fn();
+  setMenu = jest.fn();
 
   events: any = {};
 
   on = (eventName: string, callback: (...args: any[]) => any) => {
-    this.events[eventName] = jest.fn(callback);
+    this.events[eventName] = this.events[eventName] || [];
+    this.events[eventName].push(jest.fn(callback));
   }
   once = this.on;
 
   trigger = async (eventName: string, event: Electron.Event) => {
-    const fn = this.events[eventName];
-    await fn(event);
+    await Promise.all(this.events[eventName].map((fn: any) => fn.call(event)));
   }
 
   documentEdited: boolean = false;
@@ -53,9 +55,22 @@ export class BrowserWindow {
   focus = jest.fn();
 }
 
+
+const appEvents: any = {};
 export const app = {
   getName: () => 'i18n Manager',
   getPath: (path: string) => `./appPath/${path}`,
+
+  on: (eventName: string, callback: (...args: any[]) => any) => {
+    appEvents[eventName] = jest.fn(callback);
+  },
+
+  trigger: async (eventName: string, event: any) => {
+    const fn = appEvents[eventName];
+    await fn(event);
+  },
+
+  addRecentDocument: jest.fn(),
 };
 
 let dialogReturns = 0;

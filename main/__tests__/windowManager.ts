@@ -35,7 +35,7 @@ describe('windowManager', () => {
   it('resize Event', () => {
     const window: any = windowManager.createWindow();
     window.trigger('resize');
-    expect(window.events['resize']).toBeCalled();
+    expect(window.events['resize'][0]).toBeCalled();
   });
 
   it('ready-to-show Event', () => {
@@ -48,7 +48,7 @@ describe('windowManager', () => {
   it('close Event - without modifications', () => {
     const window: any = windowManager.createWindow();
     window.trigger('close');
-    expect(window.events['close']).toBeCalled();
+    expect(window.events['close'][0]).toBeCalled();
   });
 
   it('close Event - with modifications - YES', async () => {
@@ -56,7 +56,7 @@ describe('windowManager', () => {
     window.setDocumentEdited(true);
 
     await window.trigger('close');
-    expect(window.events['close']).toBeCalled();
+    expect(window.events['close'][0]).toBeCalled();
     expect(electron.dialog.showMessageBox).toBeCalled();
     expect((electron as any).webContentsSendFunction)
       .toBeCalledWith(ipcMessages.save, { close: true });
@@ -68,7 +68,7 @@ describe('windowManager', () => {
     window.setDocumentEdited(true);
 
     await window.trigger('close');
-    expect(window.events['close']).toBeCalled();
+    expect(window.events['close'][0]).toBeCalled();
     expect(window.destroy).toBeCalled();
   });
 });

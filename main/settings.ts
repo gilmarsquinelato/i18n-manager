@@ -1,15 +1,16 @@
 import { app } from 'electron';
+import _ from 'lodash';
 import * as path from 'path';
 import * as fs from 'fs';
 
 
-type Settings = {
+export type Settings = {
   window: {
     width: number,
     height: number,
   },
-  customSettings: {
-  },
+  customSettings: {},
+  recentFolders: string[],
 };
 
 export const defaultSettings: Settings = {
@@ -17,9 +18,8 @@ export const defaultSettings: Settings = {
     width: 800,
     height: 600,
   },
-  customSettings: {
-
-  },
+  customSettings: {},
+  recentFolders: [],
 };
 
 const settingsFilePath = path.join(app.getPath('userData'), 'settings.json');
@@ -31,7 +31,8 @@ export const getSavedSettings = (): Settings => {
   }
 
   const file = fs.readFileSync(settingsFilePath);
-  return JSON.parse(file.toString());
+  const parsed = JSON.parse(file.toString());
+  return _.merge(defaultSettings, parsed);
 };
 
 export const saveSettings = (settings: Settings) => {
@@ -49,5 +50,24 @@ export const saveCustomSettings = (data: any) => {
   settings.customSettings = data;
 
   saveSettings(settings);
-  return getSavedSettings().customSettings || {};
+  return getCustomSettings();
+};
+
+export const getRecentFolders = (): string[] => {
+  return getSavedSettings().recentFolders || [];
+};
+
+export const addRecentFolder = (folderPath: string) => {
+  const settings = getSavedSettings();
+
+  const duplicatedIndex = settings.recentFolders.indexOf(folderPath);
+  if (duplicatedIndex !== -1) {
+    settings.recentFolders.splice(duplicatedIndex, 1);
+  }
+
+  settings.recentFolders.unshift(folderPath);
+  settings.recentFolders = settings.recentFolders.slice(0, 10);
+
+  saveSettings(settings);
+  return getRecentFolders();
 };

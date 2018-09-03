@@ -7,3 +7,4 @@ export const addTreeItem = 'addTreeItem';
 export const removeTreeItem = 'removeTreeItem';
 export const navigateTo = 'navigateTo';
 export const settings = 'settings';
+export const recentFolders = 'recentFolders';

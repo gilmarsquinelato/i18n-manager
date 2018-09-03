@@ -19,7 +19,12 @@ describe('fileManager', () => {
   });
 
   it('saveSettings', async () => {
-    const newSettings = { window: { width: 1, height: 2 }, customSettings: {} };
+    const newSettings: settings.Settings = {
+      window: { width: 1, height: 2 },
+      customSettings: {},
+      recentFolders: [],
+    };
+
     const savedSettings = await settings.saveSettings(newSettings);
 
     expect(savedSettings).toBeDefined();

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Provider } from 'react-redux';
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory, createHashHistory } from 'history';
 import { ConnectedRouter } from 'connected-react-router/immutable';
 import {
   Switch,
@@ -10,11 +10,12 @@ import { hot } from 'react-hot-loader';
 
 import createStore from './config/redux';
 
-import { HomeContainer, FolderContainer } from './folder';
+import { HomeContainer } from './home';
+import { FolderContainer } from './folder';
 import { SettingsContainer } from './settings';
 
 
-const history = createBrowserHistory();
+const history = createHashHistory();
 const store = createStore(history);
 
 const Routes: React.SFC = () => (
