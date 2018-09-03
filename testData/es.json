@@ -1,6 +1,9 @@
 {
   "anotherItem": "",
   "hello": "Hello World!",
+  "newFolder": {
+    "otherItem": ""
+  },
   "newFolder2": {
     "newItem": "qwe"
   },

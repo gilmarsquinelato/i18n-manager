@@ -1,3 +1,4 @@
+import { app } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as util from 'util';
@@ -5,20 +6,28 @@ import {
   getAvailableWindow,
   sendOpen,
   createWindow,
+  sendRecentFolders,
+  sendSettings,
 } from './windowManager';
 import { getParsedFiles, saveFile } from './pluginManager';
+import * as settings from './settings';
 import { ParsedFile } from '../common/types';
 
 
 export const openFolder = async (folderPath: string) => {
+  const window = getAvailableWindow() || createWindow();
+  await openFolderInWindow(folderPath, window);
+};
+
+export const openFolderInWindow = async (folderPath: string, window: Electron.BrowserWindow) => {
+  app.addRecentDocument(folderPath);
+  const recent = settings.addRecentFolder(folderPath);
+
   const parsedFiles = await parseFolder(folderPath);
 
-  const window = getAvailableWindow();
-  if (window) {
-    sendOpen(window, folderPath, parsedFiles);
-  } else {
-    createWindow(folderPath, parsedFiles);
-  }
+  sendSettings(window, settings.getCustomSettings());
+  sendOpen(window, folderPath, parsedFiles);
+  sendRecentFolders(window, recent);
 };
 
 export const parseFolder = async (folderPath: string): Promise<ParsedFile[]> => {

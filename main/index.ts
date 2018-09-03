@@ -1,7 +1,6 @@
 import * as Sentry from '@sentry/electron';
 import _ from 'lodash';
-import { app } from 'electron';
-import * as path from 'path';
+import { app, dialog } from 'electron';
 import isDev from 'electron-is-dev';
 
 import { setupSentry } from '../common/sentry';
@@ -11,22 +10,19 @@ import installExtensions from './devtoolsInstaller';
 import registerAppEvents from './events';
 
 
-if (isDev) {
+if (!isDev) {
   setupSentry(Sentry);
 }
 
+registerAppEvents();
+
 app.on('ready', () => {
   if (isDev) {
-    const reload = require('electron-reload');
-    const electronPath = path.join(__dirname, '../..', 'node_modules', '.bin', 'electron');
-    reload(__dirname, { electron: electronPath });
-
     installExtensions();
   }
 
   loadMenu();
   createWindow();
-  registerAppEvents();
 });
 
 app.on('window-all-closed', () => {

@@ -2,6 +2,7 @@ import { dialog } from 'electron';
 import { openFolder } from '../fileManager';
 import { createWindow, getCurrentWindow, sendSave } from '../windowManager';
 import { onPreferencesClick } from './shared';
+import { IMenuOptions } from '../../common/types';
 
 
 const newWindow = () => createWindow();
@@ -20,39 +21,35 @@ const saveDirectory = () => {
 };
 
 
-const fileMenu: Electron.MenuItemConstructorOptions = {
-  label: 'File',
-  submenu: [
-    {
-      label: 'New Window',
-      click: newWindow,
-      accelerator: 'CommandOrControl+Shift+N',
-    },
-    { type: 'separator' },
-    {
-      label: 'Open',
-      click: openDirectory,
-      accelerator: 'CommandOrControl+O',
-    },
-    { type: 'separator' },
-    {
-      label: 'Save',
-      click: saveDirectory,
-      accelerator: 'CommandOrControl+S',
-    },
-  ],
-};
-
-if (process.platform === 'linux') {
-  (fileMenu.submenu as any).push(
-    { type: 'separator' },
-    {
+export default (): Electron.MenuItemConstructorOptions => {
+  const fileMenu: Electron.MenuItemConstructorOptions = {
+    label: 'File',
+    submenu: [
+      {
+        label: 'New Window',
+        click: newWindow,
+        accelerator: 'CommandOrControl+Shift+N',
+      },
+      { type: 'separator' },
+      {
+        label: 'Open Folder',
+        click: openDirectory,
+        accelerator: 'CommandOrControl+O',
+      },
+      { type: 'separator' },
+      {
+        label: 'Save',
+        click: saveDirectory,
+        accelerator: 'CommandOrControl+S',
+      },
+    ],
+  };
+  if (process.platform === 'linux') {
+    (fileMenu.submenu as any).push({ type: 'separator' }, {
       label: 'Preferences',
       click: onPreferencesClick,
       accelerator: 'CommandOrControl+,',
-    },
-  );
-}
-
-
-export default fileMenu;
+    });
+  }
+  return fileMenu;
+};

@@ -1,10 +1,11 @@
 import * as path from 'path';
 import { ParsedFile } from '../common/types';
-import getPlugins from './plugins';
+import getPlugins, { Plugin } from './plugins';
 
 
-export const getAvailablePlugins = () => getPlugins();
-export const getSupportedExtensions = () => getAvailablePlugins().map(p => p.fileExtension);
+export const getAvailablePlugins = (): Plugin[] => getPlugins();
+export const getSupportedExtensions = (): string[] =>
+  getAvailablePlugins().map(p => p.fileExtension);
 
 export const getParsedFiles = async (files: string[]): Promise<ParsedFile[]> => {
   const parsedFiles: ParsedFile[] = [];

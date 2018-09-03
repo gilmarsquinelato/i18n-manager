@@ -20,13 +20,19 @@ describe('fileManager', () => {
   it('openFolder', async () => {
     const files = await fileManager.getFiles(testUtils.basePath);
     const parsedFiles = await pluginManager.getParsedFiles(files);
+    const mockElectron = electron as any;
 
     await fileManager.openFolder(testUtils.basePath);
-    expect(electron.BrowserWindow.getAllWindows()).toHaveLength(1);
-    (electron.BrowserWindow.getAllWindows()[0] as any).trigger('ready-to-show');
+    expect(mockElectron.BrowserWindow.getAllWindows()).toHaveLength(1);
 
     const expected: any = { folder: parsedFiles, folderPath: testUtils.basePath };
-    expect((electron as any).webContentsSendFunction).toBeCalledWith(ipcMessages.open, expected);
+    const calls = mockElectron.webContentsSendFunction.mock.calls;
+
+    expect(calls).toHaveLength(4);
+    expect(calls[0][0]).toEqual(ipcMessages.recentFolders);
+    expect(calls[1][0]).toEqual(ipcMessages.settings);
+    expect(calls[2]).toEqual([ipcMessages.open, expected]);
+    expect(calls[3][0]).toEqual(ipcMessages.recentFolders);
   });
 
   it('saveFolder', async () => {

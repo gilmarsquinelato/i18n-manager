@@ -14,7 +14,7 @@ const disablePinchGesture = () => {
 };
 
 const enableSentry = () => {
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production' && window.require) {
     const Sentry = window.require('@sentry/electron');
     setupSentry(Sentry);
   }

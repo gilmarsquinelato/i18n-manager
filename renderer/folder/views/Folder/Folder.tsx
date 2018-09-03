@@ -236,7 +236,7 @@ class Folder extends React.Component<IProps, IState> {
    * Check if the given path is missing in the given language
    */
   isMissingPathFromLanguage = (path: string[] = [], language: string) =>
-    this.getPathFromFolder(this.state.folder, path, language) === undefined
+    !this.getPathFromFolder(this.state.folder, path, language)
 
   /**
    * Check if the given path is missing in some language
@@ -246,7 +246,7 @@ class Folder extends React.Component<IProps, IState> {
     this.state.folder.reduce(
       (acc: boolean, curr: any) =>
         acc ||
-        curr.get('data').getIn(path) === undefined,
+        !curr.get('data').getIn(path),
       false,
     )
 

@@ -14,7 +14,7 @@ export function* saveSettingsAsync({ payload }: any) {
   yield put(actions.setSettings(payload));
 }
 
-export default function* folderSagas(): any {
+export default function* settingsSagas(): any {
   yield takeLatest(settingsChannel, settingsAsync);
   yield takeLatest(ACTION_TYPES.SAVE_SETTINGS, saveSettingsAsync);
 }
