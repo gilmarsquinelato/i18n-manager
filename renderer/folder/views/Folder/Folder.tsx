@@ -11,7 +11,7 @@ import Content from '../../components/Content';
 import { hot } from 'react-hot-loader';
 
 
-const minTreeWidth = 400;
+const minTreeWidth = 300;
 const resizerWidth = 8;
 
 
@@ -72,7 +72,6 @@ class Folder extends React.Component<IProps, IState> {
     if (this.props.isSaveRequested && !prevProps.isSaveRequested) {
       this.props.saveFolder(this.state.folder.toJS());
     }
-    console.log(this.props.isRemovingTreeItem);
     if (this.props.isRemovingTreeItem && !prevProps.isRemovingTreeItem) {
       this.removeTreeItem();
     }
@@ -96,6 +95,20 @@ class Folder extends React.Component<IProps, IState> {
   onTreeMouseUp = (e: any) => {
     if (e.button === 2) {
       this.onRightClickItemTree([], e.pageX, e.pageY);
+    }
+  }
+
+  /**
+   * Called when an input in the Content was clicked with the right mouse buttom
+   */
+  onContentMouseUp = (e: any) => {
+    if (e.button === 2) {
+      this.showContextMenu(e.pageX, e.pageY, {
+        isFromTree: false,
+        enableCut: true,
+        enableCopy: true,
+        enablePaste: true,
+      });
     }
   }
 
@@ -137,7 +150,6 @@ class Folder extends React.Component<IProps, IState> {
 
   removeTreeItem = () => {
     const folder = this.updateFolderData(data => data.deleteIn(this.props.currentItemPath));
-    console.log(folder);
 
     const openedPath =
       _.isEqual(this.props.currentItemPath.toJS(), this.state.openedPath) ?
@@ -189,7 +201,7 @@ class Folder extends React.Component<IProps, IState> {
     this.props.folder &&
     this.state.folder.reduce(
       (acc: boolean, curr: any, key: number) =>
-        compareCallback(acc, curr.get('data'), this.props.folder.getIn([key, 'data'])),
+        compareCallback(acc, curr, this.props.folder.get(key)),
       initialValue,
     )
 
@@ -202,11 +214,10 @@ class Folder extends React.Component<IProps, IState> {
       (acc, state, props) =>
         acc ||
         !_.isEqual(
-          getValueOrToJS(state.getIn(path)),
-          getValueOrToJS(props.getIn(path)),
+          getValueOrToJS(state.get('data').getIn(path)),
+          getValueOrToJS(props.get('data').getIn(path)),
         ),
     )
-
   /**
    * Check if the given path is missing in all languages comparing the state with the props folder
    */
@@ -216,8 +227,8 @@ class Folder extends React.Component<IProps, IState> {
       (acc, state, props) =>
         acc &&
         (
-          getValueOrToJS(state.getIn(path)) !== undefined &&
-          getValueOrToJS(props.getIn(path)) === undefined
+          getValueOrToJS(state.get('data').getIn(path)) !== undefined &&
+          getValueOrToJS(props.get('data').getIn(path)) === undefined
         ),
     )
 
@@ -242,11 +253,18 @@ class Folder extends React.Component<IProps, IState> {
   /**
    * Get the value based on a given path and language from a folder (from state or props)
    */
-  getPathFromFolder = (folder: any, path: string[], language: string) =>
-    folder &&
-    folder
-      .find((i: any) => i.get('language') === language)
-      .get('data').getIn(path)
+  getPathFromFolder = (folder: any, path: string[], language: string) => {
+    if (!folder) {
+      return;
+    }
+
+    const lanaguageItem = folder.find((i: any) => i.get('language') === language);
+    if (!lanaguageItem) {
+      return;
+    }
+
+    return lanaguageItem.get('data').getIn(path);
+  }
 
   /**
    * Compares the state folder with the props folder
@@ -286,58 +304,45 @@ class Folder extends React.Component<IProps, IState> {
             []
         }
       />
-      {this.props.isAddingTreeItem && <TreeOverlay />}
+
+      {this.props.isAddingTreeItem && <TreeOverlay onClick={this.onCancelAddNewItem} />}
     </ResizeableItem>
   )
 
   render() {
     return (
-      <FolderRoot>
-        <ResizeablePanel
-          className={this.state.isDragging ? 'dragging' : ''}
-          onMouseUp={() => this.setIsDragging(false)}
-          onMouseMove={(e: any) => {
-            if (this.state.isDragging) {
-              this.setState({ treeWidth: e.pageX - resizerWidth / 2 });
-            }
-          }}
-        >
-          {this.renderTree()}
+      <ResizeablePanel
+        className={this.state.isDragging ? 'dragging' : ''}
+        onMouseUp={() => this.setIsDragging(false)}
+        onMouseMove={(e: any) => {
+          if (this.state.isDragging) {
+            this.setState({ treeWidth: e.pageX - resizerWidth / 2 });
+          }
+        }}
+      >
+        {this.renderTree()}
 
-          <div
-            className="drag-item"
-            onMouseDown={() => this.setIsDragging(true)}
-          />
+        <div
+          className="drag-item"
+          onMouseDown={() => this.setIsDragging(true)}
+        />
 
-          <Content
-            openedPath={this.state.openedPath}
-            folder={this.state.folder}
-            onChange={this.onChange}
-            isChangedValue={this.isChangedValue}
-            isMissingPath={this.isMissingPathFromLanguage}
-            isNewPath={this.isNewPath(this.state.openedPath)}
-          />
-        </ResizeablePanel>
-
-        <StatusBar>
-          <StatusBarItem className={`save ${!this.props.isSaveRequested ? 'hidden' : ''}`}>
-            <i className="fas fa-spinner fa-spin icon" />
-            Saving...
-          </StatusBarItem>
-        </StatusBar>
-      </FolderRoot>
+        <Content
+          openedPath={this.state.openedPath}
+          folder={this.state.folder}
+          onChange={this.onChange}
+          onMouseUp={this.onContentMouseUp}
+          isChangedValue={this.isChangedValue}
+          isMissingPath={this.isMissingPathFromLanguage}
+          isNewPath={this.isNewPath(this.state.openedPath)}
+        />
+      </ResizeablePanel>
     );
   }
 }
 
 export default hot(module)(Folder);
 
-
-const FolderRoot = styled('div')`
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-`;
 
 const ResizeablePanel = styled('div')`
   display: flex;
@@ -358,25 +363,7 @@ const ResizeablePanel = styled('div')`
 const ResizeableItem = styled('div')`
   position: relative;
   overflow: auto;
-`;
-
-const StatusBar = styled('div')`
-  display: flex;
-  height: 24px;
-  font-size: 14px;
-  padding: 0 8px;
-`;
-
-const StatusBarItem = styled('span')`
-  transition: opacity 1s;
-
-  &.hidden {
-    opacity: 0;
-  }
-
-  .icon {
-    margin-right: 4px;
-  }
+  padding-bottom: 32px;
 `;
 
 const TreeOverlay = styled('div')`

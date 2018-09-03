@@ -11,6 +11,7 @@ import { hot } from 'react-hot-loader';
 import createStore from './config/redux';
 
 import { HomeContainer, FolderContainer } from './folder';
+import { SettingsContainer } from './settings';
 
 
 const history = createBrowserHistory();
@@ -22,6 +23,7 @@ const Routes: React.SFC = () => (
       <Switch>
         <Route path="/" exact component={HomeContainer} />
         <Route path="/folder" component={FolderContainer} />
+        <Route path="/settings" component={SettingsContainer} />
       </Switch>
     </ConnectedRouter>
   </Provider>

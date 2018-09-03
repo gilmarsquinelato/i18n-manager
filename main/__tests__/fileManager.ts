@@ -25,19 +25,22 @@ describe('fileManager', () => {
     expect(electron.BrowserWindow.getAllWindows()).toHaveLength(1);
     (electron.BrowserWindow.getAllWindows()[0] as any).trigger('ready-to-show');
 
-    expect((electron as any).webContentsSendFunction).toBeCalledWith(ipcMessages.open, parsedFiles);
+    const expected: any = { folder: parsedFiles, folderPath: testUtils.basePath };
+    expect((electron as any).webContentsSendFunction).toBeCalledWith(ipcMessages.open, expected);
   });
 
   it('saveFolder', async () => {
     const language = 'pt-PT';
-    const fileName = `${language}.json`;
-    const filePath = `${testUtils.basePath}/${language}.json`;
+    const extension = '.json';
+    const fileName = `${language}${extension}`;
+    const filePath = `${testUtils.basePath}/${language}${extension}`;
 
     const filesToSave: ParsedFile[] = [
       {
         language,
         fileName,
         filePath,
+        extension,
         data: { language },
       },
     ];

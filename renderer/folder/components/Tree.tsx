@@ -2,8 +2,9 @@ import React from 'react';
 import _ from 'lodash';
 import { css } from 'emotion';
 import styled from 'react-emotion';
+import Color from 'color';
 
-import { lightBlack, yellow, green, red } from '~/lib/palette';
+import { lightBlack, yellow, green, red, blue } from '~/lib/palette';
 import { hot } from 'react-hot-loader';
 
 
@@ -11,6 +12,7 @@ type TreeProps = {
   tree?: any,
   collapsed?: boolean,
   level?: number,
+  currentKey?: string,
   openedPath?: string[],
   parentPath?: string[],
   isAddingTreeItem?: boolean,
@@ -25,14 +27,16 @@ type TreeProps = {
 };
 
 interface ITreeState {
-  itemState: any;
   addingItemName: string;
+  addItemError: boolean;
+  collapsed: boolean;
 }
 
 class Tree extends React.Component<TreeProps, ITreeState> {
   state: ITreeState = {
-    itemState: {},
     addingItemName: '',
+    addItemError: false,
+    collapsed: false,
   };
 
   static defaultProps: Partial<TreeProps> = {
@@ -41,139 +45,130 @@ class Tree extends React.Component<TreeProps, ITreeState> {
     parentPath: [],
   };
 
-  onClick = (key: string) => () => {
-    if (this.props.tree[key] === null) {
-      this.props.onSelectItem(this.getPath(key));
+  static getDerivedStateFromProps = ({ isAddingTreeItem }: TreeProps, prevState: ITreeState) =>
+    !isAddingTreeItem && prevState.addingItemName.length > 0 ?
+      {
+        addingItemName: '',
+        addItemError: false,
+      } :
+      null
+
+  onClick = () => {
+    if (this.props.tree === null) {
+      this.props.onSelectItem(this.getPath());
     } else {
-      this.toggleCollapse(key);
+      this.toggleCollapse();
     }
   }
 
-  onMouseUp = (key: string) => (e: any) => {
+  onMouseUp = (e: any) => {
     if (e.button === 2) {
-      this.props.onRightClickItem(this.getPath(key), e.pageX, e.pageY);
+      this.props.onRightClickItem(this.getPath(), e.pageX, e.pageY);
     }
   }
 
-  toggleCollapse = (key: string) => this.setState({
-    itemState: {
-      ...this.state.itemState,
-      [key]: !this.state.itemState[key],
-    },
-  })
+  toggleCollapse = () => this.setState({ collapsed: !this.state.collapsed });
+  setCollapsed = (collapsed: boolean) => this.setState({ collapsed });
 
-  setCollapsed = (key: string, collapsed: boolean) => this.setState({
-    itemState: {
-      ...this.state.itemState,
-      [key]: collapsed,
-    },
-  })
-
-  getPath = (key: string) =>
-    key.length > 0 ?
-      [...this.props.parentPath, key] :
+  getPath = () =>
+    this.props.currentKey ?
+      [...this.props.parentPath, this.props.currentKey] :
       this.props.parentPath
 
-  isSamePath = (path1: string[], path2: string[]) => _.isEqual(path1, path2);
-  isCollapsed = (key: string) => this.state.itemState[key] === true;
+  isOpenedPath = () => _.isEqual(this.props.openedPath, this.getPath());
+  isAddingItemInCurrentPath = () =>
+    this.props.isAddingTreeItem &&
+    _.isEqual(this.props.currentItemPath, this.getPath())
 
-  getCollapsedClass = (key: string) => this.isCollapsed(key) ? 'collapsed' : '';
-  getSelectedPathClass = (key: string) =>
-    this.isSamePath(this.props.openedPath, this.getPath(key)) ? 'selected' : ''
+  handleAddingItemNameChange = (e: any) => {
+    const addingItemName = e.target.value.replace(/\ /g, '');
+    const addItemError = Object.keys(this.props.tree).indexOf(addingItemName) !== -1;
+    this.setState({
+      addItemError,
+      addingItemName,
+    });
+  }
 
-  getChangedClass = (key: string) =>
-    this.props.isChangedPath(this.getPath(key)) ? 'changed' : ''
-
-  getNewClass = (key: string) =>
-    this.props.isNewPath(this.getPath(key)) ? 'new' : ''
-
-  getMissingClass = (key: string) =>
-    this.props.isMissingPath(this.getPath(key)) ? 'missing' : ''
-
-  getItemClassesByKey = (key: string) =>
-    [
-      this.getCollapsedClass(key),
-      this.getSelectedPathClass(key),
-      this.getNewClass(key),
-      this.getChangedClass(key),
-      this.getMissingClass(key),
-    ].join(' ')
-
-  handleAddingItemNameChange = (e: any) =>
-    this.setState({ addingItemName: e.target.value.replace(/\ /g, '') })
-
-  handleAddNewItem = (key: string) => (e: any) => {
+  handleAddNewItem = (e: any) => {
     if (e.key === 'Escape') {
       this.props.onCancelAddNewItem();
       this.setState({ addingItemName: '' });
     }
-
-    if (e.key === 'Enter' && this.state.addingItemName.length > 0) {
-      this.props.onAddNewItem(this.getPath(key), this.state.addingItemName);
-      this.setCollapsed(key, false);
+    if (e.key === 'Enter' && this.state.addingItemName.length > 0 && !this.state.addItemError) {
+      this.props.onAddNewItem(this.getPath(), this.state.addingItemName);
+      this.setCollapsed(false);
     }
   }
 
-  renderAddNewItem = (key: string = '') => (
-    <AddingItemContainer
-      className="form-group adding-item-name"
-      level={this.props.level}
-    >
+  getFolderIcon = () =>
+    <i
+      className={`icon fas ${this.state.collapsed ? 'fa-folder' : 'fa-folder-open'}`}
+    />
+
+  getCollapsibleIcon = () =>
+    <i
+      className={`caret-icon fas ${this.state.collapsed ? 'fa-caret-right' : 'fa-caret-down'}`}
+    />
+
+  renderAddNewItem = () => (
+    <AddingItemContainer className={`form-group adding-item-name`} level={this.props.level}>
       <input
+        value={this.state.addingItemName}
         onChange={this.handleAddingItemNameChange}
-        onKeyUp={this.handleAddNewItem(key)}
+        onKeyUp={this.handleAddNewItem}
         autoFocus
-        className="form-control form-control-sm"
+        className={`form-control form-control-sm ${this.state.addItemError ? 'is-invalid' : ''}`}
       />
-    </AddingItemContainer>
-  )
+      {this.state.addItemError &&
+        <div className="invalid-feedback">
+          Already have an item with this name.
+        </div>
+      }
+    </AddingItemContainer>)
 
-  renderItem = (key: string): React.ReactElement<any> => (
-    <TreeItem
-      key={key}
-      className="item"
-      collapsed={this.isCollapsed(key)}
-      level={this.props.level}
-    >
-      <TreeItemLabel
-        className={`item-label ${this.getItemClassesByKey(key)}`}
-        onClick={this.onClick(key)}
-        onMouseUp={this.onMouseUp(key)}
-        collapsed={this.isCollapsed(key)}
-        level={this.props.level}
-      >
-        {this.props.tree[key] &&
-          <i className={'collapsible-icon fas fa-caret-right'} />}
+  render(): React.ReactElement<any> {
+    const currentPath = this.getPath();
 
-        {this.props.tree[key] ?
-          <i className={`icon fas ${this.isCollapsed(key) ? 'fa-folder' : 'fa-folder-open'}`} /> :
-          <i className={'icon fas fa-file'} />}
-        {key}
-      </TreeItemLabel>
-
-      {this.props.isAddingTreeItem &&
-        this.isSamePath(this.props.currentItemPath, this.getPath(key)) &&
-        this.renderAddNewItem(key)}
-
-      {this.props.tree[key] &&
-        (<Tree
-          {...this.props}
-          tree={this.props.tree[key]}
-          collapsed={this.state.itemState[key]}
-          level={this.props.level + 1}
-          parentPath={this.getPath(key)}
-        />)}
-    </TreeItem>
-  )
-
-  render() {
     return (
       <TreeRoot>
-        {this.props.tree && Object.keys(this.props.tree).sort().map(this.renderItem)}
-        {this.props.isAddingTreeItem &&
-          this.props.currentItemPath.length === 0 &&
-          this.props.level === 0 &&
-          this.renderAddNewItem()}
+        {this.props.currentKey &&
+          <TreeItemLabel
+            className="item-label"
+            onClick={this.onClick}
+            onMouseUp={this.onMouseUp}
+            collapsed={this.state.collapsed}
+            level={this.props.level}
+            isNew={this.props.isNewPath(this.getPath())}
+            isChanged={this.props.isChangedPath(this.getPath())}
+            isMissing={this.props.isMissingPath(this.getPath())}
+            isSelected={this.isOpenedPath()}
+          >
+            {this.props.tree ?
+              this.getCollapsibleIcon() :
+              <i className="caret-icon" />}
+
+            {this.props.tree ?
+              this.getFolderIcon() :
+              <i className={'icon fas fa-file'} />}
+            {this.props.currentKey}
+          </TreeItemLabel>
+        }
+
+
+        {this.isAddingItemInCurrentPath() && this.renderAddNewItem()}
+
+        <TreeItemContainer collapsed={this.state.collapsed && !this.isAddingItemInCurrentPath()}>
+          {this.props.tree && Object.keys(this.props.tree).sort().map((key: string) => (
+            <Tree
+              key={key}
+              {...this.props}
+              currentKey={key}
+              tree={this.props.tree[key]}
+              parentPath={currentPath}
+              level={this.props.level + 1}
+            />
+          ))}
+        </TreeItemContainer>
       </TreeRoot>
     );
   }
@@ -182,69 +177,64 @@ class Tree extends React.Component<TreeProps, ITreeState> {
 export default hot(module)(Tree);
 
 
-const TreeRoot = styled('ul')((props: any) => css`
-  overflow: hidden;
-  padding: 0;
-  list-style: none;
+const newColor = (isNew: boolean) => isNew && green;
+const changedColor = (isChanged: boolean) => isChanged && yellow;
+const missingColor = (isMissing: boolean) => isMissing && red;
+
+const getLabelColor = ({ isChanged, isNew, isMissing }: any): Color =>
+  newColor(isNew) || changedColor(isChanged) || missingColor(isMissing) || Color('#ffffff');
+
+const iconFontSize = '12px';
+
+
+const TreeRoot = styled('div')`
   display: flex;
   flex-direction: column;
-  user-select: none;
-  position: relative;
-`);
+`;
 
-const TreeItem = styled('li')((props: any) => css`
-  display: flex;
+const TreeItemContainer = styled('div')((props: any) => css`
   flex: 1;
   flex-direction: column;
-
-  > ul {
-    height: ${props.collapsed ? 0 : 'auto'};
-  }
-
-  .adding-item-name {
-  }
+  display: ${props.collapsed ? 'none' : 'flex'};
 `);
 
 const TreeItemLabel = styled('span')((props: any) => css`
   display: flex;
   flex: 1;
   cursor: pointer;
-  padding: 4px 4px 4px ${props.level * 16 + 16}px;
+  padding: 4px 4px 4px ${props.level * 16}px;
   align-items: center;
+  color: ${getLabelColor(props).toString()};
+  background-color: ${props.isSelected ? lightBlack.toString() : 'transparent'};
 
   &:hover {
     background-color: ${lightBlack.darken(.1).toString()};
   }
 
-  .collapsible-icon {
-    font-size: 12px;
-    margin-right: 4px;
-    transform: rotate(${props.collapsed ? 0 : 45}deg);
+  .caret-icon {
+    font-size: ${iconFontSize};
+    color: white;
+    width: 8px;
+    height: 8px;
   }
 
   .icon {
-    font-size: 12px;
+    font-size: ${iconFontSize};
     margin: 0 4px;
+    width: 16px;
   }
 
-  &.changed {
-    color: ${yellow.toString()};
+  .fa-folder, .fa-folder-open {
+    color: ${yellow.lighten(.2).toString()} !important;
   }
 
-  &.new {
-    color: ${green.toString()};
-  }
-
-  &.missing {
-    color: ${red.toString()};
-  }
-
-  &.selected {
-    background-color: ${lightBlack.toString()};
+  .fa-file {
+    color: ${blue.toString()} !important;
   }
 `);
 
 const AddingItemContainer = styled('div')((props: any) => css`
-  padding: 4px ${props.level * 16 + 16}px 4px ${props.level * 16 + 16}px;
+  padding: 4px 8px 4px ${props.level * 16 + 32}px;
   z-index: 100;
+  margin-bottom: 0;
 `);

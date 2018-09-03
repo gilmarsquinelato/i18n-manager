@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/electron';
 import _ from 'lodash';
-import { app, BrowserWindow } from 'electron';
+import { app } from 'electron';
 import * as path from 'path';
 import isDev from 'electron-is-dev';
 

@@ -84,15 +84,24 @@ export const getDefaultMenuItems = (window: BrowserWindow, options: IContextMenu
   const menuTemplate: any[] = [];
 
   if (options.enableCut) {
-    menuTemplate.push({ role: 'cut' });
+    menuTemplate.push({
+      role: 'cut',
+      accelerator: 'CommandOrControl+X',
+    });
   }
 
   if (options.enableCopy) {
-    menuTemplate.push({ role: 'copy' });
+    menuTemplate.push({
+      role: 'copy',
+      accelerator: 'CommandOrControl+C',
+    });
   }
 
   if (options.enablePaste) {
-    menuTemplate.push({ role: 'paste' });
+    menuTemplate.push({
+      role: 'paste',
+      accelerator: 'CommandOrControl+V',
+    });
   }
 
   if (isDev) {

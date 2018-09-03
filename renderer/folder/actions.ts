@@ -1,17 +1,21 @@
 import { createAction } from 'redux-actions';
+import { getNamespacedActionTypes } from '~/lib/actionUtils';
 
 
-export const ACTION_TYPES = {
-  LOAD_FOLDER: 'i18n/folder/LOAD_FOLDER',
-  SAVE_REQUESTED: 'i18n/folder/SAVE_REQUESTED',
-  SAVE_FOLDER: 'i18n/folder/SAVE_FOLDER',
-  DATA_CHANGED: 'i18n/folder/DATA_CHANGED',
-  SHOW_CONTEXT_MENU: 'i18n/folder/SHOW_CONTEXT_MENU',
-  ADD_TREE_ITEM_REQUESTED: 'i18n/folder/ADD_TREE_ITEM_REQUESTED',
-  ADD_TREE_ITEM_FINISHED: 'i18n/folder/ADD_TREE_ITEM_FINISHED',
-  REMOVE_TREE_ITEM_REQUESTED: 'i18n/folder/REMOVE_TREE_ITEM_REQUESTED',
-  REMOVE_TREE_ITEM_FINISHED: 'i18n/folder/REMOVE_TREE_ITEM_FINISHED',
-};
+const namespace = 'i18n/folder';
+const types = [
+  'LOAD_FOLDER',
+  'SAVE_REQUESTED',
+  'SAVE_FOLDER',
+  'DATA_CHANGED',
+  'SHOW_CONTEXT_MENU',
+  'ADD_TREE_ITEM_REQUESTED',
+  'ADD_TREE_ITEM_FINISHED',
+  'REMOVE_TREE_ITEM_REQUESTED',
+  'REMOVE_TREE_ITEM_FINISHED',
+];
+
+export const ACTION_TYPES = getNamespacedActionTypes(namespace, types);
 
 export const actions = {
   loadFolder: createAction(ACTION_TYPES.LOAD_FOLDER),

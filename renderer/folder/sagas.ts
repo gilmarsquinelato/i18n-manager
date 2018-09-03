@@ -1,4 +1,4 @@
-import { takeLatest, call, put, take } from 'redux-saga/effects';
+import { takeLatest, put, take } from 'redux-saga/effects';
 import { push } from 'connected-react-router/immutable';
 import * as ipcMessages from '../../common/ipcMessages';
 import {
@@ -32,7 +32,6 @@ export function* addTreeItemAsync({ data }: any) {
 }
 
 export function* removeTreeItemAsync({ data }: any) {
-  console.log(data);
   yield put(actions.removeTreeItemRequested(data));
 }
 

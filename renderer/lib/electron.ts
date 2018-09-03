@@ -36,6 +36,8 @@ export const saveFolderChannel = createIpcChannel(ipcMessages.save);
 export const saveFolderCompleteChannel = createIpcChannel(ipcMessages.saveComplete);
 export const addTreeItemChannel = createIpcChannel(ipcMessages.addTreeItem);
 export const removeTreeItemChannel = createIpcChannel(ipcMessages.removeTreeItem);
+export const navigateToChannel = createIpcChannel(ipcMessages.navigateTo);
+export const settingsChannel = createIpcChannel(ipcMessages.settings);
 
 export const sendToIpc = (message: string, data?: any) =>
   ipcRenderer.send(message, data);

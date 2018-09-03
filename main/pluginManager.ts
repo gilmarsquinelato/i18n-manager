@@ -3,6 +3,9 @@ import { ParsedFile } from '../common/types';
 import getPlugins from './plugins';
 
 
+export const getAvailablePlugins = () => getPlugins();
+export const getSupportedExtensions = () => getAvailablePlugins().map(p => p.fileExtension);
+
 export const getParsedFiles = async (files: string[]): Promise<ParsedFile[]> => {
   const parsedFiles: ParsedFile[] = [];
   for (let i = 0; i < files.length; ++i) {
@@ -22,7 +25,8 @@ export const openFile = async (filePath: string): Promise<ParsedFile> => {
   }
 
   const fileName = path.basename(filePath);
-  const language = fileName.split('.')[0];
+  const extension = path.extname(filePath);
+  const language = fileName.replace(extension, '');
   if (!language) {
     return null;
   }
@@ -35,6 +39,7 @@ export const openFile = async (filePath: string): Promise<ParsedFile> => {
   return {
     fileName,
     language,
+    extension,
     filePath,
     data,
   };

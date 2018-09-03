@@ -1,6 +1,7 @@
 export type ParsedFile = {
   fileName: string,
   language: string,
+  extension: string,
   filePath: string,
   data: any,
 };

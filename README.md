@@ -8,7 +8,7 @@
 This app was developed with the objective to help the developers to manage
 this app translations.
 
-**Warning: This app is under development, it's not recommended to use in production.**
+**Warning: This app is under development, it's not recommended to use in production yet.**
 
 Any type of contributions are welcome.
 
@@ -19,17 +19,3 @@ Any type of contributions are welcome.
 ## Building
 
 ```yarn build```
-
-
-## Todo
-
-- [x] Internal Plugin support
-- [x] Unit test structure
-- [x] CI integration
-- [x] Code Coverage
-- [x] PRs blocking based on Unit Tests and Code Coverage
-- [ ] Render openned folder
-- [ ] Save files
-- [ ] Detect missing translations
-- [ ] Google Translate API integration
-- [ ] External Plugins support

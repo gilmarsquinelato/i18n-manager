@@ -36,6 +36,11 @@ const writeFile = (
   callback(null, true);
 };
 
+const writeFileSync = (filePath: string, content: string) => {
+  addFile(filePath, content);
+  return true;
+};
+
 const readFile = jest.fn((
   filePath: string,
   callback: (err: NodeJS.ErrnoException, data: any) => void) => {
@@ -57,6 +62,7 @@ const lstatSync = (path: string) => ({
 (fs as any).readFile = readFile;
 (fs as any).existsSync = (path: string) => mockFiles[path] !== undefined;
 (fs as any).readFileSync = (path: string) => Buffer.from(mockFiles[path], 'utf-8');
+(fs as any).writeFileSync = writeFileSync;
 (fs as any).getFiles = () => mockFiles;
 
 module.exports = fs;

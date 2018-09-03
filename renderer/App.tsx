@@ -2,7 +2,7 @@ import * as React from 'react';
 import { injectGlobal } from 'emotion';
 import styled from 'react-emotion';
 
-import { darkBlack } from './lib/palette';
+import { darkBlack, lightBlack } from './lib/palette';
 import Routes from './Routes';
 
 
@@ -46,6 +46,14 @@ injectGlobal`
     }
     to {
       opacity: 1;
+    }
+  }
+
+  .form-group {
+    .form-control {
+      background-color: ${lightBlack.lighten(.2).toString()};
+      border-color: ${lightBlack.lighten(.6).toString()};
+      color: white;
     }
   }
 `;
