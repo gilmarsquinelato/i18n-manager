@@ -39,7 +39,7 @@
     "tslint-config-airbnb": "^5.10.0",
     "typescript": "^3.0.1",
     "typescript-styled-plugin": "^0.10.0",
-    "wait-on": "^2.1.0"
+    "wait-on": "^3.0.0"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.3.1",
