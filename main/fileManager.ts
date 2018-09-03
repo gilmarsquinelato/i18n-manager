@@ -1,7 +1,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as util from 'util';
-import { getAvailableWindow, sendOpen, createWindow } from './windowManager';
+import {
+  getAvailableWindow,
+  sendOpen,
+  createWindow,
+} from './windowManager';
 import { getParsedFiles, saveFile } from './pluginManager';
 import { ParsedFile } from '../common/types';
 
@@ -11,13 +15,13 @@ export const openFolder = async (folderPath: string) => {
 
   const window = getAvailableWindow();
   if (window) {
-    sendOpen(window, parsedFiles);
+    sendOpen(window, folderPath, parsedFiles);
   } else {
-    createWindow(parsedFiles);
+    createWindow(folderPath, parsedFiles);
   }
 };
 
-export const parseFolder =  async (folderPath: string): Promise<ParsedFile[]> => {
+export const parseFolder = async (folderPath: string): Promise<ParsedFile[]> => {
   const files = await getFiles(folderPath);
   return await getParsedFiles(files);
 };

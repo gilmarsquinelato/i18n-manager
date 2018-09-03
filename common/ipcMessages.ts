@@ -5,3 +5,5 @@ export const dataChanged = 'dataChanged';
 export const showContextMenu = 'showContextMenu';
 export const addTreeItem = 'addTreeItem';
 export const removeTreeItem = 'removeTreeItem';
+export const navigateTo = 'navigateTo';
+export const settings = 'settings';

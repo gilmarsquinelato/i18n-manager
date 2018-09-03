@@ -6,6 +6,7 @@ import * as ipcMessages from '../common/ipcMessages';
 import * as fileManager from './fileManager';
 import * as windowManager from './windowManager';
 import { showContextMenu } from './contextMenu';
+import * as settings from './settings';
 
 
 const onSave = async (e: any, data: any) => {
@@ -17,7 +18,7 @@ const onSave = async (e: any, data: any) => {
 
   const folderPath = path.dirname((folder as ParsedFile[])[0].filePath);
   const parsedFolder = await fileManager.parseFolder(folderPath);
-  windowManager.sendOpen(window, parsedFolder);
+  windowManager.sendOpen(window, folderPath, parsedFolder);
 
   window.setDocumentEdited(false);
   windowManager.sendSaveComplete(window, result);
@@ -42,10 +43,15 @@ const onShowContextMenu = (e: any, data: IContextMenuOptions) => {
   showContextMenu(window, data);
 };
 
+const onSaveSettings = (e: any, data: any) => {
+  settings.saveCustomSettings(data);
+};
+
 const registerAppEvents = () => {
   ipcMain.on(ipcMessages.save as any, onSave);
   ipcMain.on(ipcMessages.dataChanged as any, onDataChanged);
   ipcMain.on(ipcMessages.showContextMenu as any, onShowContextMenu);
+  ipcMain.on(ipcMessages.settings as any, onSaveSettings);
 };
 
 export default registerAppEvents;

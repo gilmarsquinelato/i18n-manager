@@ -1,6 +1,7 @@
 import { dialog } from 'electron';
 import { openFolder } from '../fileManager';
 import { createWindow, getCurrentWindow, sendSave } from '../windowManager';
+import { onPreferencesClick } from './shared';
 
 
 const newWindow = () => createWindow();
@@ -41,5 +42,17 @@ const fileMenu: Electron.MenuItemConstructorOptions = {
     },
   ],
 };
+
+if (process.platform === 'linux') {
+  (fileMenu.submenu as any).push(
+    { type: 'separator' },
+    {
+      label: 'Preferences',
+      click: onPreferencesClick,
+      accelerator: 'CommandOrControl+,',
+    },
+  );
+}
+
 
 export default fileMenu;

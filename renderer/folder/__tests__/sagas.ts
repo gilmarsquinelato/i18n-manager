@@ -1,5 +1,4 @@
 import { testSaga } from 'redux-saga-test-plan';
-import { takeEvery, call, put, take } from 'redux-saga/effects';
 import { push } from 'connected-react-router/immutable';
 
 import * as ipcMessages from '../../../common/ipcMessages';

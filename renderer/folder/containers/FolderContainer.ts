@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Folder from '../views/Folder';
 import {
   getFolder,
+  getFolderPath,
   isSaveRequested,
   isAddingTreeItem,
   getCurrentItemPath,
@@ -23,6 +24,7 @@ const {
 
 const mapStateToProps = (state: any) => ({
   folder: getFolder(state),
+  folderPath: getFolderPath(state),
   isSaveRequested: isSaveRequested(state),
   isAddingTreeItem: isAddingTreeItem(state),
   isAddingTreeItemNode: isAddingTreeItemNode(state),

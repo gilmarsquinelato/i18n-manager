@@ -1,15 +1,13 @@
 {
   "anotherItem": "",
   "hello": "Hello World!",
-  "nested": {
-    "nestNest": {
-      "nNest": {
-        "item": ""
-      }
-    }
-  },
   "newFolder": {
-    "item": "a"
+    "aaa": "ssss",
+    "item": "w",
+    "otherItem": "s"
+  },
+  "newFolder2": {
+    "newItem": "asd"
   },
   "newItem": "",
   "special": "en"

@@ -1,4 +1,5 @@
 import { app } from 'electron';
+import { onPreferencesClick } from './shared';
 
 let appMenu: Electron.MenuItemConstructorOptions = null;
 
@@ -7,6 +8,12 @@ if (process.platform === 'darwin') {
     label: app.getName(),
     submenu: [
       { role: 'about' },
+      { type: 'separator' },
+      {
+        label: 'Preferences',
+        click: onPreferencesClick,
+        accelerator: 'CommandOrControl+,',
+      },
       { type: 'separator' },
       { role: 'services', submenu: [] },
       { type: 'separator' },

@@ -7,12 +7,15 @@ import { ACTION_TYPES } from './actions';
 
 const initialState = Immutable.fromJS({
   folder: [],
+  folderPath: '',
   isSaveRequested: false,
   isAddingTreeItem: false,
   currentItemPath: [],
   isAddingTreeItemNode: false,
   isRemovingTreeItem: false,
 });
+
+const loadFolder: ReducerHandlerKey = (state, { payload }) => state.merge(payload);
 
 const addTreeItemRequested: ReducerHandlerKey = (state, { payload }) => state.merge({
   isAddingTreeItem: true,
@@ -37,7 +40,7 @@ const removeTreeItemFinished: ReducerHandlerKey = state => state.merge({
 });
 
 const reducerMap: ReducerHandler = {
-  [ACTION_TYPES.LOAD_FOLDER]: (state, { payload }) => state.merge({ folder: payload }),
+  [ACTION_TYPES.LOAD_FOLDER]: loadFolder,
   [ACTION_TYPES.SAVE_REQUESTED]: (state, { payload }) => state.merge({ isSaveRequested: payload }),
   [ACTION_TYPES.ADD_TREE_ITEM_REQUESTED]: addTreeItemRequested,
   [ACTION_TYPES.ADD_TREE_ITEM_FINISHED]: addTreeItemFinished,

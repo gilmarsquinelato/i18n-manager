@@ -1,3 +1,5 @@
+import { onPreferencesClick } from './shared';
+
 const windowMenu: Electron.MenuItemConstructorOptions = {
   role: 'window',
   submenu: [
@@ -13,6 +15,17 @@ if (process.platform === 'darwin') {
     { role: 'zoom' },
     { type: 'separator' },
     { role: 'front' },
+  );
+}
+
+if (process.platform === 'win32') {
+  (windowMenu.submenu as any).push(
+    { type: 'separator' },
+    {
+      label: 'Preferences',
+      click: onPreferencesClick,
+      accelerator: 'CommandOrControl+,',
+    },
   );
 }
 

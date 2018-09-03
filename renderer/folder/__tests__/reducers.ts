@@ -5,10 +5,12 @@ import { actions } from '../actions';
 describe('folder/reducers', () => {
   it('LOAD_FOLDER', () => {
     const folder = [{ fileName: 'en.json' }];
-    const action = actions.loadFolder(folder);
+    const folderPath = '/folder/path';
+    const action = actions.loadFolder({ folder, folderPath });
 
     const state = reducers(undefined, action);
     expect(state.get('folder').toJS()).toEqual(folder);
+    expect(state.get('folderPath')).toEqual(folderPath);
     expect(state.get('isSaveRequested')).toBe(false);
   });
 
