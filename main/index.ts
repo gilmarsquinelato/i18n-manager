@@ -1,8 +1,8 @@
 import { init } from '@sentry/electron';
 import _ from 'lodash';
-import * as path from 'path';
 import * as fs from 'fs';
 import { app } from 'electron';
+import { autoUpdater } from 'electron-updater'
 import isDev from 'electron-is-dev';
 
 import { sentryConfig } from '../common/sentry';
@@ -35,6 +35,7 @@ app.on('ready', () => {
 
   loadMenu();
   createWindow();
+  autoUpdater.checkForUpdatesAndNotify();
 });
 
 app.on('window-all-closed', () => {

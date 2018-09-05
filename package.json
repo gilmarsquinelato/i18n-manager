@@ -71,6 +71,7 @@
     "connected-react-router": "^4.4.1",
     "electron-is-dev": "^0.3.0",
     "electron-reload": "^1.2.5",
+    "electron-updater": "^3.1.2",
     "emotion": "^9.2.6",
     "history": "^4.7.2",
     "immutable": "^3.8.2",
@@ -109,7 +110,9 @@
     ],
     "icon": "./icons/icon.png",
     "mac": {
-      "publish": ["github"],
+      "publish": [
+        "github"
+      ],
       "category": "public.app-category.developer-tools",
       "extendInfo": {
         "CFBundleDocumentTypes": [
@@ -125,11 +128,15 @@
       }
     },
     "linux": {
-      "publish": ["github"],
+      "publish": [
+        "github"
+      ],
       "category": "Development"
     },
     "win": {
-      "publish": ["github"]
+      "publish": [
+        "github"
+      ]
     }
   },
   "jest": {
