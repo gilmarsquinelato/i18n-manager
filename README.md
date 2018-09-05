@@ -5,8 +5,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8acca046a7fc462fbfe69677984cff91)](https://www.codacy.com/project/gilmarsquinelato/i18n-manager/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gilmarsquinelato/i18n-manager&amp;utm_campaign=Badge_Grade_Dashboard)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/8acca046a7fc462fbfe69677984cff91)](https://www.codacy.com/app/gilmarsquinelato/i18n-manager?utm_source=github.com&utm_medium=referral&utm_content=gilmarsquinelato/i18n-manager&utm_campaign=Badge_Coverage)
 
-This app was developed with the objective to help the developers to manage
-this app translations.
+This app was developed with the objective to help the developers to manage the app translations.
 
 Any type of contributions are welcome.
 
