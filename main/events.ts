@@ -52,7 +52,11 @@ const onSaveSettings = (e: any, data: any) => {
 };
 
 const onOpenFile = (e: any, data: any) => {
-  fileManager.openFolder(data);
+  if (app.isReady()) {
+    fileManager.openFolder(data);
+  } else {
+    app.on('ready', () => fileManager.openFolder(data));
+  }
 };
 
 const registerAppEvents = () => {

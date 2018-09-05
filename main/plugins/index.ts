@@ -2,8 +2,8 @@ import * as jsonPlugin from './json';
 
 export interface Plugin {
   fileExtension: string;
-  parse: (path: string) => Promise<any>;
-  save: (path: string, data: any) => Promise<boolean>;
+  parse: (content: string) => Promise<any>;
+  serialize: (data: any) => Promise<string>;
 }
 
 let plugins: Plugin[] = [

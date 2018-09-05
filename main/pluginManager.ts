@@ -1,7 +1,12 @@
 import * as path from 'path';
+import * as util from 'util';
+import * as fs from 'fs';
 import { ParsedFile } from '../common/types';
 import getPlugins, { Plugin } from './plugins';
 
+
+const readFilePromise = util.promisify(fs.readFile);
+const writeFilePromise = util.promisify(fs.writeFile);
 
 export const getAvailablePlugins = (): Plugin[] => getPlugins();
 export const getSupportedExtensions = (): string[] =>
@@ -20,6 +25,8 @@ export const getParsedFiles = async (files: string[]): Promise<ParsedFile[]> => 
 };
 
 export const openFile = async (filePath: string): Promise<ParsedFile> => {
+  const fileContent = await readFilePromise(filePath);
+
   const plugin = getPluginForFile(filePath);
   if (!plugin) {
     return null;
@@ -32,7 +39,7 @@ export const openFile = async (filePath: string): Promise<ParsedFile> => {
     return null;
   }
 
-  const data = await plugin.parse(filePath);
+  const data = await plugin.parse(fileContent.toString());
   if (!data) {
     return null;
   }
@@ -47,8 +54,14 @@ export const openFile = async (filePath: string): Promise<ParsedFile> => {
 };
 
 export const saveFile = async (parsedFile: ParsedFile): Promise<boolean> => {
-  const plugin = getPluginForFile(parsedFile.filePath);
-  return await plugin.save(parsedFile.filePath, parsedFile.data);
+  try {
+    const plugin = getPluginForFile(parsedFile.filePath);
+    const serializedContent = await plugin.serialize(parsedFile.data);
+    await writeFilePromise(parsedFile.filePath, serializedContent);
+    return true;
+  } catch (e) {
+    return false;
+  }
 };
 
 const getPluginForFile = (path: string) =>

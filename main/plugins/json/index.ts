@@ -3,20 +3,18 @@ import * as util from 'util';
 
 export const fileExtension = '.json';
 
-export const parse = async (path: string): Promise<any> => {
+export const parse = (content: string): Promise<any> => {
   try {
-    const content = await util.promisify(fs.readFile)(path);
-    return JSON.parse(content.toString());
+    return JSON.parse(content);
   } catch (e) {
     return null;
   }
 };
 
-export const save = async (path: string, data: object): Promise<boolean> => {
+export const serialize = async (data: object): Promise<string> => {
   try {
-    await util.promisify(fs.writeFile)(path, JSON.stringify(data, null, 2));
-    return true;
+    return JSON.stringify(data, null, 2);
   } catch (e) {
-    return false;
+    return '{}';
   }
 };
