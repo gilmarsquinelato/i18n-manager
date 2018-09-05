@@ -53,7 +53,7 @@ class Settings extends React.Component<IProps, IState> {
   };
 
   static getDerivedStateFromProps = ({ settings }: IProps, prevState: IState) =>
-    !prevState.settings || prevState.settings.size === 0 || settings === null ?
+    !settings.equals(prevState.settings) ?
       { settings } :
       null
 

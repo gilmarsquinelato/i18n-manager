@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Immutable from 'immutable';
+import { css } from 'emotion';
 import styled from 'react-emotion';
 import _ from 'lodash';
 import axios from 'axios';
@@ -11,8 +12,6 @@ import Tree from '../../components/Tree';
 import Content from '../../components/Content';
 import { hot } from 'react-hot-loader';
 
-
-// const apiKey = 'AIzaSyA2Bg602HKiiqFt7vcmzse2ned_2eAkn-U';
 
 const translate = async (apiKey: string, language: string, text: string, target: string) => {
   try {
@@ -387,42 +386,57 @@ class Folder extends React.Component<IProps, IState> {
 
   render() {
     return (
-      <ResizeablePanel
-        className={this.state.isDragging ? 'dragging' : ''}
-        onMouseUp={() => this.setIsDragging(false)}
-        onMouseMove={(e: any) => {
-          if (this.state.isDragging) {
-            this.setState({ treeWidth: e.pageX - resizerWidth / 2 });
-          }
-        }}
-      >
-        {this.renderTree()}
+      <FolderRoot>
+        <ResizeablePanel
+          className={this.state.isDragging ? 'dragging' : ''}
+          onMouseUp={() => this.setIsDragging(false)}
+          onMouseMove={(e: any) => {
+            if (this.state.isDragging) {
+              this.setState({ treeWidth: e.pageX - resizerWidth / 2 });
+            }
+          }}
+        >
+          {this.renderTree()}
 
-        <div
-          className="drag-item"
-          onMouseDown={() => this.setIsDragging(true)}
-        />
+          <div
+            className="drag-item"
+            onMouseDown={() => this.setIsDragging(true)}
+          />
 
-        <Content
-          openedPath={this.state.openedPath}
-          folder={this.state.folder}
-          onChange={this.onChange}
-          onMouseUp={this.onContentMouseUp}
-          isChangedValue={this.isChangedValue}
-          isMissingPath={this.isMissingPathFromLanguage}
-          isNewPath={this.isNewPath(this.state.openedPath)}
-          isTranslationEnabled={this.isTranslationEnabled}
-          translateEmptyFields={this.translateEmptyFields}
-          isTranslating={this.state.isTranslating}
-          translateErrors={this.state.translateErrors}
-        />
-      </ResizeablePanel>
+          <Content
+            openedPath={this.state.openedPath}
+            folder={this.state.folder}
+            onChange={this.onChange}
+            onMouseUp={this.onContentMouseUp}
+            isChangedValue={this.isChangedValue}
+            isMissingPath={this.isMissingPathFromLanguage}
+            isNewPath={this.isNewPath(this.state.openedPath)}
+            isTranslationEnabled={this.isTranslationEnabled}
+            translateEmptyFields={this.translateEmptyFields}
+            isTranslating={this.state.isTranslating}
+            translateErrors={this.state.translateErrors}
+          />
+        </ResizeablePanel>
+
+        <StatusBar>
+          <StatusBarItem className="save" hidden={!this.props.isSaveRequested}>
+            <i className="fas fa-spinner fa-spin icon" />
+            Saving...
+          </StatusBarItem>
+        </StatusBar>
+      </FolderRoot>
     );
   }
 }
 
 export default hot(module)(Folder);
 
+
+const FolderRoot = styled('div')`
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+`;
 
 const ResizeablePanel = styled('div')`
   display: flex;
@@ -455,3 +469,19 @@ const TreeOverlay = styled('div')`
   background: ${darkBlack.toString()};
   opacity: .5;
 `;
+
+const StatusBar = styled('div')`
+  display: flex;
+  height: 24px;
+  font-size: 14px;
+  padding: 0 8px;
+`;
+
+const StatusBarItem = styled('span')((props: any) => css`
+  transition: opacity 1s;
+  opacity: ${props.hidden ? 0 : 1};
+
+  .icon {
+    margin-right: 4px;
+  }
+`);
