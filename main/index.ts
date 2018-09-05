@@ -1,8 +1,7 @@
 import { init } from '@sentry/electron';
 import _ from 'lodash';
-import * as fs from 'fs';
 import { app } from 'electron';
-import { autoUpdater } from 'electron-updater'
+import { autoUpdater } from 'electron-updater';
 import isDev from 'electron-is-dev';
 
 import { sentryConfig } from '../common/sentry';
@@ -19,13 +18,15 @@ registerAppEvents();
 
 
 app.setName('i18n Manager');
-app.setAboutPanelOptions({
-  applicationName: 'i18n Manager',
-  applicationVersion: app.getVersion(),
-  copyright: 'https://www.github.com/gilmarsquinelato',
-  credits: 'Gilmar Quinelato',
-  version: app.getVersion(),
-});
+if (process.platform === 'darwin') {
+  app.setAboutPanelOptions({
+    applicationName: 'i18n Manager',
+    applicationVersion: app.getVersion(),
+    copyright: 'https://www.github.com/gilmarsquinelato',
+    credits: 'Gilmar Quinelato',
+    version: app.getVersion(),
+  });
+}
 
 
 app.on('ready', () => {

@@ -2,7 +2,6 @@ import { dialog } from 'electron';
 import { openFolder } from '../fileManager';
 import { createWindow, getCurrentWindow, sendSave } from '../windowManager';
 import { onPreferencesClick } from './shared';
-import { IMenuOptions } from '../../common/types';
 
 
 const newWindow = () => createWindow();
