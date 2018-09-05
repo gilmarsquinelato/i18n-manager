@@ -21,7 +21,7 @@ Any type of contributions are welcome.
 * json - [.json]
 
 
-## Sreenshots
+## Screenshots
 
 ![](./picture1.jpg)
 ![](./picture2.jpg)
