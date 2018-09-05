@@ -23,9 +23,14 @@ describe('folder/components/Content', () => {
       <Content
         openedPath={openedPath}
         onChange={onChange}
+        onMouseUp={jest.fn()}
         isChangedValue={jest.fn()}
         isMissingPath={jest.fn()}
         isNewPath={false}
+        isTranslationEnabled={() => false}
+        translateEmptyFields={jest.fn()}
+        translateErrors={[]}
+        isTranslating={false}
       />,
     );
 
@@ -39,16 +44,21 @@ describe('folder/components/Content', () => {
         openedPath={openedPath}
         onChange={onChange}
         folder={folder}
-        isChangedValue={jest.fn()}
-        isMissingPath={jest.fn()}
+        onMouseUp={jest.fn()}
+        isChangedValue={jest.fn().mockReturnValue(false)}
+        isMissingPath={jest.fn().mockReturnValue(false)}
         isNewPath={false}
+        isTranslationEnabled={() => false}
+        translateEmptyFields={jest.fn()}
+        translateErrors={[]}
+        isTranslating={false}
       />,
     );
 
     expect(component).toBeDefined();
     expect(component.find('div.form-group').length).toBe(2);
-    expect(component.find('div.form-group label').at(0).text()).toBe('en');
-    expect(component.find('div.form-group label').at(1).text()).toBe('es');
+    expect(component.find('div.form-group label').at(0).text().startsWith('en')).toBeTruthy();
+    expect(component.find('div.form-group label').at(1).text().startsWith('es')).toBeTruthy();
   });
 
   it('changing items', () => {
@@ -57,9 +67,14 @@ describe('folder/components/Content', () => {
         openedPath={openedPath}
         onChange={onChange}
         folder={folder}
-        isChangedValue={jest.fn()}
-        isMissingPath={jest.fn()}
+        onMouseUp={jest.fn()}
+        isChangedValue={jest.fn().mockReturnValue(false)}
+        isMissingPath={jest.fn().mockReturnValue(false)}
         isNewPath={false}
+        isTranslationEnabled={() => false}
+        translateEmptyFields={jest.fn()}
+        translateErrors={[]}
+        isTranslating={false}
       />,
     );
 

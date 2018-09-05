@@ -1,14 +1,6 @@
 {
-  "anotherItem": "",
   "hello": "Olá Mundo!",
-  "newFolder": {
-    "aaa": "",
-    "item": "aaaaaa",
-    "otherItem": "aaaaaa"
-  },
-  "newFolder2": {
-    "newItem": "zxc"
-  },
-  "newItem": "",
-  "special": "pt-BR"
+  "home": {
+    "welcome": "Bem-vindo {{name}}!"
+  }
 }

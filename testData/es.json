@@ -1,12 +1,6 @@
 {
-  "anotherItem": "",
-  "hello": "Hello World!",
-  "newFolder": {
-    "otherItem": ""
-  },
-  "newFolder2": {
-    "newItem": "qwe"
-  },
-  "newItem": "",
-  "special": "es"
+  "hello": "Hola Mundo!",
+  "home": {
+    "welcome": "Bienvenido {{name}}!"
+  }
 }

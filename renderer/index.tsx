@@ -2,7 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import _ from 'lodash';
 
-import { setupSentry } from '../common/sentry';
+import { sentryConfig } from '../common/sentry';
 
 import App from './App';
 
@@ -15,8 +15,7 @@ const disablePinchGesture = () => {
 
 const enableSentry = () => {
   if (process.env.NODE_ENV === 'production' && window.require) {
-    const Sentry = window.require('@sentry/electron');
-    setupSentry(Sentry);
+    window.require('@sentry/electron').init(sentryConfig);
   }
 };
 

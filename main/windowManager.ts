@@ -20,12 +20,14 @@ export const createWindow = (): BrowserWindow => {
   const window = new BrowserWindow({
     ...settings.getSavedSettings().window,
     show: false,
+    icon: '../icons/icon.png',
   });
 
   window.loadURL(getUrl());
 
   registerEvents(window);
   sendRecentFolders(window, settings.getRecentFolders());
+  sendSettings(window, settings.getCustomSettings());
 
   return window;
 };

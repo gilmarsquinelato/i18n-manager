@@ -13,6 +13,8 @@ import {
 } from '../selectors';
 import { actions } from '../actions';
 
+import { getGoogleTranslateAPIKey } from '~/settings/selectors';
+
 
 const {
   saveFolder,
@@ -30,6 +32,7 @@ const mapStateToProps = (state: any) => ({
   isAddingTreeItemNode: isAddingTreeItemNode(state),
   currentItemPath: getCurrentItemPath(state),
   isRemovingTreeItem: isRemovingTreeItem(state),
+  googleTranslateAPIKey: getGoogleTranslateAPIKey(state),
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(

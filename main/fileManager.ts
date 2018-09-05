@@ -7,7 +7,6 @@ import {
   sendOpen,
   createWindow,
   sendRecentFolders,
-  sendSettings,
 } from './windowManager';
 import { getParsedFiles, saveFile } from './pluginManager';
 import * as settings from './settings';
@@ -25,7 +24,6 @@ export const openFolderInWindow = async (folderPath: string, window: Electron.Br
 
   const parsedFiles = await parseFolder(folderPath);
 
-  sendSettings(window, settings.getCustomSettings());
   sendOpen(window, folderPath, parsedFiles);
   sendRecentFolders(window, recent);
 };
