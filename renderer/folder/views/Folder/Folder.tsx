@@ -2,6 +2,7 @@ import * as React from 'react';
 import Immutable from 'immutable';
 import styled from 'react-emotion';
 import _ from 'lodash';
+import axios from 'axios';
 
 import { lightBlack, darkBlack } from '~/lib/palette';
 import buildTree from './treeBuilder';
@@ -9,6 +10,30 @@ import buildTree from './treeBuilder';
 import Tree from '../../components/Tree';
 import Content from '../../components/Content';
 import { hot } from 'react-hot-loader';
+
+
+// const apiKey = 'AIzaSyA2Bg602HKiiqFt7vcmzse2ned_2eAkn-U';
+
+const translate = async (apiKey: string, language: string, text: string, target: string) => {
+  try {
+    const { data } = await axios.post(
+      `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
+      {
+        target,
+        source: language,
+        q: text,
+      },
+    );
+
+    return {
+      data: _.get(data, 'data.translations[0].translatedText', ''),
+    };
+  } catch (error) {
+    return {
+      error,
+    };
+  }
+};
 
 
 const minTreeWidth = 300;
@@ -30,6 +55,7 @@ interface IProps {
   currentItemPath: Immutable.List<any>;
   addTreeItemFinished: Function;
   removeTreeItemFinished: Function;
+  googleTranslateAPIKey: string;
 }
 
 interface IState {
@@ -38,6 +64,8 @@ interface IState {
   isDragging: boolean;
   treeWidth: number;
   tree: any;
+  translateErrors: string[];
+  isTranslating: boolean;
 }
 
 class Folder extends React.Component<IProps, IState> {
@@ -46,7 +74,9 @@ class Folder extends React.Component<IProps, IState> {
     openedPath: [],
     isDragging: false,
     treeWidth: minTreeWidth,
-    tree: [],
+    tree: Immutable.fromJS({}),
+    translateErrors: [],
+    isTranslating: false,
   };
 
   mouseLeavingFn: () => void;
@@ -175,7 +205,7 @@ class Folder extends React.Component<IProps, IState> {
     this.props.showContextMenu({ x, y, ...data })
 
 
-  isNode = (path: string[]) => _.get(this.state.tree, path) === null;
+  isNode = (path: string[]) => typeof this.state.tree.getIn(path) !== 'object';
 
   getLanguageIndex = (language: string) =>
     this.state.folder.indexOf(
@@ -278,6 +308,52 @@ class Folder extends React.Component<IProps, IState> {
     return stateItem !== propsItem;
   }
 
+  isTranslationEnabled = () =>
+    this.props.googleTranslateAPIKey &&
+    this.props.googleTranslateAPIKey.length > 0
+
+  translateEmptyFields = async (language: string, text: string, path: string[]) => {
+    this.setState({
+      translateErrors: [],
+      isTranslating: true,
+    });
+
+    const translateErrors = [];
+
+    let folder = this.state.folder;
+    for (let i = 0; i < folder.size; ++i) {
+      let folderItem = folder.get(i);
+      const currentLanguage = folderItem.get('language');
+      const currentPathItem = folderItem.getIn(['data', ...path]);
+
+      if (currentLanguage === language ||
+        (currentPathItem && currentPathItem.length > 0)) {
+        continue;
+      }
+
+      const result = await translate(
+        this.props.googleTranslateAPIKey,
+        language,
+        text,
+        currentLanguage,
+      );
+
+      if (result.error) {
+        translateErrors.push(result.error.message);
+      } else {
+        folderItem = folderItem.setIn(['data', ...path], result.data);
+        folder = folder.set(i, folderItem);
+      }
+    }
+
+    this.setState({
+      folder,
+      translateErrors: _.uniq(translateErrors),
+      isTranslating: false,
+    });
+    this.sendIsChanged();
+  }
+
   renderTree = () => (
     <ResizeableItem
       style={{
@@ -335,6 +411,10 @@ class Folder extends React.Component<IProps, IState> {
           isChangedValue={this.isChangedValue}
           isMissingPath={this.isMissingPathFromLanguage}
           isNewPath={this.isNewPath(this.state.openedPath)}
+          isTranslationEnabled={this.isTranslationEnabled}
+          translateEmptyFields={this.translateEmptyFields}
+          isTranslating={this.state.isTranslating}
+          translateErrors={this.state.translateErrors}
         />
       </ResizeablePanel>
     );

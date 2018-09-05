@@ -9,3 +9,12 @@ export const yellow = Color('#E5B122');
 export const green = Color('#29CC52');
 export const red = Color('#FF4719');
 export const blue = Color('#0064E0');
+
+
+const newColor = (isNew: boolean) => isNew && green;
+const changedColor = (isChanged: boolean) => isChanged && yellow;
+const missingColor = (isMissing: boolean) => isMissing && red;
+
+export const getStatusColor = ({ isChanged, isNew, isMissing }: any): string =>
+  (newColor(isNew) || missingColor(isMissing) || changedColor(isChanged)).toString() || 'inherit';
+

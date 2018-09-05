@@ -2,9 +2,8 @@ import React from 'react';
 import _ from 'lodash';
 import { css } from 'emotion';
 import styled from 'react-emotion';
-import Color from 'color';
 
-import { lightBlack, yellow, green, red, blue } from '~/lib/palette';
+import { lightBlack, yellow, blue, getStatusColor } from '~/lib/palette';
 import { hot } from 'react-hot-loader';
 
 
@@ -12,18 +11,18 @@ type TreeProps = {
   tree?: any,
   collapsed?: boolean,
   level?: number,
-  currentKey?: string,
+  label?: string,
   openedPath?: string[],
-  parentPath?: string[],
+  currentPath?: string[],
   isAddingTreeItem?: boolean,
   currentItemPath?: string[],
-  onAddNewItem: (path: string[], itemName: string) => void,
-  onSelectItem: (path: string[]) => void,
-  isChangedPath: (path: string[]) => boolean,
-  isNewPath: (path: string[]) => boolean,
-  isMissingPath: (path: string[]) => boolean,
-  onRightClickItem: (path: string[], x: number, y: number) => void,
-  onCancelAddNewItem: () => void,
+  onAddNewItem?: (path: string[], itemName: string) => void,
+  onSelectItem?: (path: string[]) => void,
+  isChangedPath?: (path: string[]) => boolean,
+  isNewPath?: (path: string[]) => boolean,
+  isMissingPath?: (path: string[]) => boolean,
+  onRightClickItem?: (path: string[], x: number, y: number) => void,
+  onCancelAddNewItem?: () => void,
 };
 
 interface ITreeState {
@@ -42,7 +41,7 @@ class Tree extends React.Component<TreeProps, ITreeState> {
   static defaultProps: Partial<TreeProps> = {
     collapsed: false,
     level: 0,
-    parentPath: [],
+    currentPath: [],
   };
 
   static getDerivedStateFromProps = ({ isAddingTreeItem }: TreeProps, prevState: ITreeState) =>
@@ -54,7 +53,7 @@ class Tree extends React.Component<TreeProps, ITreeState> {
       null
 
   onClick = () => {
-    if (this.props.tree === null) {
+    if (!this.isFolder()) {
       this.props.onSelectItem(this.getPath());
     } else {
       this.toggleCollapse();
@@ -70,11 +69,9 @@ class Tree extends React.Component<TreeProps, ITreeState> {
   toggleCollapse = () => this.setState({ collapsed: !this.state.collapsed });
   setCollapsed = (collapsed: boolean) => this.setState({ collapsed });
 
-  getPath = () =>
-    this.props.currentKey ?
-      [...this.props.parentPath, this.props.currentKey] :
-      this.props.parentPath
+  getPath = (): string[] => this.props.currentPath;
 
+  isFolder = () => typeof this.props.tree === 'object';
   isOpenedPath = () => _.isEqual(this.props.openedPath, this.getPath());
   isAddingItemInCurrentPath = () =>
     this.props.isAddingTreeItem &&
@@ -82,7 +79,7 @@ class Tree extends React.Component<TreeProps, ITreeState> {
 
   handleAddingItemNameChange = (e: any) => {
     const addingItemName = e.target.value.replace(/\ /g, '');
-    const addItemError = Object.keys(this.props.tree).indexOf(addingItemName) !== -1;
+    const addItemError = this.props.tree.get(addingItemName) !== undefined;
     this.setState({
       addItemError,
       addingItemName,
@@ -99,6 +96,7 @@ class Tree extends React.Component<TreeProps, ITreeState> {
       this.setCollapsed(false);
     }
   }
+
 
   getFolderIcon = () =>
     <i
@@ -127,11 +125,9 @@ class Tree extends React.Component<TreeProps, ITreeState> {
     </AddingItemContainer>)
 
   render(): React.ReactElement<any> {
-    const currentPath = this.getPath();
-
     return (
       <TreeRoot>
-        {this.props.currentKey &&
+        {this.props.label && (
           <TreeItemLabel
             className="item-label"
             onClick={this.onClick}
@@ -143,31 +139,33 @@ class Tree extends React.Component<TreeProps, ITreeState> {
             isMissing={this.props.isMissingPath(this.getPath())}
             isSelected={this.isOpenedPath()}
           >
-            {this.props.tree ?
+            {this.isFolder() ?
               this.getCollapsibleIcon() :
               <i className="caret-icon" />}
 
-            {this.props.tree ?
+            {this.isFolder() ?
               this.getFolderIcon() :
               <i className={'icon fas fa-file'} />}
-            {this.props.currentKey}
+            {this.props.label}
           </TreeItemLabel>
-        }
-
+        )}
 
         {this.isAddingItemInCurrentPath() && this.renderAddNewItem()}
 
         <TreeItemContainer collapsed={this.state.collapsed && !this.isAddingItemInCurrentPath()}>
-          {this.props.tree && Object.keys(this.props.tree).sort().map((key: string) => (
-            <Tree
-              key={key}
-              {...this.props}
-              currentKey={key}
-              tree={this.props.tree[key]}
-              parentPath={currentPath}
-              level={this.props.level + 1}
-            />
-          ))}
+          {this.isFolder() &&
+            this.props.tree
+              .filter((_value: any, key: string) => key.length > 0)
+              .map((value: any, key: string) => (
+                <Tree
+                  {...this.props}
+                  key={key}
+                  label={key}
+                  tree={value}
+                  level={this.props.level + 1}
+                  currentPath={[...this.props.currentPath, key]}
+                />
+              )).toList().toJS()}
         </TreeItemContainer>
       </TreeRoot>
     );
@@ -176,13 +174,6 @@ class Tree extends React.Component<TreeProps, ITreeState> {
 
 export default hot(module)(Tree);
 
-
-const newColor = (isNew: boolean) => isNew && green;
-const changedColor = (isChanged: boolean) => isChanged && yellow;
-const missingColor = (isMissing: boolean) => isMissing && red;
-
-const getLabelColor = ({ isChanged, isNew, isMissing }: any): Color =>
-  newColor(isNew) || changedColor(isChanged) || missingColor(isMissing) || Color('#ffffff');
 
 const iconFontSize = '12px';
 
@@ -204,7 +195,7 @@ const TreeItemLabel = styled('span')((props: any) => css`
   cursor: pointer;
   padding: 4px 4px 4px ${props.level * 16}px;
   align-items: center;
-  color: ${getLabelColor(props).toString()};
+  color: ${getStatusColor(props)};
   background-color: ${props.isSelected ? lightBlack.toString() : 'transparent'};
 
   &:hover {

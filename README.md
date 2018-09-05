@@ -8,9 +8,24 @@
 This app was developed with the objective to help the developers to manage
 this app translations.
 
-**Warning: This app is under development, it's not recommended to use in production yet.**
-
 Any type of contributions are welcome.
+
+## Features
+
+* Detect changed translations
+* Detect missing translations
+* Detect added translations
+* Google Translate™ API Integration
+
+## Current plugins and their supported extensions
+### Feature requests and or pull requests with new plugins are welcomed 🙂
+* json - [.json]
+
+
+## Sreenshots
+
+![](./picture1.jpg)
+![](./picture2.jpg)
 
 ## Developing
 

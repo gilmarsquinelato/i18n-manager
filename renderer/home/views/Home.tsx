@@ -3,7 +3,7 @@ import Immutable from 'immutable';
 import styled from 'react-emotion';
 import _ from 'lodash';
 
-import { lightBlack, blue } from '~/lib/palette';
+import { blue } from '~/lib/palette';
 
 import { hot } from 'react-hot-loader';
 
@@ -15,7 +15,6 @@ interface IProps {
 
 class Home extends React.Component<IProps> {
   render() {
-    console.log(this.props.recent);
     return (
       <div className="p-4">
         <RecentFolders>

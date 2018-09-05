@@ -1,4 +1,5 @@
 import React from 'react';
+import Immutable from 'immutable';
 import { mount } from 'enzyme';
 import Settings from '../Settings';
 
@@ -8,7 +9,7 @@ describe('settings/views/Settings', () => {
     const component = mount(
       <Settings
         history={null}
-        settings={null}
+        settings={Immutable.Map()}
         saveSettings={() => {}}
       />,
     );

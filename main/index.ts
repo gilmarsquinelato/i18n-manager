@@ -1,20 +1,32 @@
-import * as Sentry from '@sentry/electron';
+import { init } from '@sentry/electron';
 import _ from 'lodash';
-import { app, dialog } from 'electron';
+import * as fs from 'fs';
+import { app } from 'electron';
+import { autoUpdater } from 'electron-updater'
 import isDev from 'electron-is-dev';
 
-import { setupSentry } from '../common/sentry';
+import { sentryConfig } from '../common/sentry';
 import loadMenu from './menu';
 import { hasWindows, createWindow } from './windowManager';
 import installExtensions from './devtoolsInstaller';
 import registerAppEvents from './events';
 
-
 if (!isDev) {
-  setupSentry(Sentry);
+  init(sentryConfig);
 }
 
 registerAppEvents();
+
+
+app.setName('i18n Manager');
+app.setAboutPanelOptions({
+  applicationName: 'i18n Manager',
+  applicationVersion: app.getVersion(),
+  copyright: 'https://www.github.com/gilmarsquinelato',
+  credits: 'Gilmar Quinelato',
+  version: app.getVersion(),
+});
+
 
 app.on('ready', () => {
   if (isDev) {
@@ -23,6 +35,7 @@ app.on('ready', () => {
 
   loadMenu();
   createWindow();
+  autoUpdater.checkForUpdatesAndNotify();
 });
 
 app.on('window-all-closed', () => {
