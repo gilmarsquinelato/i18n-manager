@@ -121,15 +121,16 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.1.tgz#53f349bb986ab273d601175aa1b25a655ab90ee3"
 
-"@sentry/browser@4.0.0-beta.12":
-  version "4.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-4.0.0-beta.12.tgz#dff44c7a3732577057844b1643e0ba38c644138b"
+"@sentry/browser@4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-4.0.0-rc.1.tgz#07deb1f7bcd1d3220fa832f9eeee12444ea80aff"
   dependencies:
-    "@sentry/core" "4.0.0-beta.12"
-    "@sentry/hub" "4.0.0-beta.12"
-    "@sentry/minimal" "4.0.0-beta.12"
-    "@sentry/types" "4.0.0-beta.12"
-    "@sentry/utils" "4.0.0-beta.12"
+    "@sentry/core" "4.0.0-rc.1"
+    "@sentry/hub" "4.0.0-rc.1"
+    "@sentry/minimal" "4.0.0-rc.1"
+    "@sentry/types" "4.0.0-rc.1"
+    "@sentry/utils" "4.0.0-rc.1"
+    md5 "2.2.1"
 
 "@sentry/cli@^1.35.1":
   version "1.35.1"
@@ -140,67 +141,67 @@
     progress "2.0.0"
     proxy-from-env "^1.0.0"
 
-"@sentry/core@4.0.0-beta.12":
-  version "4.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.0.0-beta.12.tgz#c821e41b02c1d66e48fbef16da744f0173575558"
+"@sentry/core@4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.0.0-rc.1.tgz#6d22dbfb9399a2e7936fe8b2ec086e0567b2e692"
   dependencies:
-    "@sentry/hub" "4.0.0-beta.12"
-    "@sentry/minimal" "4.0.0-beta.12"
-    "@sentry/types" "4.0.0-beta.12"
-    "@sentry/utils" "4.0.0-beta.12"
+    "@sentry/hub" "4.0.0-rc.1"
+    "@sentry/minimal" "4.0.0-rc.1"
+    "@sentry/types" "4.0.0-rc.1"
+    "@sentry/utils" "4.0.0-rc.1"
 
-"@sentry/electron@^0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@sentry/electron/-/electron-0.8.1.tgz#0b978efee79697d3bb86cce7f906edbea98fd6a9"
+"@sentry/electron@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@sentry/electron/-/electron-0.9.0.tgz#9163b967d92415a0a29db8742a372d89c5c7388e"
   dependencies:
-    "@sentry/browser" "4.0.0-beta.12"
-    "@sentry/core" "4.0.0-beta.12"
-    "@sentry/hub" "4.0.0-beta.12"
-    "@sentry/minimal" "4.0.0-beta.12"
-    "@sentry/node" "4.0.0-beta.12"
-    "@sentry/types" "4.0.0-beta.12"
-    "@sentry/utils" "4.0.0-beta.12"
-    electron-fetch "^1.1.0"
-    form-data "^2.3.2"
-    util.promisify "^1.0.0"
+    "@sentry/browser" "4.0.0-rc.1"
+    "@sentry/core" "4.0.0-rc.1"
+    "@sentry/hub" "4.0.0-rc.1"
+    "@sentry/minimal" "4.0.0-rc.1"
+    "@sentry/node" "4.0.0-rc.1"
+    "@sentry/types" "4.0.0-rc.1"
+    "@sentry/utils" "4.0.0-rc.1"
+    electron-fetch "1.1.0"
+    form-data "2.3.2"
+    util.promisify "1.0.0"
 
-"@sentry/hub@4.0.0-beta.12":
-  version "4.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-4.0.0-beta.12.tgz#85267cec47c0bbf1094a537f7d14d19495c77234"
+"@sentry/hub@4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-4.0.0-rc.1.tgz#1579728d4c84054eb397b3aa1cac7b0c0c3dd2d5"
   dependencies:
-    "@sentry/types" "4.0.0-beta.12"
-    "@sentry/utils" "4.0.0-beta.12"
+    "@sentry/types" "4.0.0-rc.1"
+    "@sentry/utils" "4.0.0-rc.1"
 
-"@sentry/minimal@4.0.0-beta.12":
-  version "4.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-4.0.0-beta.12.tgz#534e8edd065646e0e5f8d71443a63f6ce7187573"
+"@sentry/minimal@4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-4.0.0-rc.1.tgz#1bd71ab901523f6569b499a376a5069eeec8b924"
   dependencies:
-    "@sentry/hub" "4.0.0-beta.12"
-    "@sentry/types" "4.0.0-beta.12"
+    "@sentry/hub" "4.0.0-rc.1"
+    "@sentry/types" "4.0.0-rc.1"
 
-"@sentry/node@4.0.0-beta.12":
-  version "4.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@sentry/node/-/node-4.0.0-beta.12.tgz#efc5b61ebde118a2a22e15530ddac16eb804d639"
+"@sentry/node@4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@sentry/node/-/node-4.0.0-rc.1.tgz#0a4daf8cf55559092ce78040527ae96c9e6401c2"
   dependencies:
-    "@sentry/core" "4.0.0-beta.12"
-    "@sentry/hub" "4.0.0-beta.12"
-    "@sentry/minimal" "4.0.0-beta.12"
-    "@sentry/types" "4.0.0-beta.12"
-    "@sentry/utils" "4.0.0-beta.12"
+    "@sentry/core" "4.0.0-rc.1"
+    "@sentry/hub" "4.0.0-rc.1"
+    "@sentry/minimal" "4.0.0-rc.1"
+    "@sentry/types" "4.0.0-rc.1"
+    "@sentry/utils" "4.0.0-rc.1"
     cookie "0.3.1"
     lsmod "1.0.0"
     md5 "2.2.1"
     stack-trace "0.0.10"
 
-"@sentry/types@4.0.0-beta.12":
-  version "4.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-4.0.0-beta.12.tgz#0abd303692e48c0fc11afbfea8cbad87e625357a"
+"@sentry/types@4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-4.0.0-rc.1.tgz#a7365c239abc380a9bdde7968767c567cf865468"
 
-"@sentry/utils@4.0.0-beta.12":
-  version "4.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-4.0.0-beta.12.tgz#9d51e88634843232b6c6f0edb6df3d3fba83071e"
+"@sentry/utils@4.0.0-rc.1":
+  version "4.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-4.0.0-rc.1.tgz#1a22af22c6173bfece55e436f1c3181f5b6bfe17"
   dependencies:
-    "@sentry/types" "4.0.0-beta.12"
+    "@sentry/types" "4.0.0-rc.1"
 
 "@types/axios@^0.14.0":
   version "0.14.0"
@@ -2551,9 +2552,9 @@ electron-download@^4.1.1:
     semver "^5.4.1"
     sumchecker "^2.0.2"
 
-electron-fetch@^1.1.0:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/electron-fetch/-/electron-fetch-1.2.1.tgz#08a033a23cc47febf05457f3e0e0a26598d02b95"
+electron-fetch@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/electron-fetch/-/electron-fetch-1.1.0.tgz#74b0ea547fe149620d38596a84fb104d34218e31"
   dependencies:
     encoding "^0.1.12"
 
@@ -2673,9 +2674,9 @@ enzyme-adapter-utils@^1.6.0:
     object.assign "^4.1.0"
     prop-types "^15.6.2"
 
-enzyme@^3.5.1:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/enzyme/-/enzyme-3.5.1.tgz#aad0cbd005fee4cfd800b6451b64112b5374da67"
+enzyme@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/enzyme/-/enzyme-3.6.0.tgz#d213f280a258f61e901bc663d4cc2d6fd9a9dec8"
   dependencies:
     array.prototype.flat "^1.2.1"
     cheerio "^1.0.0-rc.2"
@@ -3063,7 +3064,7 @@ forever-agent@~0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
 
-form-data@^2.3.2, form-data@~2.3.2:
+form-data@2.3.2, form-data@~2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/form-data/-/form-data-2.3.2.tgz#4970498be604c20c005d4f5c23aecd21d6b49099"
   dependencies:
@@ -7702,7 +7703,7 @@ util-inspect@^0.1.8:
     json3 "3.3.0"
     object-keys "0.5.0"
 
-util.promisify@^1.0.0, util.promisify@~1.0.0:
+util.promisify@1.0.0, util.promisify@^1.0.0, util.promisify@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/util.promisify/-/util.promisify-1.0.0.tgz#440f7165a459c9a16dc145eb8e72f35687097030"
   dependencies:
