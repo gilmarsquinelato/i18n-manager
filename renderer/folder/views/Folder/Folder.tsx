@@ -3,41 +3,18 @@ import Immutable from 'immutable';
 import { css } from 'emotion';
 import styled from 'react-emotion';
 import _ from 'lodash';
-import axios from 'axios';
+import { hot } from 'react-hot-loader';
 
 import { lightBlack, darkBlack } from '~/lib/palette';
+import translate from '~/lib/translate';
 import buildTree from './treeBuilder';
 
 import Tree from '../../components/Tree';
 import Content from '../../components/Content';
-import { hot } from 'react-hot-loader';
-
-
-const translate = async (apiKey: string, language: string, text: string, target: string) => {
-  try {
-    const { data } = await axios.post(
-      `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`,
-      {
-        target,
-        source: language,
-        q: text,
-      },
-    );
-
-    return {
-      data: _.get(data, 'data.translations[0].translatedText', ''),
-    };
-  } catch (error) {
-    return {
-      error,
-    };
-  }
-};
 
 
 const minTreeWidth = 300;
 const resizerWidth = 8;
-
 
 const getValueOrToJS = (value: any) =>
   _.isObject(value) ? value.toJS() : value;

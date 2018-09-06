@@ -57,8 +57,8 @@ describe('folder/components/Content', () => {
 
     expect(component).toBeDefined();
     expect(component.find('div.form-group').length).toBe(2);
-    expect(component.find('div.form-group label').at(0).text().startsWith('en')).toBeTruthy();
-    expect(component.find('div.form-group label').at(1).text().startsWith('es')).toBeTruthy();
+    expect(component.find('div.form-group label').at(0).text()).toContain('en');
+    expect(component.find('div.form-group label').at(1).text()).toContain('es');
   });
 
   it('changing items', () => {

@@ -2,7 +2,18 @@ import React from 'react';
 import Immutable from 'immutable';
 import styled, { css } from 'react-emotion';
 import { lightBlack, red, getStatusColor } from '~/lib/palette';
+import { getLocaleLabel } from '../../../common/language';
 import TranslateButton from './TranslateButton';
+
+
+const getLanguageLabel = (language: string): string => {
+  const localeLabel = getLocaleLabel(language);
+  if (!localeLabel) {
+    return language;
+  }
+
+  return `${localeLabel} - ${language}`;
+};
 
 
 type OnChange = (language: string, value: string) => any;
@@ -35,8 +46,10 @@ const ContentInput: React.SFC<IContentInputProps> =
         isNew={isNewPath}
         isMissing={isMissingPath}
       >
-        <label htmlFor={language}>
-          {language}
+        <label htmlFor={language} className="d-flex">
+          <span className="flex-fill">
+            {getLanguageLabel(language)}
+          </span>
 
           <TranslateButton
             isTranslationEnabled={isTranslationEnabled}
