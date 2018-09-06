@@ -151,7 +151,8 @@
     },
     "projects": [
       "./main",
-      "./renderer"
+      "./renderer",
+      "./common"
     ],
     "collectCoverageFrom": [
       "**/*.{ts,tsx,js}",

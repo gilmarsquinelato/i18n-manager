@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as util from 'util';
 import * as fs from 'fs';
 import { ParsedFile } from '../common/types';
+import { getLocaleFromText } from '../common/language';
 import getPlugins, { Plugin } from './plugins';
 
 
@@ -34,7 +35,9 @@ export const openFile = async (filePath: string): Promise<ParsedFile> => {
 
   const fileName = path.basename(filePath);
   const extension = path.extname(filePath);
-  const language = fileName.replace(extension, '');
+  const fileNameWithoutExtension = fileName.replace(extension, '');
+  const language = getLocaleFromText(fileNameWithoutExtension) || fileNameWithoutExtension;
+
   if (!language) {
     return null;
   }
