@@ -30,6 +30,7 @@ describe('folder/views/Folder', () => {
         isAddingTreeItemNode={false}
         isRemovingTreeItem={false}
         currentItemPath={Immutable.List()}
+        googleTranslateAPIKey={null}
       />,
     );
 
