@@ -9,6 +9,7 @@ describe('home/views/Home', () => {
     const component = mount(
       <Home
         recent={Immutable.List()}
+        openFolder={jest.fn()}
       />,
     );
 
