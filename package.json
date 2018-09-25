@@ -39,7 +39,7 @@
     "parcel-bundler": "^1.9.7",
     "redux-saga-test-plan": "^3.7.0",
     "rimraf": "^2.6.2",
-    "ts-jest": "23.10.0",
+    "ts-jest": "23.10.1",
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.10.0",
     "typescript": "^3.0.1",
@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.3.1",
-    "@sentry/electron": "^0.9.0",
+    "@sentry/electron": "^0.10.0",
     "@types/axios": "^0.14.0",
     "@types/color": "^3.0.0",
     "@types/electron-devtools-installer": "^2.2.0",
