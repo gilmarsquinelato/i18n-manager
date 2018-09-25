@@ -14,7 +14,7 @@
     "start": "yarn clean && concurrently \"yarn watch-main\" \"BROWSER=none yarn start-web\" \"wait-on http://localhost:1234 && electron --inspect=9229 --remote-debugging-port=9222 .\"",
     "build": "yarn build-all && electron-builder -wml",
     "test:watch": "jest --watch",
-    "test": "jest --ci --coverage --runInBand && cat ./coverage/lcov.info | codacy-coverage --language typescript",
+    "test": "jest --ci --coverage --maxWorkers=2 && cat ./coverage/lcov.info | codacy-coverage --language typescript",
     "start-web": "parcel ./renderer/index.html -d build/view",
     "build-web": "parcel build ./renderer/index.html -d build/view --public-url '.'",
     "build-main": "tsc --outDir ./build -d -p ./main",
