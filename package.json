@@ -25,8 +25,6 @@
   },
   "devDependencies": {
     "@sentry/cli": "^1.35.1",
-    "@types/electron-devtools-installer": "^2.2.0",
-    "@types/json-schema": "^7.0.0",
     "codacy-coverage": "^3.0.0",
     "concurrently": "^4.0.0",
     "cross-env": "^5.2.0",
@@ -53,10 +51,12 @@
     "@sentry/electron": "^0.10.0",
     "@types/axios": "^0.14.0",
     "@types/color": "^3.0.0",
+    "@types/electron-devtools-installer": "^2.2.0",
     "@types/electron-is-dev": "^0.3.0",
     "@types/enzyme": "^3.1.13",
     "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/jest": "^23.3.1",
+    "@types/json-schema": "^7.0.1",
     "@types/lodash": "^4.14.116",
     "@types/react": "^16.4.11",
     "@types/react-dom": "^16.0.7",
@@ -71,7 +71,6 @@
     "color": "^3.0.0",
     "connected-react-router": "^4.4.1",
     "electron-is-dev": "^1.0.0",
-    "electron-reload": "^1.2.5",
     "electron-updater": "^3.1.2",
     "emotion": "^9.2.6",
     "history": "^4.7.2",
@@ -94,8 +93,7 @@
     "redux-actions": "^2.6.1",
     "redux-devtools-extension": "^2.13.5",
     "redux-immutable": "^4.0.0",
-    "redux-saga": "^0.16.0",
-    "web-frame": "^0.0.2"
+    "redux-saga": "^0.16.0"
   },
   "alias": {
     "~": "./renderer"
@@ -142,7 +140,7 @@
   },
   "jest": {
     "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest"
+      "^.+\\.tsx?$": "ts-jest"
     },
     "globals": {
       "ts-jest": {
