@@ -140,7 +140,7 @@
   },
   "jest": {
     "transform": {
-      "^.+\\.(ts|tsx)$": "ts-jest"
+      "^.+\\.tsx?$": "ts-jest"
     },
     "globals": {
       "ts-jest": {
