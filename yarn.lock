@@ -124,13 +124,13 @@
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.2.tgz#54c5a964462be3d4d78af631363c18d6fa91ac26"
 
-"@sentry/browser@^4.0.3":
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-4.0.4.tgz#6dfe05099d9ce23d7e9becaa905af5406520d448"
+"@sentry/browser@^4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-4.0.5.tgz#8881227fe7b711b5724ccfdc4bb2a8b54fbfd473"
   dependencies:
-    "@sentry/core" "4.0.3"
+    "@sentry/core" "4.0.5"
     "@sentry/types" "4.0.1"
-    "@sentry/utils" "4.0.1"
+    "@sentry/utils" "4.0.5"
     md5 "2.2.1"
 
 "@sentry/cli@^1.35.1":
@@ -142,69 +142,65 @@
     progress "2.0.0"
     proxy-from-env "^1.0.0"
 
-"@sentry/core@4.0.3", "@sentry/core@^4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.0.3.tgz#4f8fd67888f1cf0f1a984c5fa362122b60e8bd08"
+"@sentry/core@4.0.5", "@sentry/core@^4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.0.5.tgz#2ed158e5df5eec7acd4527ed91ed0baa234737ba"
   dependencies:
-    "@sentry/hub" "4.0.1"
-    "@sentry/minimal" "4.0.1"
+    "@sentry/hub" "4.0.5"
+    "@sentry/minimal" "4.0.5"
     "@sentry/types" "4.0.1"
-    "@sentry/utils" "4.0.1"
+    "@sentry/utils" "4.0.5"
 
-"@sentry/electron@^0.10.0":
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/@sentry/electron/-/electron-0.10.0.tgz#2d57d59036084886bdb6b9217cb5433417ec19a7"
+"@sentry/electron@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@sentry/electron/-/electron-0.11.0.tgz#f0ecd01c67b5c7f8684b586b53850001493c2af9"
   dependencies:
-    "@sentry/browser" "^4.0.3"
-    "@sentry/core" "^4.0.3"
-    "@sentry/minimal" "^4.0.0"
-    "@sentry/node" "^4.0.3"
+    "@sentry/browser" "^4.0.5"
+    "@sentry/core" "^4.0.5"
+    "@sentry/minimal" "^4.0.5"
+    "@sentry/node" "^4.0.5"
     "@sentry/types" "^4.0.0"
-    "@sentry/utils" "^4.0.0"
+    "@sentry/utils" "^4.0.5"
     electron-fetch "1.1.0"
     form-data "2.3.2"
     util.promisify "1.0.0"
 
-"@sentry/hub@4.0.1":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-4.0.1.tgz#01870cede195029ae32d763199ff6c3e4edf99d1"
+"@sentry/hub@4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-4.0.5.tgz#6d9b559fc61e691d4c1111c5aa975b83d6912814"
   dependencies:
-    "@sentry/types" "4.0.0"
-    "@sentry/utils" "4.0.1"
-
-"@sentry/minimal@4.0.1", "@sentry/minimal@^4.0.0":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-4.0.1.tgz#c51a2af81eba48977fb54ab187e0c0eb0ad12c15"
-  dependencies:
-    "@sentry/hub" "4.0.1"
-    "@sentry/types" "4.0.0"
-
-"@sentry/node@^4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@sentry/node/-/node-4.0.3.tgz#4c1bfd222ebc100844a4d8a9a599ff3ace5e8518"
-  dependencies:
-    "@sentry/core" "4.0.3"
-    "@sentry/hub" "4.0.1"
     "@sentry/types" "4.0.1"
-    "@sentry/utils" "4.0.1"
+    "@sentry/utils" "4.0.5"
+
+"@sentry/minimal@4.0.5", "@sentry/minimal@^4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-4.0.5.tgz#78cc548ef4bf272b8529bc35f38b7187cd371bbe"
+  dependencies:
+    "@sentry/hub" "4.0.5"
+    "@sentry/types" "4.0.1"
+
+"@sentry/node@^4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@sentry/node/-/node-4.0.5.tgz#aa301b33fe1e27c98d468e3089481ff3995bca23"
+  dependencies:
+    "@sentry/core" "4.0.5"
+    "@sentry/hub" "4.0.5"
+    "@sentry/types" "4.0.1"
+    "@sentry/utils" "4.0.5"
     cookie "0.3.1"
     lsmod "1.0.0"
     md5 "2.2.1"
     stack-trace "0.0.10"
 
-"@sentry/types@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-4.0.0.tgz#9dd46a7b05004871fe0cea0b0423098d9d91a173"
-
 "@sentry/types@4.0.1", "@sentry/types@^4.0.0":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@sentry/types/-/types-4.0.1.tgz#f9342e905ce2aee71975574589d915b6fb691fb0"
 
-"@sentry/utils@4.0.1", "@sentry/utils@^4.0.0":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-4.0.1.tgz#5690058fb030c23d46ea056aa3e8ebebb8105d45"
+"@sentry/utils@4.0.5", "@sentry/utils@^4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-4.0.5.tgz#0c855433d39d9befe434e5b691f86d638cf48b2a"
   dependencies:
-    "@sentry/types" "4.0.0"
+    "@sentry/types" "4.0.1"
 
 "@types/axios@^0.14.0":
   version "0.14.0"
