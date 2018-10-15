@@ -1,6 +1,6 @@
 import * as path from 'path';
 
-interface IFormattedFolderPath {
+export interface IFormattedFolderPath {
   fullPath: string;
   folder: string;
   path: string;
