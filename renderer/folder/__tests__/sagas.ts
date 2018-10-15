@@ -1,9 +1,10 @@
-import { testSaga } from 'redux-saga-test-plan';
+import { testSaga, expectSaga } from 'redux-saga-test-plan';
 import { push } from 'connected-react-router/immutable';
 
 import * as ipcMessages from '../../../common/ipcMessages';
 import { ACTION_TYPES, actions } from '../actions';
 import { openFolderAsync, saveFolderAsync, saveFolderCompleteAsync } from '../sagas';
+import { getFolderPath } from '../selectors';
 
 
 describe('folder/sagas', () => {
@@ -13,35 +14,33 @@ describe('folder/sagas', () => {
 
   it('openFolderAsync', () => {
     const data = [{ language: 'pt-BR', data: {} }];
-    testSaga(openFolderAsync, { data })
-      .next()
 
+    return expectSaga(openFolderAsync, { data })
       .put(actions.loadFolder(null))
-      .next()
-
       .put(push('/folder'))
-      .next()
-
       .put(actions.loadFolder(data))
-      .next()
-
-      .isDone();
+      .run();
   });
 
-  it('saveFolderAsync', () => {
+  it('saveFolderAsync', async () => {
     const payload = [{ language: 'pt-BR', data: {} }];
     const data = { close: true };
 
-    testSaga(saveFolderAsync, { data })
-      .next()
+    await expectSaga(saveFolderAsync, { data })
+      .provide({
+        select({ selector }, next) {
+          if (selector === getFolderPath) {
+            return '/fake/path';
+          }
 
+          return next();
+        },
+      })
+      .select(getFolderPath)
       .put(actions.saveRequested(true))
-      .next()
-
       .take(ACTION_TYPES.SAVE_FOLDER)
-      .next(actions.saveFolder(payload))
-
-      .isDone();
+      .dispatch(actions.saveFolder(payload))
+      .run();
 
     const electron = require('~/lib/electron');
     expect(electron.sendToIpc).toBeCalledWith(ipcMessages.save, { data, payload });

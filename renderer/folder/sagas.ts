@@ -1,4 +1,4 @@
-import { takeLatest, put, take } from 'redux-saga/effects';
+import { takeLatest, put, take, select } from 'redux-saga/effects';
 import { push } from 'connected-react-router/immutable';
 import * as ipcMessages from '../../common/ipcMessages';
 import {
@@ -9,6 +9,8 @@ import {
 
 import { ACTION_TYPES, actions } from './actions';
 
+import { getFolderPath } from './selectors';
+
 
 export function* openFolderAsync({ data }: any) {
   yield put(actions.loadFolder(null));
@@ -17,6 +19,11 @@ export function* openFolderAsync({ data }: any) {
 }
 
 export function* saveFolderAsync({ data }: any) {
+  const folderPath = yield select(getFolderPath);
+  if (!folderPath) {
+    return;
+  }
+
   yield put(actions.saveRequested(true));
   const { payload } = yield take(ACTION_TYPES.SAVE_FOLDER);
 
