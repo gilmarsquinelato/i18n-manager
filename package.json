@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.3.1",
-    "@sentry/electron": "^0.11.0",
+    "@sentry/electron": "^0.12.0",
     "@types/axios": "^0.14.0",
     "@types/color": "^3.0.0",
     "@types/electron-devtools-installer": "^2.2.0",
