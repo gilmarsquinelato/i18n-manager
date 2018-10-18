@@ -10,8 +10,6 @@ const readFilePromise = util.promisify(fs.readFile);
 const writeFilePromise = util.promisify(fs.writeFile);
 
 export const getAvailablePlugins = (): Plugin[] => getPlugins();
-export const getSupportedExtensions = (): string[] =>
-  getAvailablePlugins().map(p => p.fileExtension);
 
 export const getParsedFiles = async (files: string[]): Promise<ParsedFile[]> => {
   const parsedFiles: ParsedFile[] = [];
@@ -69,4 +67,9 @@ export const saveFile = async (parsedFile: ParsedFile): Promise<boolean> => {
 
 const getPluginForFile = (path: string) =>
   getPlugins()
-    .filter(plugin => path.endsWith(plugin.fileExtension))[0];
+    .filter(plugin => pluginSupportsFileExtension(plugin, path))[0];
+
+const pluginSupportsFileExtension = (plugin: Plugin, path: string) =>
+  plugin.fileExtensions
+    .filter(extension => path.toLowerCase().endsWith(extension))
+    .length > 0;
