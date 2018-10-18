@@ -1,7 +1,4 @@
-import * as fs from 'fs';
-import * as util from 'util';
-
-export const fileExtension = '.json';
+export const fileExtensions = ['.json', '.arb'];
 
 export const parse = (content: string): Promise<any> => {
   try {
