@@ -24,40 +24,48 @@ export const getParsedFiles = async (files: string[]): Promise<ParsedFile[]> => 
 };
 
 export const openFile = async (filePath: string): Promise<ParsedFile> => {
-  const fileContent = await readFilePromise(filePath);
+  try {
+    const fileContent = await readFilePromise(filePath);
 
-  const plugin = getPluginForFile(filePath);
-  if (!plugin) {
+    const plugin = getPluginForFile(filePath);
+    if (!plugin) {
+      return null;
+    }
+
+    const fileName = path.basename(filePath);
+    const extension = path.extname(filePath);
+    const fileNameWithoutExtension = fileName.replace(extension, '');
+    const language = getLocaleFromText(fileNameWithoutExtension) || fileNameWithoutExtension;
+
+    if (!language) {
+      return null;
+    }
+
+    const data = await plugin.parse(fileContent.toString());
+    if (!data) {
+      return null;
+    }
+
+    return {
+      fileName,
+      language,
+      extension,
+      filePath,
+      data,
+    };
+  } catch (e) {
     return null;
   }
-
-  const fileName = path.basename(filePath);
-  const extension = path.extname(filePath);
-  const fileNameWithoutExtension = fileName.replace(extension, '');
-  const language = getLocaleFromText(fileNameWithoutExtension) || fileNameWithoutExtension;
-
-  if (!language) {
-    return null;
-  }
-
-  const data = await plugin.parse(fileContent.toString());
-  if (!data) {
-    return null;
-  }
-
-  return {
-    fileName,
-    language,
-    extension,
-    filePath,
-    data,
-  };
 };
 
 export const saveFile = async (parsedFile: ParsedFile): Promise<boolean> => {
   try {
     const plugin = getPluginForFile(parsedFile.filePath);
     const serializedContent = await plugin.serialize(parsedFile.data);
+    if (serializedContent === null) {
+      return false;
+    }
+
     await writeFilePromise(parsedFile.filePath, serializedContent);
     return true;
   } catch (e) {

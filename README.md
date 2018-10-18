@@ -17,9 +17,13 @@ Any type of contributions are welcome.
 * Google Translate™ API Integration
 
 ## Current plugins and their supported extensions
-### Feature requests and or pull requests with new plugins are welcomed 🙂
-* json - [.json]
 
+* json - [.json, .arb (Flutter Internationalization)]
+* yaml - [.yaml, .yml]
+
+**Feature requests and or pull requests with new plugins are welcomed 🙂**
+
+**If you want to test the features, you can open the testData folder!**
 
 ## Screenshots
 
