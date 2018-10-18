@@ -1,8 +1,11 @@
-export const fileExtensions = ['.json', '.arb'];
+import * as yaml from 'js-yaml';
+
+export const fileExtensions = ['.yaml', '.yml'];
 
 export const parse = (content: string): Promise<any> => {
   try {
-    return JSON.parse(content);
+    const data = yaml.load(content);
+    return data || {};
   } catch (e) {
     return null;
   }
@@ -10,7 +13,7 @@ export const parse = (content: string): Promise<any> => {
 
 export const serialize = async (data: object): Promise<string> => {
   try {
-    return JSON.stringify(data, null, 2);
+    return yaml.safeDump(data);
   } catch (e) {
     return null;
   }
