@@ -1,0 +1,65 @@
+@import "../../_palette.styl"
+
+$iconFontSize = 12px
+
+:host
+  display flex
+  flex-direction column
+  flex 1
+
+ul
+  list-style none
+  padding 0
+
+li
+  display flex
+
+.tree-item-label
+  padding 4px
+  cursor pointer
+  display flex
+  flex 1
+  align-items baseline
+
+  &.selected
+    background-color $lightBlack
+
+  &:hover
+    background-color $lightBlack - 10%
+
+  &.new
+    color $green
+
+  &.changed
+    color $yellow
+
+  &.missing
+    color $red
+
+
+.caret-icon
+  font-size $iconFontSize
+  color white
+  width 8px
+  height 8px
+
+
+.icon
+  font-size $iconFontSize
+  margin 0 4px
+  width 16px
+
+
+.fa-folder, .fa-folder-open
+  color $yellow + 20% !important
+
+.fa-file
+  color $blue !important
+
+.hidden
+  display none
+
+.adding-item-input
+  z-index 30
+  padding 8px
+  margin 0

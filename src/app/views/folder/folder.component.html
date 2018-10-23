@@ -1,0 +1,37 @@
+<div (mousemove)="resize($event)"
+     (mouseup)="stopResize()"
+     class="resizeable-panel {{isResizing ? 'resizing': ''}}">
+
+  <div class="tree" [style.width.px]="treeWidth" (mouseup)="onTreeMouseUp($event)">
+    <app-tree [tree]="tree"
+              (openPath)="onOpenPath($event)"
+              (contextMenu)="onRightClickItemTree($event)"
+              [isAddingItem]="isAddingItem"
+              [addingItemData]="addingItemData"
+              (cancelAddItem)="addItemDone()"
+              (addItem)="onAddItem($event)"
+              [openedPath]="openedPath"
+    ></app-tree>
+
+    <div class="add-item-overlay" *ngIf="isAddingItem" (click)="addItemDone()"></div>
+  </div>
+
+  <div class="resizer" (mousedown)="startResize()"></div>
+
+  <div class="content">
+    <app-content *ngIf="openedPath && openedPath.length > 0"
+                 [path]="openedPath"
+                 [folder]="folder"
+                 [originalFolder]="originalFolder"
+                 (change)="onContentChange()"
+                 (contextMenu)="onContentRightClick($event)"
+    ></app-content>
+  </div>
+</div>
+
+<div class="status-bar">
+  <div class="status-bar-item" *ngIf="isSaving">
+    <i class="fas fa-spinner fa-spin icon"></i>
+    Saving...
+  </div>
+</div>

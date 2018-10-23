@@ -2,12 +2,7 @@ import { app } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as util from 'util';
-import {
-  getAvailableWindow,
-  sendOpen,
-  createWindow,
-  sendRecentFolders,
-} from './windowManager';
+import { createWindow, getAvailableWindow, sendOpen, sendRecentFolders, } from './windowManager';
 import { getParsedFiles, saveFile } from './pluginManager';
 import * as settings from './settings';
 import { ParsedFile } from '../common/types';
@@ -45,10 +40,8 @@ export const saveFolder = async (data: ParsedFile[]) => {
   const saveAll = data.map(item => saveFile(item));
   const result = await Promise.all(saveAll);
 
-  const failedToSaveFiles = result
-    .map((success: boolean, index: number) => ({ success, file: data[index].fileName }))
+  return result
+    .map((success: boolean, index: number) => ({success, file: data[index].fileName}))
     .filter((i: any) => !i.success)
     .map((i: any) => i.file);
-
-  return failedToSaveFiles;
 };

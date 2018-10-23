@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import * as testUtils from './testUtils';
 import * as electron from 'electron';
 
@@ -33,12 +32,7 @@ describe('events', () => {
     await mockElectron.ipcMain.trigger(ipcMessages.save, event, data);
 
     const calls = mockElectron.webContentsSendFunction.mock.calls;
-    expect(calls).toHaveLength(5);
-    // expect(calls[0][0]).toBe(ipcMessages.recentFolders);
-    // expect(calls[1][0]).toBe(ipcMessages.settings);
-    // expect(calls[2][0]).toBe(ipcMessages.open);
-    // expect(calls[3][0]).toBe(ipcMessages.recentFolders);
-    // expect(calls[4][0]).toBe(ipcMessages.saveComplete);
+    expect(calls).toHaveLength(4);
 
     expect(window.isDocumentEdited()).toBeFalsy();
   });

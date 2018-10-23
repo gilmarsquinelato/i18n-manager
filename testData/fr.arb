@@ -2,5 +2,6 @@
   "hello": "Bonjour le monde!",
   "home": {
     "welcome": "Bienvenue {{name}}!"
-  }
+  },
+  "missing": ""
 }
