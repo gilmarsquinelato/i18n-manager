@@ -1,3 +1,4 @@
 hello: こんにちは世界
 home:
   welcome: 'ようこそ{{name}}!'
+missing: ''

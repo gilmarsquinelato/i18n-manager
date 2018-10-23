@@ -1,13 +1,10 @@
 import { init } from '@sentry/electron';
-import _ from 'lodash';
 import { app } from 'electron';
-import { autoUpdater } from 'electron-updater';
 import isDev from 'electron-is-dev';
 
 import { sentryConfig } from '../common/sentry';
 import loadMenu from './menu';
 import { hasWindows, createWindow } from './windowManager';
-import installExtensions from './devtoolsInstaller';
 import registerAppEvents from './events';
 
 if (!isDev) {
@@ -30,13 +27,9 @@ if (process.platform === 'darwin') {
 
 
 app.on('ready', () => {
-  if (isDev) {
-    installExtensions();
-  }
-
   loadMenu();
   createWindow();
-  autoUpdater.checkForUpdatesAndNotify();
+  // autoUpdater.checkForUpdatesAndNotify();
 });
 
 app.on('window-all-closed', () => {

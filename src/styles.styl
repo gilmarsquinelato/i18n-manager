@@ -1,0 +1,41 @@
+@import "bootstrap/dist/css/bootstrap.min.css"
+@import "./assets/bootstrap-darkly.min.css"
+@import "@fortawesome/fontawesome-free/css/all.min.css"
+@import "./app/_palette.styl"
+
+html, body
+  position relative
+  display flex
+  width 100%
+  height 100%
+  overflow hidden
+  background-color $background-color
+
+app-root
+  display flex
+  flex 1
+
+  -webkit-user-select none
+  -webkit-app-region drag
+  animation fadein 0.5s
+
+
+  .form-group
+    label
+      color $input-label-color
+    .form-control
+      background-color $input-background-color
+      color: $input-color
+
+$keyframes fadein
+  from
+    opacity 0
+  to
+    opacity 1
+
+h1, h2
+  color #cccccc
+
+.container-fluid
+  padding 0
+  display flex

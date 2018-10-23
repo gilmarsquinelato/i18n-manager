@@ -1,0 +1,10 @@
+<small *ngIf="!isTranslationEnabled">Google Translate™ API is not configured</small>
+
+<button
+  class="btn btn-outline-info translate-button"
+  [disabled]="!isTranslationEnabled || isTranslating"
+  (click)="onClick($event)"
+>
+  <i class="fas fa-language"></i>
+  Translate empty fields
+</button>

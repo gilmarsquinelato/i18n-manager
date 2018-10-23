@@ -1,0 +1,15 @@
+<h1>i18n Manager</h1>
+
+<h2>Recent folders</h2>
+
+<ul>
+  <li *ngFor="let folder of recentFolders$ | async">
+    <a class="folder-name" routerLink="/folder" [queryParams]="{path: folder.fullPath}">
+      {{ folder.folder }}
+    </a>
+
+    <span class="folder-path">
+      {{ folder.path }}
+    </span>
+  </li>
+</ul>
