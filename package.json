@@ -14,7 +14,7 @@
     "start": "yarn clean && concurrently \"yarn watch:main\" \"BROWSER=none yarn start:web\" \"wait-on http://localhost:4200 && yarn start:main\"",
     "build": "yarn build:all && electron-builder -wml",
     "start:web": "ng serve",
-    "build:web": "parcel build ./renderer/index.html -d build/view --public-url '.'",
+    "build:web": "ng build --optimization --vendor-chunk --extract-css --prod --output-path build/view",
     "start:main": "electron --inspect=9229 --remote-debugging-port=9222 .",
     "build:main": "tsc --outDir ./build -d -p ./main",
     "watch:main": "tsc --outDir ./build -w -p ./main",
