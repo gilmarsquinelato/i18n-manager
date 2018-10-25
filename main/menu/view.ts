@@ -1,4 +1,4 @@
-import isDev from 'electron-is-dev';
+const isDev = require('electron-is-dev');
 
 
 const viewMenu: Electron.MenuItemConstructorOptions = {

@@ -2,7 +2,7 @@
      (mouseup)="stopResize()"
      class="resizeable-panel {{isResizing ? 'resizing': ''}}">
 
-  <div class="tree" [style.width.px]="treeWidth" (mouseup)="onTreeMouseUp($event)">
+  <div class="tree scroll" [style.width.px]="treeWidth" (mouseup)="onTreeMouseUp($event)">
     <app-tree [tree]="tree"
               (openPath)="onOpenPath($event)"
               (contextMenu)="onRightClickItemTree($event)"
@@ -19,7 +19,7 @@
 
   <div class="resizer" (mousedown)="startResize()"></div>
 
-  <div class="content">
+  <div class="content scroll">
     <app-content *ngIf="openedPath && openedPath.length > 0"
                  [path]="openedPath"
                  [folder]="folder"

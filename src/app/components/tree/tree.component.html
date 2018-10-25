@@ -11,11 +11,9 @@
   <i *ngIf="!hasChildren" class="icon fas fa-file"></i>
   <i *ngIf="hasChildren" class="icon fas {{isCollapsed ? 'fa-folder' : 'fa-folder-open'}}"></i>
 
-  <span class="flex-fill">{{label}}</span>
+  <span>{{label}}</span>
 
-  <span *ngIf="missingTranslations > 0" class="mr-2">
-    {{missingTranslations}}
-  </span>
+  <span *ngIf="missingTranslations > 0" class="badge badge-danger badge-pill ml-3">{{missingTranslations}}</span>
 </div>
 
 <div class="adding-item-input form-group {{isAddingItemPath() ? '' : 'hidden'}}"
