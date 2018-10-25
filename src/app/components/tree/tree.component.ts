@@ -128,7 +128,7 @@ export class TreeComponent implements OnInit, OnChanges {
   }
 
   private updateMissingTranslationsCounter() {
-    if (this.hasChildren) {
+    if (this.hasChildren || !this.folder) {
       this.missingTranslations = 0;
       return;
     }
