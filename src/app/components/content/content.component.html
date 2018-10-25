@@ -1,0 +1,31 @@
+<div *ngFor="let folderItem of folder"
+  class="form-group {{getStatus(folderItem.language)}}">
+
+  <label for="lang-{{folderItem.language}}" class="d-flex">
+    <span class="flex-fill language">{{getLanguageLabel(folderItem.language)}}</span>
+    <app-translate-button [isTranslationEnabled]="isTranslationEnabled"
+                          [isTranslating]="isTranslating"
+                          (translate)="translateEmptyFields(folderItem.language)"
+    ></app-translate-button>
+  </label>
+
+  <input id="lang-{{folderItem.language}}"
+         type="text"
+         class="form-control"
+         [value]="getValue(folderItem.language)"
+         (keyup)="updateValue($event, folderItem.language)"
+         (mouseup)="onMouseUp($event)">
+</div>
+
+<div class="col-md-12 d-flex justify-content-center" *ngIf="isTranslating">
+  <i class="fas fa-spinner fa-spin fa-2x"></i>
+</div>
+
+<div class="errors my-5" *ngIf="translateErrors && translateErrors.length > 0">
+  <h5>Errors occurred when translating</h5>
+  <ul>
+    <li *ngFor="let error of translateErrors">
+      {{error}}
+    </li>
+  </ul>
+</div>

@@ -28,11 +28,10 @@ describe('fileManager', () => {
     const expected: any = { folder: parsedFiles, folderPath: testUtils.basePath };
     const calls = mockElectron.webContentsSendFunction.mock.calls;
 
-    expect(calls).toHaveLength(4);
-    expect(calls[0][0]).toEqual(ipcMessages.recentFolders);
-    expect(calls[1][0]).toEqual(ipcMessages.settings);
-    expect(calls[2]).toEqual([ipcMessages.open, expected]);
-    expect(calls[3][0]).toEqual(ipcMessages.recentFolders);
+    expect(calls).toHaveLength(3);
+    expect(calls[0][0]).toEqual(ipcMessages.navigateTo);
+    expect(calls[1][0]).toEqual(ipcMessages.open);
+    expect(calls[2][0]).toEqual(ipcMessages.recentFolders);
   });
 
   it('saveFolder', async () => {

@@ -14,8 +14,13 @@ const onSave = async (e: any, data: any) => {
   const closeWindow = data.data.close;
   const folder = data.payload;
 
-  const result = await fileManager.saveFolder(folder);
+  if (!(folder as ParsedFile[])[0]) {
+    windowManager.sendSaveComplete(window, []);
+    return;
+  }
 
+
+  const result = await fileManager.saveFolder(folder);
   const folderPath = path.dirname((folder as ParsedFile[])[0].filePath);
   await fileManager.openFolderInWindow(folderPath, window);
 
@@ -47,6 +52,11 @@ const onShowContextMenu = (e: any, data: IContextMenuOptions) => {
   showContextMenu(window, data);
 };
 
+const onGetSettings = (e: any) => {
+  const window = BrowserWindow.fromWebContents(e.sender);
+  windowManager.sendSettings(window, settings.getCustomSettings());
+};
+
 const onSaveSettings = (e: any, data: any) => {
   settings.saveCustomSettings(data);
 };
@@ -59,12 +69,21 @@ const onOpenFile = (e: any, data: any) => {
   }
 };
 
+const onRecentFolders = (e: any) => {
+  const window = BrowserWindow.fromWebContents(e.sender);
+  windowManager.sendRecentFolders(window, settings.getRecentFolders());
+};
+
+
 const registerAppEvents = () => {
   ipcMain.on(ipcMessages.open as any, onOpen);
   ipcMain.on(ipcMessages.save as any, onSave);
   ipcMain.on(ipcMessages.dataChanged as any, onDataChanged);
   ipcMain.on(ipcMessages.showContextMenu as any, onShowContextMenu);
-  ipcMain.on(ipcMessages.settings as any, onSaveSettings);
+  ipcMain.on(ipcMessages.saveSettings as any, onSaveSettings);
+  ipcMain.on(ipcMessages.settings as any, onGetSettings);
+  ipcMain.on(ipcMessages.recentFolders as any, onRecentFolders);
+
   app.on('open-file', onOpenFile);
   app.on('will-finish-launching', () => {
     app.on('open-file', onOpenFile);

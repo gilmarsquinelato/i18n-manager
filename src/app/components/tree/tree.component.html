@@ -1,0 +1,49 @@
+<div class="tree-item-label {{tree}} {{isOpenedPath() ? 'selected' : ''}}"
+      *ngIf="label"
+      [style.paddingLeft.px]="level * 16"
+      (click)="toggleOrOpen()"
+      (mouseup)="onMouseUp($event)">
+
+  <div class="caret-icon">
+    <i *ngIf="hasChildren" class="fas {{isCollapsed ? 'fa-caret-right' : 'fa-caret-down'}}"></i>
+  </div>
+
+  <i *ngIf="!hasChildren" class="icon fas fa-file"></i>
+  <i *ngIf="hasChildren" class="icon fas {{isCollapsed ? 'fa-folder' : 'fa-folder-open'}}"></i>
+
+  <span class="flex-fill">{{label}}</span>
+
+  <span *ngIf="missingTranslations > 0" class="mr-2">
+    {{missingTranslations}}
+  </span>
+</div>
+
+<div class="adding-item-input form-group {{isAddingItemPath() ? '' : 'hidden'}}"
+     [style.paddingLeft.px]="level * 16 + 32">
+  <input #addItemInput
+         type="text"
+         class="form-control form-control-sm {{isValidAddingItemName ? '' : 'is-invalid'}}"
+         [(ngModel)]="addingItemName"
+         (keyup)="onAddingItemNameChange($event)">
+  <div class="invalid-feedback">
+    Already have an item with this name.
+  </div>
+</div>
+
+<ul *ngIf="hasChildren" class="{{ isCollapsed ? 'hidden' : '' }}">
+  <li *ngFor="let key of childrenKeys">
+    <app-tree [label]="key"
+              [tree]="tree[key]"
+              [level]="level + 1"
+              [path]="path.concat(key)"
+              [openedPath]="openedPath"
+              (openPath)="onOpenPath($event)"
+              (contextMenu)="onContextMenu($event)"
+              [isAddingItem]="isAddingItem"
+              [addingItemData]="addingItemData"
+              (cancelAddItem)="onCancelAddItem()"
+              (addItem)="onAddItem($event)"
+              [folder]="folder"
+    ></app-tree>
+  </li>
+</ul>

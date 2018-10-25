@@ -1,13 +1,13 @@
 import { BrowserWindow, dialog } from 'electron';
 import * as path from 'path';
-import _ from 'lodash';
-import isDev from 'electron-is-dev';
+import * as _ from 'lodash';
 
 import * as ipcMessages from '../common/ipcMessages';
 import { ParsedFile } from '../common/types';
 import * as settings from './settings';
 import { getFormattedFoldersPaths } from './pathUtils';
 
+const isDev = require('electron-is-dev');
 
 export const hasWindows = (): boolean => BrowserWindow.getAllWindows().length > 0;
 
@@ -26,8 +26,6 @@ export const createWindow = (): BrowserWindow => {
   window.loadURL(getUrl());
 
   registerEvents(window);
-  sendRecentFolders(window, settings.getRecentFolders());
-  sendSettings(window, settings.getCustomSettings());
 
   return window;
 };
@@ -36,7 +34,8 @@ export const getCurrentWindow = (): BrowserWindow => BrowserWindow.getFocusedWin
 
 
 export const sendOpen = async (window: BrowserWindow, folderPath: string, folder: ParsedFile[]) => {
-  sendToIpc(window, ipcMessages.open, { folder, folderPath });
+  sendToIpc(window, ipcMessages.navigateTo, {path: '/folder', query: {path: folderPath}});
+  sendToIpc(window, ipcMessages.open, {folder, folderPath});
 };
 
 export const sendSave = (window: BrowserWindow, data: any = {}) => {
@@ -71,7 +70,7 @@ const sendToIpc = (window: BrowserWindow, message: string, data: any) => {
   const send = () => window.webContents.send(message, data);
 
   if (window.webContents.isLoading()) {
-    window.once('ready-to-show', send);
+    window.webContents.on('did-finish-load', send);
   } else {
     send();
   }
@@ -115,15 +114,14 @@ export const getAvailableWindow = (): BrowserWindow =>
 
 const getUrl = () => (
   isDev ?
-    'http://localhost:1234' :
+    'http://localhost:4200' :
     `file://${path.join(__dirname, '../view/index.html')}`
 );
-
 
 const registerEvents = (window: BrowserWindow) => {
   window.on('close', onClose(window));
   window.on('resize', _.debounce(onResize(window), 1000));
-  window.once('ready-to-show', onReadyToShow(window));
+  window.on('ready-to-show', onReadyToShow(window));
 };
 
 const onClose = (window: BrowserWindow) => async (e: Electron.Event) => {
@@ -138,7 +136,7 @@ const onClose = (window: BrowserWindow) => async (e: Electron.Event) => {
   const response = await showSaveDialog(window);
 
   if (response === SaveResponse.Save) {
-    sendSave(window, { close: true });
+    sendSave(window, {close: true});
   } else if (response === SaveResponse.DontSave) {
     window.destroy();
   }
