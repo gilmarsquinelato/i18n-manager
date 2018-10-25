@@ -46,10 +46,7 @@ export class ContentComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.settingsService.getSettings().subscribe((data) => {
-      this.settings = data;
-      console.log(data);
-    });
+    this.settingsService.getSettings().subscribe((data) => this.settings = data);
     this.updateStatus();
   }
 

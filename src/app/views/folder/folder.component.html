@@ -11,6 +11,7 @@
               (cancelAddItem)="addItemDone()"
               (addItem)="onAddItem($event)"
               [openedPath]="openedPath"
+              [folder]="folder"
     ></app-tree>
 
     <div class="add-item-overlay" *ngIf="isAddingItem" (click)="addItemDone()"></div>

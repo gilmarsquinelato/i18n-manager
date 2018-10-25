@@ -8,6 +8,7 @@ import {
   SimpleChanges, ViewChild
 } from '@angular/core';
 import * as _ from 'lodash';
+import { ParsedFile } from '@common/types';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class TreeComponent implements OnInit, OnChanges {
   @Input() level = 0;
   @Input() path: string[] = [];
   @Input() openedPath: string[] = [];
+  @Input() folder: ParsedFile[];
   @Output() openPath = new EventEmitter<string[]>(true);
   @Output() contextMenu = new EventEmitter<any>(true);
 
@@ -33,11 +35,13 @@ export class TreeComponent implements OnInit, OnChanges {
   @ViewChild('addItemInput') addItemInput: ElementRef;
 
   isCollapsed = false;
+  missingTranslations = 0;
 
   constructor() {
   }
 
   ngOnInit() {
+    this.updateMissingTranslationsCounter();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -47,6 +51,8 @@ export class TreeComponent implements OnInit, OnChanges {
       // Delay needed because of the delay to input appear
       setTimeout(() => this.addItemInput.nativeElement.focus(), 100);
     }
+
+    this.updateMissingTranslationsCounter();
   }
 
   get hasChildren() {
@@ -89,7 +95,7 @@ export class TreeComponent implements OnInit, OnChanges {
 
   onAddingItemNameChange(event: any) {
     this.addingItemName = event.target.value;
-    if (event.keyCode !== 13) {
+    if (event.key !== 'Enter') {
       return;
     }
 
@@ -119,5 +125,17 @@ export class TreeComponent implements OnInit, OnChanges {
 
   isOpenedPath() {
     return _.isEqual(this.path, this.openedPath);
+  }
+
+  private updateMissingTranslationsCounter() {
+    if (this.hasChildren || !this.folder) {
+      this.missingTranslations = 0;
+      return;
+    }
+
+    this.missingTranslations = this.folder
+      .map(it => _.get(it.data, this.path))
+      .filter(it => !it)
+      .length
   }
 }
