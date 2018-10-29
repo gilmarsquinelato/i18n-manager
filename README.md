@@ -39,3 +39,7 @@ Any type of contributions are welcome.
 ## Building
 
 ```yarn build```
+
+## Contributors
+
+logo designed by [@reallinfo](https://github.com/reallinfo)
