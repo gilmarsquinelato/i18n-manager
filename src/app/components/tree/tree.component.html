@@ -1,28 +1,42 @@
-<div class="tree-item-label {{tree}} {{isOpenedPath() ? 'selected' : ''}}"
-      *ngIf="label"
-      [style.paddingLeft.px]="level * 16"
-      (click)="toggleOrOpen()"
-      (mouseup)="onMouseUp($event)">
+<div class="tree-item-label {{tree}}"
+     [class.selected]="isOpenedPath()"
+     *ngIf="label"
+     [style.paddingLeft.px]="level * 16"
+     (click)="toggleOrOpen()"
+     (mouseup)="onMouseUp($event)">
 
   <div class="caret-icon">
-    <i *ngIf="hasChildren" class="fas {{isCollapsed ? 'fa-caret-right' : 'fa-caret-down'}}"></i>
+    <i *ngIf="hasChildren" class="fas" [class.fa-caret-right]="isCollapsed" [class.fa-caret-down]="!isCollapsed"></i>
   </div>
 
   <i *ngIf="!hasChildren" class="icon fas fa-file"></i>
-  <i *ngIf="hasChildren" class="icon fas {{isCollapsed ? 'fa-folder' : 'fa-folder-open'}}"></i>
+  <i *ngIf="hasChildren" class="icon fas" [class.fa-folder]="isCollapsed" [class.fa-folder-open]="!isCollapsed"></i>
 
-  <span class="flex-fill">{{label}}</span>
+  <span [class.hidden]="isRenamingItemPath()">{{label}}</span>
 
-  <span *ngIf="missingTranslations > 0" class="mr-2">
-    {{missingTranslations}}
-  </span>
+  <div class="renaming-item-input form-group"
+       [class.hidden]="!isRenamingItemPath()">
+    <input #renameItemInput
+           type="text"
+           class="form-control form-control-sm"
+           [class.is-invalid]="!isValidRenamingItemName"
+           [(ngModel)]="renamingItemName"
+           (keyup)="onRenamingItemNameChange($event)">
+    <div class="invalid-feedback">
+      Already have an item with this name.
+    </div>
+  </div>
+
+  <span *ngIf="missingTranslations > 0" class="badge badge-danger badge-pill ml-3">{{missingTranslations}}</span>
 </div>
 
-<div class="adding-item-input form-group {{isAddingItemPath() ? '' : 'hidden'}}"
+<div class="adding-item-input form-group"
+     [class.hidden]="!isAddingItemPath()"
      [style.paddingLeft.px]="level * 16 + 32">
   <input #addItemInput
          type="text"
-         class="form-control form-control-sm {{isValidAddingItemName ? '' : 'is-invalid'}}"
+         class="form-control form-control-sm"
+         [class.is-invalid]="!isValidAddingItemName"
          [(ngModel)]="addingItemName"
          (keyup)="onAddingItemNameChange($event)">
   <div class="invalid-feedback">
@@ -30,10 +44,11 @@
   </div>
 </div>
 
-<ul *ngIf="hasChildren" class="{{ isCollapsed ? 'hidden' : '' }}">
+<ul *ngIf="hasChildren" [class.hidden]="isCollapsed">
   <li *ngFor="let key of childrenKeys">
     <app-tree [label]="key"
               [tree]="tree[key]"
+              [parentTree]="tree"
               [level]="level + 1"
               [path]="path.concat(key)"
               [openedPath]="openedPath"
@@ -43,6 +58,10 @@
               [addingItemData]="addingItemData"
               (cancelAddItem)="onCancelAddItem()"
               (addItem)="onAddItem($event)"
+              [isRenamingItem]="isRenamingItem"
+              [renamingItemData]="renamingItemData"
+              (cancelRenameItem)="onCancelRenameItem()"
+              (renameItem)="onRenameItem($event)"
               [folder]="folder"
     ></app-tree>
   </li>

@@ -1,4 +1,4 @@
-# i18n Manager
+<p align="left"><img src="logo/horizontal.png" alt="i18n-manager" height="120px"></p>
 
 [![Build Status](https://travis-ci.com/gilmarsquinelato/i18n-manager.svg?branch=master)](https://travis-ci.com/gilmarsquinelato/i18n-manager)
 [![Greenkeeper badge](https://badges.greenkeeper.io/gilmarsquinelato/i18n-manager.svg)](https://greenkeeper.io/)
@@ -11,9 +11,7 @@ Any type of contributions are welcome.
 
 ## Features
 
-* Detect changed translations
-* Detect missing translations
-* Detect added translations
+* Detect changed, missing and added translations
 * Google Translate™ API Integration
 
 ## Current plugins and their supported extensions
@@ -37,3 +35,7 @@ Any type of contributions are welcome.
 ## Building
 
 ```yarn build```
+
+## Contributors
+
+logo designed by [@reallinfo](https://github.com/reallinfo)

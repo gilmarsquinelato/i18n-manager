@@ -19,7 +19,7 @@ li
   cursor pointer
   display flex
   flex 1
-  align-items baseline
+  align-items center
 
   &.selected
     background-color $lightBlack
@@ -40,8 +40,9 @@ li
 .caret-icon
   font-size $iconFontSize
   color white
-  width 8px
-  height 8px
+  width $iconFontSize
+  height $iconFontSize
+  line-height $iconFontSize
 
 
 .icon
@@ -59,7 +60,20 @@ li
 .hidden
   display none
 
-.adding-item-input
+.adding-item-input, .renaming-item-input
   z-index 30
-  padding 8px
   margin 0
+
+.adding-item-input
+  padding 8px
+
+.badge-danger
+  background-color $red
+  line-height 12px
+
+.invalid-feedback
+  position absolute
+  margin 0
+  padding 8px
+  background $red
+  color white

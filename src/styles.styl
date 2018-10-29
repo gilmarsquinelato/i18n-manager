@@ -39,3 +39,18 @@ h1, h2
 .container-fluid
   padding 0
   display flex
+
+
+.scroll
+  &::-webkit-scrollbar
+    width 8px
+
+  &::-webkit-scrollbar:horizontal
+    height 8px
+
+  &::-webkit-scrollbar-track, &::-webkit-scrollbar-corner
+    background transparent
+
+  &::-webkit-scrollbar-thumb
+    background $lightBlack
+    opacity .8

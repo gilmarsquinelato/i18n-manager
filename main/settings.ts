@@ -1,22 +1,22 @@
 import { app } from 'electron';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import * as path from 'path';
 import * as fs from 'fs';
 
 
-export type Settings = {
+export interface Settings {
   window: {
     width: number,
     height: number,
   },
   customSettings: {},
   recentFolders: string[],
-};
+}
 
 export const defaultSettings: Settings = {
   window: {
-    width: 800,
-    height: 600,
+    width: 1024,
+    height: 768,
   },
   customSettings: {},
   recentFolders: [],
