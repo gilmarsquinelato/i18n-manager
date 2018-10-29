@@ -74,7 +74,7 @@
     "@angular/platform-browser-dynamic": "^7.0.1",
     "@angular/router": "^7.0.1",
     "@fortawesome/fontawesome-free": "^5.4.1",
-    "@sentry/electron": "^0.12.1",
+    "@sentry/electron": "^0.13.0",
     "@types/electron-is-dev": "^0.3.0",
     "@types/jest": "^23.3.7",
     "@types/js-yaml": "^3.11.2",
