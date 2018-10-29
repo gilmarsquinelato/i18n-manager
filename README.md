@@ -1,3 +1,5 @@
+<p align="left"><img src="logo/horizontal.png" alt="i18n-manager" height="120px"></p>
+
 # i18n Manager
 
 [![Build Status](https://travis-ci.com/gilmarsquinelato/i18n-manager.svg?branch=master)](https://travis-ci.com/gilmarsquinelato/i18n-manager)
