@@ -1,4 +1,3 @@
-<p align="left"><img src="logo/horizontal.png" alt="i18n-manager" height="120px"></p>
 
 # i18n Manager
 
