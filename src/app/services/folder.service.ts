@@ -21,6 +21,9 @@ export class FolderService {
   isAddingItem = false;
   addingItemData: any;
 
+  isRenamingItem = false;
+  renamingItemData: any;
+
   isSaving = false;
 
   constructor(
@@ -30,6 +33,7 @@ export class FolderService {
     this.setSaveFolderListener();
     this.listenSaveComplete();
     this.listenAddTreeItem();
+    this.listenRenameTreeItem();
     this.setDeleteItemListener();
   }
 
@@ -87,9 +91,25 @@ export class FolderService {
       });
   }
 
+  private listenRenameTreeItem() {
+    this.ipcService.on(ipcMessages.renameTreeItem)
+      .pipe(
+        switchMap(({data}) => of(data))
+      )
+      .subscribe((data) => {
+        this.renamingItemData = data;
+        this.isRenamingItem = true;
+      });
+  }
+
   addItemDone() {
     this.isAddingItem = false;
     this.addingItemData = {};
+  }
+
+  renameItemDone() {
+    this.isRenamingItem = false;
+    this.renamingItemData = {};
   }
 
   private setDeleteItemListener() {

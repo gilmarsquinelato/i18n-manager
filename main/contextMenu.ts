@@ -55,6 +55,14 @@ export const getTreeMenuItems = (window: BrowserWindow, options: IContextMenuOpt
     menuTemplate.push(
       { type: 'separator' },
       {
+        label: 'Rename',
+        click() {
+          windowManager.sendRenameTreeItem(window, {
+            path: options.path,
+          });
+        },
+      },
+      {
         label: 'Delete',
         click() {
           dialog.showMessageBox(
