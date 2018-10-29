@@ -19,6 +19,7 @@ import { ParsedFile } from '@common/types';
 export class TreeComponent implements OnInit, OnChanges {
 
   @Input() tree: any;
+  @Input() parentTree: any;
   @Input() label = '';
   @Input() level = 0;
   @Input() path: string[] = [];
@@ -34,6 +35,13 @@ export class TreeComponent implements OnInit, OnChanges {
   addingItemName: string;
   @ViewChild('addItemInput') addItemInput: ElementRef;
 
+  @Input() isRenamingItem: boolean;
+  @Input() renamingItemData: any;
+  renamingItemName: string;
+  @ViewChild('renameItemInput') renameItemInput: ElementRef;
+  @Output() cancelRenameItem = new EventEmitter<void>(true);
+  @Output() renameItem = new EventEmitter<any>(true);
+
   isCollapsed = false;
   missingTranslations = 0;
 
@@ -42,6 +50,7 @@ export class TreeComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.updateMissingTranslationsCounter();
+    this.renamingItemName = this.label;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -52,6 +61,13 @@ export class TreeComponent implements OnInit, OnChanges {
       setTimeout(() => this.addItemInput.nativeElement.focus(), 100);
     }
 
+    if (changes.isRenamingItem && changes.isRenamingItem.currentValue && this.isRenamingItemPath()) {
+      this.isCollapsed = false;
+
+      // Delay needed because of the delay to input appear
+      setTimeout(() => this.renameItemInput.nativeElement.focus(), 100);
+    }
+
     this.updateMissingTranslationsCounter();
   }
 
@@ -60,7 +76,9 @@ export class TreeComponent implements OnInit, OnChanges {
   }
 
   get childrenKeys() {
-    return this.hasChildren ? Object.keys(this.tree) : null;
+    return this.hasChildren
+      ? Object.keys(this.tree).sort((a, b) => a.localeCompare(b))
+      : null;
   }
 
   toggleOrOpen() {
@@ -93,8 +111,16 @@ export class TreeComponent implements OnInit, OnChanges {
     return this.isAddingItem && _.isEqual(this.path, this.addingItemData.path);
   }
 
+  isRenamingItemPath() {
+    return this.isRenamingItem && _.isEqual(this.path, this.renamingItemData.path);
+  }
+
   onAddingItemNameChange(event: any) {
     this.addingItemName = event.target.value;
+    if (event.key === 'Escape') {
+      this.onCancelAddItem();
+    }
+
     if (event.key !== 'Enter') {
       return;
     }
@@ -111,8 +137,40 @@ export class TreeComponent implements OnInit, OnChanges {
     }
   }
 
+  onRenamingItemNameChange(event: any) {
+    this.renamingItemName = event.target.value;
+    if (event.key === 'Escape') {
+      this.onCancelRenameItem();
+    }
+
+    if (event.key !== 'Enter') {
+      return;
+    }
+
+    if (this.renamingItemName.trim().length === 0 || this.renamingItemName === this.label) {
+      this.onCancelRenameItem();
+    } else {
+      this.onRenameItem({
+        ...this.renamingItemData,
+        name: this.renamingItemName,
+      });
+
+      this.renamingItemName = '';
+    }
+  }
+
   get isValidAddingItemName() {
     return this.tree && Object.keys(this.tree).indexOf(this.addingItemName) === -1;
+  }
+
+  get isValidRenamingItemName() {
+    if (!this.isRenamingItemPath()) {
+      return false;
+    }
+    return this.parentTree &&
+      Object.keys(this.parentTree)
+        .filter(it => it !== this.label)
+        .indexOf(this.renamingItemName) === -1;
   }
 
   onCancelAddItem() {
@@ -121,6 +179,14 @@ export class TreeComponent implements OnInit, OnChanges {
 
   private onAddItem(data: any) {
     this.addItem.emit(data);
+  }
+
+  onCancelRenameItem() {
+    this.cancelRenameItem.emit();
+  }
+
+  private onRenameItem(data: any) {
+    this.renameItem.emit(data);
   }
 
   isOpenedPath() {
@@ -136,6 +202,6 @@ export class TreeComponent implements OnInit, OnChanges {
     this.missingTranslations = this.folder
       .map(it => _.get(it.data, this.path))
       .filter(it => !it)
-      .length
+      .length;
   }
 }

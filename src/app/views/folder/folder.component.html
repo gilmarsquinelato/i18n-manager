@@ -1,6 +1,7 @@
 <div (mousemove)="resize($event)"
      (mouseup)="stopResize()"
-     class="resizeable-panel {{isResizing ? 'resizing': ''}}">
+     class="resizeable-panel"
+     [class.resizing]="isResizing">
 
   <div class="tree scroll" [style.width.px]="treeWidth" (mouseup)="onTreeMouseUp($event)">
     <app-tree [tree]="tree"
@@ -10,11 +11,15 @@
               [addingItemData]="addingItemData"
               (cancelAddItem)="addItemDone()"
               (addItem)="onAddItem($event)"
+              [isRenamingItem]="isRenamingItem"
+              [renamingItemData]="renamingItemData"
+              (cancelRenameItem)="renameItemDone()"
+              (renameItem)="onRenameItem($event)"
               [openedPath]="openedPath"
               [folder]="folder"
     ></app-tree>
 
-    <div class="add-item-overlay" *ngIf="isAddingItem" (click)="addItemDone()"></div>
+    <div class="item-manipulate-overlay" *ngIf="isAddingItem || isRenamingItem" (click)="manipulateItemDone()"></div>
   </div>
 
   <div class="resizer" (mousedown)="startResize()"></div>

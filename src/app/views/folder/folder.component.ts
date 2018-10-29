@@ -117,6 +117,14 @@ export class FolderComponent implements OnInit {
     return this.folderService.addingItemData;
   }
 
+  get isRenamingItem() {
+    return this.folderService.isRenamingItem;
+  }
+
+  get renamingItemData() {
+    return this.folderService.renamingItemData;
+  }
+
   private buildTree = () => {
     const folderData = _.cloneDeep(this.folder.map(i => i.data));
     this.tree = _.merge.apply(null, folderData);
@@ -197,6 +205,15 @@ export class FolderComponent implements OnInit {
     this.folderService.addItemDone();
   }
 
+  renameItemDone() {
+    this.folderService.renameItemDone();
+  }
+
+  manipulateItemDone() {
+    this.addItemDone();
+    this.renameItemDone();
+  }
+
   onAddItem(data: any) {
     const path = data.path.concat(data.name);
 
@@ -222,5 +239,22 @@ export class FolderComponent implements OnInit {
     }
 
     this.onContentChange();
+  }
+
+  onRenameItem(data: any) {
+    const oldPath = data.path;
+    const newPath = data.path.slice(0, -1).concat(data.name);
+
+    for (const item of this.folder) {
+      _.set(item.data, newPath, _.get(item.data, oldPath));
+      _.unset(item.data, oldPath);
+    }
+
+    this.onContentChange();
+    this.renameItemDone();
+
+    if (this.isNode(newPath)) {
+      this.openedPath = newPath;
+    }
   }
 }

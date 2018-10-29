@@ -19,6 +19,8 @@ export const getOrCreateAvailableWindow = (): BrowserWindow => {
 export const createWindow = (): BrowserWindow => {
   const window = new BrowserWindow({
     ...settings.getSavedSettings().window,
+    minWidth: 1024,
+    minHeight: 768,
     show: false,
     icon: '../icons/icon.png',
   });
@@ -52,6 +54,10 @@ export const sendAddTreeItem = (window: BrowserWindow, data: any = {}) => {
 
 export const sendRemoveTreeItem = (window: BrowserWindow, data: any = {}) => {
   sendToIpc(window, ipcMessages.removeTreeItem, data);
+};
+
+export const sendRenameTreeItem = (window: BrowserWindow, data: any = {}) => {
+  sendToIpc(window, ipcMessages.renameTreeItem, data);
 };
 
 export const sendNavigateTo = (window: BrowserWindow, data: any = {}) => {
