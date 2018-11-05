@@ -31,6 +31,7 @@ Any type of contributions are welcome.
 ## Developing
 
 **This project is developed with Angular, so it will need the Angular CLI (```yarn global add @angular/cli```)**
+
 ```yarn start```
 
 ## Building
