@@ -5,7 +5,7 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges
+  SimpleChanges, ViewEncapsulation,
 } from '@angular/core';
 import { ParsedFile } from '@common/types';
 import * as _ from 'lodash';
@@ -24,7 +24,7 @@ interface ILanguageStatus {
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
-  styleUrls: ['./content.component.styl']
+  styleUrls: ['./content.component.scss'],
 })
 export class ContentComponent implements OnInit, OnChanges {
   @Input() path: string[] = [];
@@ -99,6 +99,7 @@ export class ContentComponent implements OnInit, OnChanges {
     for (const item of this.folder) {
       this.updateLanguageStatus(item.language);
     }
+    this.translateErrors = [];
   }
 
   private updateLanguageStatus(language: string) {
@@ -143,6 +144,7 @@ export class ContentComponent implements OnInit, OnChanges {
     this.isTranslating = true;
     this.translateErrors = [];
 
+    const errors = [];
     const text = this.getFromLanguage(this.folder, language);
 
     for (const folderItem of this.folder) {
@@ -162,22 +164,22 @@ export class ContentComponent implements OnInit, OnChanges {
         this.updateLanguageStatus(folderItem.language);
       } catch (e) {
         if (e.status === 400) {
-          this.translateErrors.push(
+          errors.push(
             `Google Translate can't translate from "${this.getLanguageLabel(language)}" to "${this.getLanguageLabel(folderItem.language)}"`
           );
         } else {
-          this.translateErrors.push(e.message);
+          errors.push(e.message);
         }
       }
     }
 
-    this.translateErrors = _.sortedUniq(this.translateErrors);
-
-    if (this.translateErrors.length > 0) {
-      alert(this.translateErrors.join('\n'));
-    }
+    this.translateErrors = _.sortedUniq(errors);
 
     this.change.emit();
     this.isTranslating = false;
+
+    if (this.translateErrors.length > 0) {
+      setTimeout(() => alert(this.translateErrors.join('\n')), 500);
+    }
   }
 }

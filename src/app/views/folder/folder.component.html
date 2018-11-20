@@ -1,9 +1,5 @@
-<div (mousemove)="resize($event)"
-     (mouseup)="stopResize()"
-     class="resizeable-panel"
-     [class.resizing]="isResizing">
-
-  <div class="tree scroll" [style.width.px]="treeWidth" (mouseup)="onTreeMouseUp($event)">
+<div class="container">
+  <div class="tree scroll" (mouseup)="onTreeMouseUp($event)">
     <app-tree [tree]="tree"
               (openPath)="onOpenPath($event)"
               (contextMenu)="onRightClickItemTree($event)"
@@ -22,8 +18,6 @@
     <div class="item-manipulate-overlay" *ngIf="isAddingItem || isRenamingItem" (click)="manipulateItemDone()"></div>
   </div>
 
-  <div class="resizer" (mousedown)="startResize()"></div>
-
   <div class="content scroll">
     <app-content *ngIf="openedPath && openedPath.length > 0"
                  [path]="openedPath"
@@ -37,7 +31,7 @@
 
 <div class="status-bar">
   <div class="status-bar-item" *ngIf="isSaving">
-    <i class="fas fa-spinner fa-spin icon"></i>
+    <mat-icon>save</mat-icon>
     Saving...
   </div>
 </div>

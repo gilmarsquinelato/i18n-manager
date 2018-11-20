@@ -1,0 +1,60 @@
+@import '~@angular/material/theming';
+@import "../../_palette";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 8px 0;
+}
+
+@mixin field-color($color) {
+  color: $color;
+
+  mat-label {
+    color: $color;
+  }
+
+  /deep/ .mat-form-field-underline, /deep/ .mat-form-field-ripple {
+    background-color: $color !important;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  padding: 0 8px;
+
+  mat-form-field {
+    flex: 1;
+  }
+
+  &.new {
+    @include field-color(mat-color($mat-green, A400));
+  }
+
+  &.changed {
+    @include field-color(mat-color($mat-yellow, A400));
+  }
+
+  &.missing {
+    @include field-color(mat-color($mat-red, A400));
+  }
+}
+
+.errors {
+  color: mat-color($mat-red, A400);
+  flex: 1;
+}
+
+cdk-virtual-scroll-viewport {
+  flex: 1;
+}
+
+.loading {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}

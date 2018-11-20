@@ -6,7 +6,7 @@ import { SettingsService } from '@app/services/settings.service';
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.styl']
+  styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
   settings = new FormGroup({

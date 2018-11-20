@@ -9,7 +9,7 @@ if (window.require) {
 @Component({
   selector: 'app-remote-link',
   templateUrl: './remote-link.component.html',
-  styleUrls: ['./remote-link.component.styl']
+  styleUrls: ['./remote-link.component.scss']
 })
 export class RemoteLinkComponent implements OnInit {
   @Input() href: string;

@@ -1,10 +1,23 @@
-<small *ngIf="!isTranslationEnabled">Google Translate™ API is not configured</small>
+<ng-container *ngIf="isTranslationEnabled">
+  <button mat-flat-button
+          isIconButton
+          color="primary"
+          class="translate-button"
+          [disabled]="isTranslating"
+          (click)="onClick($event)"
+          tabindex="-1">
+    <mat-icon>translate</mat-icon>
+    Translate empty fields
+  </button>
+</ng-container>
 
-<button
-  class="btn btn-outline-info translate-button"
-  [disabled]="!isTranslationEnabled || isTranslating"
-  (click)="onClick($event)"
->
-  <i class="fas fa-language"></i>
-  Translate empty fields
-</button>
+<ng-container *ngIf="!isTranslationEnabled">
+  <a mat-flat-button
+     isIconButton
+     color="warn"
+     tabindex="-1"
+     routerLink="/settings">
+    <mat-icon>settings</mat-icon>
+    Configure Google Translate™
+  </a>
+</ng-container>

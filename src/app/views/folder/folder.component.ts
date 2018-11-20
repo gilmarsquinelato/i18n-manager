@@ -9,7 +9,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-folder',
   templateUrl: './folder.component.html',
-  styleUrls: ['./folder.component.styl']
+  styleUrls: ['./folder.component.scss']
 })
 export class FolderComponent implements OnInit {
 
@@ -18,9 +18,6 @@ export class FolderComponent implements OnInit {
   originalFolder: ParsedFile[] = [];
   tree: any;
   openedPath: string[] = [];
-
-  isResizing = false;
-  treeWidth = 300;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -48,24 +45,6 @@ export class FolderComponent implements OnInit {
 
     this.folderService.deleteItemListener$
       .subscribe(({path}) => this.removePath(path));
-  }
-
-  startResize() {
-    this.isResizing = true;
-  }
-
-  stopResize() {
-    this.isResizing = false;
-  }
-
-  resize(event) {
-    if (this.isResizing) {
-      this.treeWidth = event.pageX - 8;
-
-      if (this.treeWidth > window.innerWidth - 500) {
-        this.treeWidth = window.innerWidth - 500;
-      }
-    }
   }
 
   onOpenPath = (event: string[]) => {

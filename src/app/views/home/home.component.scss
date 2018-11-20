@@ -1,0 +1,29 @@
+@import '~@angular/material/theming';
+@import "../../_palette";
+
+:host {
+  color: white;
+  padding: 8px;
+  flex: 1;
+  background-image: url("../../../assets/logo.png");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 500px 125px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  z-index: 10;
+}
+
+.folder-name {
+  color: mat-color($mat-blue, A400);
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.folder-path {
+  color: rgba(204, 204, 204, 0.7);
+}
