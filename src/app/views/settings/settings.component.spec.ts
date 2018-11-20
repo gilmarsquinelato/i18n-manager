@@ -7,6 +7,8 @@ import { Location } from '@angular/common';
 import { SettingsService } from '@app/services/settings.service';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
+import { MatFormFieldModule, MatInputModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 class SettingsServiceMock {
@@ -28,6 +30,9 @@ describe('SettingsComponent', () => {
     TestBed.configureTestingModule({
       declarations: [SettingsComponent, RemoteLinkComponent],
       imports: [
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
         FormsModule,
         ReactiveFormsModule
       ],

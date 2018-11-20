@@ -1,9 +1,9 @@
-<cdk-virtual-scroll-viewport [itemSize]="folder.length" class="scroll">
-  <div *cdkVirtualFor="let folderItem of folder"
+<div class="scroll">
+  <div *ngFor="let folderItem of folder"
        class="field {{getStatus(folderItem.language)}}">
     <mat-form-field>
-      <mat-label>{{getLanguageLabel(folderItem.language)}}</mat-label>
       <input matInput
+             [placeholder]="getLanguageLabel(folderItem.language)"
              value="{{getValue(folderItem.language)}}"
              (keyup)="updateValue($event, folderItem.language)"
              (mouseup)="onMouseUp($event)">
@@ -14,7 +14,7 @@
                           (translate)="translateEmptyFields(folderItem.language)"
     ></app-translate-button>
   </div>
-</cdk-virtual-scroll-viewport>
+</div>
 
 <div class="loading" *ngIf="isTranslating">
   <mat-spinner></mat-spinner>

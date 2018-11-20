@@ -1,7 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TreeComponent } from './tree.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  MatChipsModule,
+  MatFormFieldModule,
+  MatIconModule,
+  MatInputModule
+} from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('TreeComponent', () => {
   let component: TreeComponent;
@@ -10,7 +17,15 @@ describe('TreeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [TreeComponent],
-      imports: [FormsModule]
+      imports: [
+        MatFormFieldModule,
+        MatInputModule,
+        FormsModule,
+        MatIconModule,
+        MatChipsModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+      ],
     })
       .compileComponents();
   }));

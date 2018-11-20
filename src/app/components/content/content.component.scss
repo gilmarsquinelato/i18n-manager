@@ -11,8 +11,8 @@
 @mixin field-color($color) {
   color: $color;
 
-  mat-label {
-    color: $color;
+  /deep/ label {
+    color: $color !important;
   }
 
   /deep/ .mat-form-field-underline, /deep/ .mat-form-field-ripple {

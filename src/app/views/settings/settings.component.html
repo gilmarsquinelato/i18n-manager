@@ -6,7 +6,7 @@
   <form [formGroup]="settings" (ngSubmit)="saveSettings($event)">
     <mat-form-field>
       <mat-label>Google Translate™ API Key</mat-label>
-      <input matInput formControlName="googleTranslateApiKey">
+      <input matInput formControlName="googleTranslateApiKey" id="googleTranslateApiKey">
       <mat-hint>
         <app-remote-link [href]="translateApiKeyLink">
           {{translateApiKeyLink}}

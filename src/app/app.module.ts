@@ -43,7 +43,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatButtonModule,
     MatIconModule,
     MatChipsModule,
-    ScrollingModule,
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
   ],
