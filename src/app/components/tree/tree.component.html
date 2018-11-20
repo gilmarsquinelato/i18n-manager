@@ -1,48 +1,54 @@
 <div class="tree-item-label {{tree}}"
      [class.selected]="isOpenedPath()"
+     [class.hidden]="isRenamingItemPath()"
      *ngIf="label"
-     [style.paddingLeft.px]="level * 16"
+     [style.paddingLeft.px]="(level - 1) * 16"
      (click)="toggleOrOpen()"
      (mouseup)="onMouseUp($event)">
 
   <div class="caret-icon">
-    <i *ngIf="hasChildren" class="fas" [class.fa-caret-right]="isCollapsed" [class.fa-caret-down]="!isCollapsed"></i>
+    <mat-icon *ngIf="hasChildren">{{isCollapsed ? 'arrow_right' : 'arrow_drop_down'}}</mat-icon>
   </div>
 
-  <i *ngIf="!hasChildren" class="icon fas fa-file"></i>
-  <i *ngIf="hasChildren" class="icon fas" [class.fa-folder]="isCollapsed" [class.fa-folder-open]="!isCollapsed"></i>
+  <mat-icon *ngIf="!hasChildren" class="icon file-icon">insert_drive_file</mat-icon>
+  <mat-icon *ngIf="hasChildren" class="icon folder-icon">{{isCollapsed ? 'folder' : 'folder_open'}}</mat-icon>
 
-  <span [class.hidden]="isRenamingItemPath()">{{label}}</span>
+  <span [class.hidden]="isRenamingItemPath()" class="mat-body-1">{{label}}</span>
 
-  <div class="renaming-item-input form-group"
-       [class.hidden]="!isRenamingItemPath()">
-    <input #renameItemInput
-           type="text"
-           class="form-control form-control-sm"
-           [class.is-invalid]="!isValidRenamingItemName"
-           [(ngModel)]="renamingItemName"
-           (keyup)="onRenamingItemNameChange($event)">
-    <div class="invalid-feedback">
-      Already have an item with this name.
-    </div>
-  </div>
-
-  <span *ngIf="missingTranslations > 0" class="badge badge-danger badge-pill ml-3">{{missingTranslations}}</span>
+  <mat-chip-list>
+    <mat-chip *ngIf="missingTranslations > 0" disableRipple="true" selectable="false">{{missingTranslations}}</mat-chip>
+  </mat-chip-list>
 </div>
 
-<div class="adding-item-input form-group"
-     [class.hidden]="!isAddingItemPath()"
-     [style.paddingLeft.px]="level * 16 + 32">
-  <input #addItemInput
+<mat-form-field class="renaming-item-input"
+                [class.hidden]="!isRenamingItemPath()"
+                [style.paddingLeft.px]="level * 16 + 16">
+  <input matInput
+         #renameItemInput
          type="text"
-         class="form-control form-control-sm"
-         [class.is-invalid]="!isValidAddingItemName"
-         [(ngModel)]="addingItemName"
-         (keyup)="onAddingItemNameChange($event)">
-  <div class="invalid-feedback">
-    Already have an item with this name.
-  </div>
-</div>
+         placeholder="Name"
+         (keyup)="onRenamingItemNameChange($event)"
+         [formControl]="renamingItemNameControl"
+         [errorStateMatcher]="errorStateMatcher">
+  <mat-error *ngIf="renamingItemNameControl.hasError('exists')">
+    Already have an item with this name
+  </mat-error>
+</mat-form-field>
+
+<mat-form-field class="adding-item-input"
+                [class.hidden]="!isAddingItemPath()"
+                [style.paddingLeft.px]="level * 16 + 32">
+  <input matInput
+         #addItemInput
+         type="text"
+         placeholder="Name"
+         (keyup)="onAddingItemNameChange($event)"
+         [formControl]="addingItemNameControl"
+         [errorStateMatcher]="errorStateMatcher">
+  <mat-error *ngIf="addingItemNameControl.hasError('exists')">
+    Already have an item with this name
+  </mat-error>
+</mat-form-field>
 
 <ul *ngIf="hasChildren" [class.hidden]="isCollapsed">
   <li *ngFor="let key of childrenKeys">

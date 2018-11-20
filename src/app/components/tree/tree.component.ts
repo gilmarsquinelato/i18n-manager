@@ -9,12 +9,14 @@ import {
 } from '@angular/core';
 import * as _ from 'lodash';
 import { ParsedFile } from '@common/types';
+import { AbstractControl, FormControl } from '@angular/forms';
+import { GenericErrorStateMatcher } from '@app/lib/validation';
 
 
 @Component({
   selector: 'app-tree',
   templateUrl: './tree.component.html',
-  styleUrls: ['./tree.component.styl']
+  styleUrls: ['./tree.component.scss']
 })
 export class TreeComponent implements OnInit, OnChanges {
 
@@ -32,25 +34,30 @@ export class TreeComponent implements OnInit, OnChanges {
   @Input() addingItemData: any;
   @Output() cancelAddItem = new EventEmitter<void>(true);
   @Output() addItem = new EventEmitter<any>(true);
-  addingItemName: string;
   @ViewChild('addItemInput') addItemInput: ElementRef;
+  addingItemNameControl: FormControl;
+
 
   @Input() isRenamingItem: boolean;
   @Input() renamingItemData: any;
-  renamingItemName: string;
   @ViewChild('renameItemInput') renameItemInput: ElementRef;
   @Output() cancelRenameItem = new EventEmitter<void>(true);
   @Output() renameItem = new EventEmitter<any>(true);
+  renamingItemNameControl: FormControl;
+
 
   isCollapsed = false;
   missingTranslations = 0;
+  errorStateMatcher = new GenericErrorStateMatcher();
 
   constructor() {
+    this.addingItemNameControl = new FormControl('', this.validateAddingItemName);
+    this.renamingItemNameControl = new FormControl('', this.validateRenamingItemName);
   }
 
   ngOnInit() {
     this.updateMissingTranslationsCounter();
-    this.renamingItemName = this.label;
+    this.renamingItemNameControl.patchValue(this.label);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -115,62 +122,61 @@ export class TreeComponent implements OnInit, OnChanges {
     return this.isRenamingItem && _.isEqual(this.path, this.renamingItemData.path);
   }
 
+  validateAddingItemName = (control: AbstractControl) => {
+    return this.tree && Object.keys(this.tree).indexOf(control.value) !== -1
+      ? {exists: true}
+      : null;
+  };
+
+  validateRenamingItemName = (control: AbstractControl) => {
+    const containsNameInParentTree = (this.parentTree &&
+      Object.keys(this.parentTree)
+        .filter(it => it !== this.label)
+        .indexOf(control.value) !== -1);
+
+    return containsNameInParentTree
+      ? {exists: true}
+      : null;
+  };
+
   onAddingItemNameChange(event: any) {
-    this.addingItemName = event.target.value;
     if (event.key === 'Escape') {
       this.onCancelAddItem();
     }
 
-    if (event.key !== 'Enter') {
+    if (event.key !== 'Enter' || this.addingItemNameControl.invalid) {
       return;
     }
 
-    if (this.addingItemName.trim().length === 0) {
+    if (this.addingItemNameControl.value.trim().length === 0) {
       this.onCancelAddItem();
     } else {
       this.onAddItem({
         ...this.addingItemData,
-        name: this.addingItemName,
+        name: this.addingItemNameControl.value,
       });
 
-      this.addingItemName = '';
+      this.addingItemNameControl.patchValue('');
     }
   }
 
   onRenamingItemNameChange(event: any) {
-    this.renamingItemName = event.target.value;
     if (event.key === 'Escape') {
       this.onCancelRenameItem();
     }
 
-    if (event.key !== 'Enter') {
+    if (event.key !== 'Enter' || this.renamingItemNameControl.invalid) {
       return;
     }
 
-    if (this.renamingItemName.trim().length === 0 || this.renamingItemName === this.label) {
+    if (this.renamingItemNameControl.value.trim().length === 0 || this.renamingItemNameControl.value === this.label) {
       this.onCancelRenameItem();
     } else {
       this.onRenameItem({
         ...this.renamingItemData,
-        name: this.renamingItemName,
+        name: this.renamingItemNameControl.value,
       });
-
-      this.renamingItemName = '';
     }
-  }
-
-  get isValidAddingItemName() {
-    return this.tree && Object.keys(this.tree).indexOf(this.addingItemName) === -1;
-  }
-
-  get isValidRenamingItemName() {
-    if (!this.isRenamingItemPath()) {
-      return false;
-    }
-    return this.parentTree &&
-      Object.keys(this.parentTree)
-        .filter(it => it !== this.label)
-        .indexOf(this.renamingItemName) === -1;
   }
 
   onCancelAddItem() {

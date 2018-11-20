@@ -1,9 +1,11 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import 'jquery';
-import 'popper.js';
-import 'bootstrap';
+import 'hammerjs';
+
+// import 'jquery';
+// import 'popper.js';
+// import 'bootstrap';
 
 import { AppModule } from '@app/app.module';
 import { environment } from '@env/environment';

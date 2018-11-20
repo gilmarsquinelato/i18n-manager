@@ -1,0 +1,12 @@
+@import '~@angular/material/theming';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  margin-left: 8px;
+}
+
+small {
+  color: mat-color($mat-red, A400);
+  margin-left: 4px;
+}

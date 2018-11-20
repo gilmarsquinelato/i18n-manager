@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-translate-button',
   templateUrl: './translate-button.component.html',
-  styleUrls: ['./translate-button.component.styl']
+  styleUrls: ['./translate-button.component.scss']
 })
 export class TranslateButtonComponent implements OnInit {
   @Input() isTranslating: boolean;

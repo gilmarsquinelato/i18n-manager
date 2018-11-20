@@ -12,6 +12,14 @@ import { SettingsComponent } from './views/settings/settings.component';
 import { RemoteLinkComponent } from './components/remote-link/remote-link.component';
 import { TranslateButtonComponent } from './components/translate-button/translate-button.component';
 import { HttpClientModule } from '@angular/common/http';
+import {
+  MatButtonModule,
+  MatChipsModule, MatFormFieldModule,
+  MatIconModule,
+  MatInputModule, MatProgressSpinnerModule
+} from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -30,6 +38,13 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatChipsModule,
+    MatProgressSpinnerModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

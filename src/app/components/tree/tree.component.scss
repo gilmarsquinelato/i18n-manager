@@ -1,0 +1,85 @@
+@import '~@angular/material/theming';
+@import "../../_palette";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  display: flex;
+}
+
+.tree-item-label {
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  flex: 1;
+  align-items: center;
+
+  &.selected {
+    background-color: $lightBlack;
+  }
+
+  &:hover {
+    background-color: darken($lightBlack, 10%);
+  }
+
+  &.new {
+    color: mat-color($mat-green, A400);
+  }
+
+  &.changed {
+    color: mat-color($mat-yellow, A400);
+  }
+
+  &.missing {
+    color: mat-color($mat-red, A400);
+  }
+}
+
+.caret-icon {
+  width: 24px;
+}
+
+.icon {
+  margin: 0 4px;
+}
+
+.folder-icon {
+  color: mat-color($mat-yellow, 300) !important;
+}
+
+.file-icon {
+  color: mat-color($mat-blue, 300) !important;
+}
+
+.hidden {
+  display: none;
+}
+
+.adding-item-input, .renaming-item-input {
+  z-index: 30;
+  margin: 0;
+}
+
+.badge-danger {
+  background-color: mat-color($mat-red, A400);
+  line-height: 12px;
+}
+
+mat-chip {
+  font-size: 12px;
+  padding: 2px 8px;
+  min-height: auto;
+  height: auto;
+  margin-left: 8px !important;
+  background-color: mat-color($mat-red, A400) !important;
+}
