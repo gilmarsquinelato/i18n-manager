@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { SettingsService } from '@app/services/settings.service';
 import { HttpClient } from '@angular/common/http';
 import { switchMap } from 'rxjs/operators';
