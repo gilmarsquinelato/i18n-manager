@@ -28,8 +28,9 @@ Any type of contributions are welcome.
 
 ## Screenshots
 
-![](./picture1.jpg)
-![](./picture2.jpg)
+![](./screenshots/pic-1.jpg)
+![](./screenshots/pic-2.jpg)
+![](./screenshots/pic-3.jpg)
 
 ## Developing
 

@@ -1,6 +1,6 @@
 {
   "name": "i18n-manager",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "main": "build/main/index.js",
   "license": "MIT",
   "description": "The app that will help to manage your app translations",
@@ -30,8 +30,8 @@
     "test:watch:web": "ng test"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.10.6",
-    "@angular/cli": "~7.0.6",
+    "@angular-devkit/build-angular": "~0.11.0",
+    "@angular/cli": "~7.1.0",
     "@angular/compiler-cli": "^7.0.4",
     "@angular/language-service": "^7.0.4",
     "@sentry/cli": "^1.36.4",
@@ -54,7 +54,7 @@
     "karma-jasmine-html-reporter": "^1.4.0",
     "protractor": "~5.4.1",
     "rimraf": "^2.6.2",
-    "ts-jest": "23.10.4",
+    "ts-jest": "23.10.5",
     "ts-node": "~7.0.1",
     "tslint": "^5.11.0",
     "tslint-config-airbnb": "^5.11.1",
@@ -73,7 +73,7 @@
     "@angular/platform-browser": "^7.0.4",
     "@angular/platform-browser-dynamic": "^7.0.4",
     "@angular/router": "^7.0.4",
-    "@sentry/electron": "^0.13.0",
+    "@sentry/electron": "^0.14.0",
     "@types/electron-is-dev": "^0.3.0",
     "@types/jest": "^23.3.9",
     "@types/js-yaml": "^3.11.2",

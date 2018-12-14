@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { SettingsService } from '@app/services/settings.service';
 import { HttpClient } from '@angular/common/http';
 import { switchMap } from 'rxjs/operators';
@@ -22,12 +22,15 @@ export class TranslationService {
   }
 
   translate(language: string, text: string, target: string) {
+    language = language.split('-')[0];
+    target = target.split('-')[0];
     return this.http.post(
       `${this.baseUrl}?key=${this.settings.googleTranslateApiKey}`,
       {
         target,
         source: language,
         q: text,
+        format: 'text'
       })
       .pipe(
         switchMap(response => of(_.get(response, 'data.translations[0].translatedText', '')))
