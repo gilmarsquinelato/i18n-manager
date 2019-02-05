@@ -6,13 +6,6 @@
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/7zip-bin/-/7zip-bin-4.1.0.tgz#33eff662a5c39c0c2061170cc003c5120743fff0"
 
-"@angular-devkit/architect@0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/architect/-/architect-0.11.0.tgz#25b75f5d8ca00cedd414ede12db87364c6c5aa45"
-  dependencies:
-    "@angular-devkit/core" "7.1.0"
-    rxjs "6.3.3"
-
 "@angular-devkit/architect@0.12.0":
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/@angular-devkit/architect/-/architect-0.12.0.tgz#93dc6c8a97971bac745bff6ecc7e21d502a8a472"
@@ -94,30 +87,10 @@
     "@angular-devkit/core" "7.2.0"
     rxjs "6.3.3"
 
-"@angular-devkit/core@7.1.0":
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-7.1.0.tgz#5374736843acc2405937ad61c2c4818fad64b72d"
-  dependencies:
-    ajv "6.5.3"
-    chokidar "2.0.4"
-    fast-json-stable-stringify "2.0.0"
-    rxjs "6.3.3"
-    source-map "0.7.3"
-
 "@angular-devkit/core@7.2.0":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-7.2.0.tgz#c138be754f17908b773dba7c20fe6f40a080d10b"
   integrity sha512-0T9SJQ2f8qxGClonulQd4pMFfOrEv/it+doPgnalsM8UhQ3RRSrziFGEB97kpLTjH8fIPEgC/80YbtwOarfojg==
-  dependencies:
-    ajv "6.6.2"
-    chokidar "2.0.4"
-    fast-json-stable-stringify "2.0.0"
-    rxjs "6.3.3"
-    source-map "0.7.3"
-
-"@angular-devkit/schematics@7.1.0":
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-7.1.0.tgz#ef89aaf48d995f3129c2673f5c82a9f88d2f8b61"
   dependencies:
     ajv "6.6.2"
     chokidar "2.0.4"
@@ -484,9 +457,10 @@
   dependencies:
     "@types/jasmine" "*"
 
-"@types/jest@^23.3.9":
-  version "23.3.9"
-  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.9.tgz#c16b55186ee73ae65e001fbee69d392c51337ad1"
+"@types/jest@^24.0.0":
+  version "24.0.0"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-24.0.0.tgz#848492026c327b3548d92be0352a545c36a21e8a"
+  integrity sha512-kOafJnUTnMd7/OfEO/x3I47EHswNjn+dbz9qk3mtonr1RvKT+1FGVxnxAx08I9K8Tl7j9hpoJRE7OCf+t10fng==
 
 "@types/js-yaml@^3.11.2":
   version "3.11.2"
@@ -758,15 +732,6 @@ ajv-errors@^1.0.0:
 ajv-keywords@^3.1.0, ajv-keywords@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.2.0.tgz#e86b819c602cf8821ad637413698f1dec021847a"
-
-ajv@6.5.3:
-  version "6.5.3"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.5.3.tgz#71a569d189ecf4f4f321224fecb166f071dd90f9"
-  dependencies:
-    fast-deep-equal "^2.0.1"
-    fast-json-stable-stringify "^2.0.0"
-    json-schema-traverse "^0.4.1"
-    uri-js "^4.2.2"
 
 ajv@6.6.2:
   version "6.6.2"
@@ -8031,14 +7996,14 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@3.1.6, typescript@^3.1.6:
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.6.tgz#b6543a83cfc8c2befb3f4c8fba6896f5b0c9be68"
-
 typescript@3.2.2:
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.2.2.tgz#fe8101c46aa123f8353523ebdcf5730c2ae493e5"
   integrity sha512-VCj5UiSyHBjwfYacmDuc/NOk4QQixbE+Wn7MFJuS0nRuPQbof132Pw4u53dm264O8LPc2MVsc7RJNml5szurkg==
+
+typescript@^3.1.6:
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.1.6.tgz#b6543a83cfc8c2befb3f4c8fba6896f5b0c9be68"
 
 uglify-es@^3.3.4:
   version "3.3.9"
