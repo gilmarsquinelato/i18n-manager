@@ -1,6 +1,6 @@
 {
   "name": "i18n-manager",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "main": "build/main/index.js",
   "license": "MIT",
   "description": "The app that will help to manage your app translations",
@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.13.1",
-    "@angular/cli": "~7.2.0",
+    "@angular/cli": "~7.3.1",
     "@angular/compiler-cli": "^7.0.4",
     "@angular/language-service": "^7.0.4",
     "@sentry/cli": "^1.36.4",
