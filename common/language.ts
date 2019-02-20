@@ -7,9 +7,7 @@ const localesKeys = Object.keys(locales);
 export const getLocaleFromText = _.memoize((text: string): string => {
   const normalizedText = getNormalizedText(text);
 
-  const filteredLocales = localesKeys.filter(l =>
-    normalizedText.indexOf(l.toLowerCase()) !== -1,
-  );
+  const filteredLocales = localesKeys.filter(l => normalizedText === l.toLowerCase());
 
   // the best locale match is the key with most letters matched with given text
   return _.maxBy(filteredLocales, l => l.length);
