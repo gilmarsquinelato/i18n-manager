@@ -35,7 +35,7 @@ export const openFile = async (filePath: string): Promise<ParsedFile> => {
     const fileName = path.basename(filePath);
     const extension = path.extname(filePath);
     const fileNameWithoutExtension = fileName.replace(extension, '');
-    const language = getLocaleFromText(fileNameWithoutExtension) || fileNameWithoutExtension;
+    const language = getLocaleFromText(fileNameWithoutExtension);
 
     if (!language) {
       return null;
