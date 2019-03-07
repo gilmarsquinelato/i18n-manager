@@ -58,3 +58,19 @@ cdk-virtual-scroll-viewport {
   align-items: center;
   justify-content: center;
 }
+
+mat-chip {
+  font-size: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  justify-content: center;
+
+  margin-right: 8px;
+}
+
+.menu-label {
+  padding: 16px;
+  cursor: default;
+  user-select: none;
+}

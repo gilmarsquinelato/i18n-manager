@@ -21,14 +21,14 @@ export class TranslationService {
     this.settingsService.getSettings().subscribe((data) => this.settings = data);
   }
 
-  translate(language: string, text: string, target: string) {
-    language = language.split('-')[0];
+  translate(source: string, text: string, target: string) {
+    source = source.split('-')[0];
     target = target.split('-')[0];
     return this.http.post(
       `${this.baseUrl}?key=${this.settings.googleTranslateApiKey}`,
       {
         target,
-        source: language,
+        source,
         q: text,
         format: 'text'
       })
