@@ -21,6 +21,7 @@
 
 .content {
   display: flex;
+  flex-direction: column;
   flex: 1;
   overflow: auto;
   min-width: 512px;
@@ -51,4 +52,24 @@
   background-color: $darkBlack;
   opacity: 0.5;
   z-index: 20;
+}
+
+.toolbar {
+  background-color: $black;
+  padding: 8px 8px 16px;
+  display: flex;
+  align-items: baseline;
+  flex-direction: column;
+
+  strong {
+    margin: 0 8px;
+  }
+}
+
+mat-radio-button {
+  margin: 0 8px;
+}
+
+mat-checkbox {
+  margin: 0 8px;
 }

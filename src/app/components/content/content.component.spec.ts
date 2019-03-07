@@ -10,9 +10,10 @@ import { ParsedFile } from '@common/types';
 import { By } from '@angular/platform-browser';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import {
+  MatChipsModule,
   MatFormFieldModule,
   MatIconModule,
-  MatInputModule,
+  MatInputModule, MatMenuModule,
   MatProgressSpinnerModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -56,6 +57,8 @@ describe('ContentComponent', () => {
         MatProgressSpinnerModule,
         MatFormFieldModule,
         MatInputModule,
+        MatChipsModule,
+        MatMenuModule,
         HttpClientTestingModule,
         BrowserAnimationsModule,
       ],
@@ -120,6 +123,11 @@ describe('ContentComponent', () => {
     component.path = ['message'];
     component.folder = mockFolder;
     component.originalFolder = [{...mockFolder[0], data: {}}];
+    component.status = {
+      message: {
+        'en-us': {isChanged: false, isNew: true, isMissing: false},
+      }
+    };
 
     component.ngOnInit();
     fixture.detectChanges();
@@ -132,6 +140,11 @@ describe('ContentComponent', () => {
     component.path = ['message'];
     component.folder = mockFolder;
     component.originalFolder = [{...mockFolder[0], data: {message: 'originalValue'}}];
+    component.status = {
+      message: {
+        'en-us': {isChanged: true, isNew: false, isMissing: false},
+      }
+    };
 
     component.ngOnInit();
     fixture.detectChanges();
@@ -141,9 +154,14 @@ describe('ContentComponent', () => {
   }));
 
   it('should have status = missing', fakeAsync(() => {
-    component.path = ['missing'];
+    component.path = ['message'];
     component.folder = mockFolder;
     component.originalFolder = mockFolder;
+    component.status = {
+      message: {
+        'en-us': {isChanged: false, isNew: false, isMissing: true},
+      }
+    };
 
     component.ngOnInit();
     fixture.detectChanges();

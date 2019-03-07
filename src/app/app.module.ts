@@ -13,13 +13,18 @@ import { RemoteLinkComponent } from './components/remote-link/remote-link.compon
 import { TranslateButtonComponent } from './components/translate-button/translate-button.component';
 import { HttpClientModule } from '@angular/common/http';
 import {
-  MatButtonModule,
-  MatChipsModule, MatFormFieldModule,
+  MatButtonModule, MatCheckboxModule,
+  MatChipsModule,
+  MatFormFieldModule,
   MatIconModule,
-  MatInputModule, MatProgressSpinnerModule
+  MatInputModule, MatMenuModule,
+  MatOptionModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatSelectModule,
+  MatToolbarModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -43,6 +48,12 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatButtonModule,
     MatIconModule,
     MatChipsModule,
+    MatToolbarModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatRadioModule,
+    MatCheckboxModule,
+    MatMenuModule,
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
   ],
