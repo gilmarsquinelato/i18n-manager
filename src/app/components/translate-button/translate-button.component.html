@@ -1,19 +1,17 @@
 <ng-container *ngIf="isTranslationEnabled">
   <button mat-flat-button
-          isIconButton
           color="primary"
           class="translate-button"
           [disabled]="isTranslating"
           (click)="onClick($event)"
           tabindex="-1">
     <mat-icon>translate</mat-icon>
-    Translate empty fields
+    Translate
   </button>
 </ng-container>
 
 <ng-container *ngIf="!isTranslationEnabled">
   <a mat-flat-button
-     isIconButton
      color="warn"
      tabindex="-1"
      routerLink="/settings">
