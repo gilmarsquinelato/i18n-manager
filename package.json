@@ -37,7 +37,7 @@
     "@sentry/cli": "^1.36.4",
     "@types/jasmine": "~3.3.0",
     "@types/jasminewd2": "~2.0.6",
-    "@types/node": "~11.10.0",
+    "@types/node": "~11.11.0",
     "codacy-coverage": "^3.2.0",
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
