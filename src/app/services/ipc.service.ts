@@ -27,7 +27,7 @@ export class IpcService {
   ) {
   }
 
-  on = (message: string) => Observable.create((observer) => {
+  on = (message: string): Observable<any> => Observable.create((observer) => {
     const onMessage = (event: any, data: any) => {
       this.ngZone.run(() => {
         observer.next({event, data});

@@ -1,22 +1,25 @@
 import {
-  Component,
+  ChangeDetectionStrategy,
+  Component, ElementRef,
   EventEmitter,
-  Input,
+  Input, OnChanges,
   OnInit,
-  Output,
+  Output, SimpleChanges, ViewChild,
 } from '@angular/core';
 import { ParsedFile } from '@common/types';
 import * as _ from 'lodash';
 import { getLocaleLabel } from '@common/language';
 import { SettingsService } from '@app/services/settings.service';
+import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContentComponent implements OnInit {
+export class ContentComponent implements OnInit, OnChanges {
   @Input() path: string[] = [];
   @Input() folder: ParsedFile[] = [];
   @Input() originalFolder: ParsedFile[] = [];
@@ -26,6 +29,7 @@ export class ContentComponent implements OnInit {
   @Output() change = new EventEmitter<any>();
   @Output() contextMenu = new EventEmitter<any>();
 
+  @ViewChild('viewport') viewport: CdkVirtualScrollViewport;
 
   isTranslating: boolean;
   translateErrors: string[];
@@ -38,7 +42,12 @@ export class ContentComponent implements OnInit {
 
   ngOnInit() {
     this.settingsService.getSettings().subscribe((data) => this.settings = data);
-    this.change.emit();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.path) {
+      this.change.emit();
+    }
   }
 
   getValue = (language: string): string =>
@@ -95,5 +104,9 @@ export class ContentComponent implements OnInit {
 
   translateField(source: string, target: string) {
     this.translate.emit({source, target});
+  }
+
+  trackFn(_: number, item: any) {
+    return item.language;
   }
 }

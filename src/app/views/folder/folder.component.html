@@ -1,21 +1,34 @@
 <div class="container">
-  <div class="tree scroll" (mouseup)="onTreeMouseUp($event)">
-    <app-tree [tree]="tree"
-              (openPath)="onOpenPath($event)"
-              (contextMenu)="onRightClickItemTree($event)"
-              [isAddingItem]="isAddingItem"
-              [addingItemData]="addingItemData"
-              (cancelAddItem)="addItemDone()"
-              (addItem)="onAddItem($event)"
-              [isRenamingItem]="isRenamingItem"
-              [renamingItemData]="renamingItemData"
-              (cancelRenameItem)="renameItemDone()"
-              (renameItem)="onRenameItem($event)"
-              [openedPath]="openedPath"
-              [folder]="folder"
-    ></app-tree>
+  <div class="tree-container">
+    <div class="search-container" *ngIf="tree">
+      <mat-form-field>
+        <input matInput
+               type="search"
+               placeholder="Search"
+               [(ngModel)]="search"
+               (keyup)="onSearch()">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
 
-    <div class="item-manipulate-overlay" *ngIf="isAddingItem || isRenamingItem" (click)="manipulateItemDone()"></div>
+    <div class="tree scroll" (mouseup)="onTreeMouseUp($event)">
+      <app-tree [tree]="tree"
+                (openPath)="onOpenPath($event)"
+                (contextMenu)="onRightClickItemTree($event)"
+                [isAddingItem]="isAddingItem"
+                [addingItemData]="addingItemData"
+                (cancelAddItem)="addItemDone()"
+                (addItem)="onAddItem($event)"
+                [isRenamingItem]="isRenamingItem"
+                [renamingItemData]="renamingItemData"
+                (cancelRenameItem)="renameItemDone()"
+                (renameItem)="onRenameItem($event)"
+                [openedPath]="openedPath"
+                [folder]="folder"
+      ></app-tree>
+
+      <div class="item-manipulate-overlay" *ngIf="isAddingItem || isRenamingItem" (click)="manipulateItemDone()"></div>
+    </div>
   </div>
 
   <div class="content" *ngIf="openedPath && openedPath.length > 0">
@@ -54,8 +67,9 @@
       </div>
     </div>
 
-    <div class="scroll">
-      <app-content [path]="openedPath"
+    <div class="translations scroll">
+      <app-content *ngIf="openedPath && openedPath.length > 0"
+                   [path]="openedPath"
                    [folder]="folder"
                    [originalFolder]="originalFolder"
                    [status]="languageStatus"
@@ -69,6 +83,10 @@
 </div>
 
 <div class="status-bar">
+  <div class="status-bar-item" *ngIf="isLoading">
+    <mat-spinner [diameter]="15" [strokeWidth]="3"></mat-spinner>
+    Loading...
+  </div>
   <div class="status-bar-item" *ngIf="isSaving">
     <mat-icon>save</mat-icon>
     Saving...

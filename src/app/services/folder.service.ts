@@ -25,6 +25,7 @@ export class FolderService {
   renamingItemData: any;
 
   isSaving = false;
+  isLoading = false;
 
   constructor(
     private ipcService: IpcService,
@@ -41,9 +42,14 @@ export class FolderService {
     this.ipcService.send(ipcMessages.recentFolders);
   };
 
-  getOpenFolderMessages = () => this.ipcService.on(ipcMessages.open);
+  getOpenFolderMessages = () =>
+    this.ipcService.on(ipcMessages.open)
+      .pipe(
+        tap(_ => this.isLoading = false),
+      );
 
   openFolder = (path: string) => {
+    this.isLoading = true;
     this.ipcService.send(ipcMessages.open, path);
   };
 

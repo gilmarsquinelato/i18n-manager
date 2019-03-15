@@ -18,11 +18,12 @@ li {
 }
 
 .tree-item-label {
-  padding: 4px;
+  //padding: 4px;
   cursor: pointer;
   display: flex;
   flex: 1;
   align-items: center;
+  height: 32px;
 
   &.selected {
     background-color: $lightBlack;

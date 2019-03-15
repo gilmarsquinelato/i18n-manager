@@ -21,6 +21,7 @@ import {
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 describe('FolderComponent', () => {
   let component: FolderComponent;
@@ -58,6 +59,7 @@ describe('FolderComponent', () => {
         ReactiveFormsModule,
         MatProgressSpinnerModule,
         HttpClientTestingModule,
+        ScrollingModule,
       ],
       providers: [
         {

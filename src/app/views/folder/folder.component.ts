@@ -16,11 +16,13 @@ import { TranslationService } from '@app/services/translation.service';
   styleUrls: ['./folder.component.scss']
 })
 export class FolderComponent implements OnInit {
+  search: string;
 
   folderPath: string;
   folder: ParsedFile[] = [];
   originalFolder: ParsedFile[] = [];
   tree: any;
+  originalTree: any;
   openedPath: string[] = [];
   languageList: any[] = [];
 
@@ -72,6 +74,31 @@ export class FolderComponent implements OnInit {
     this.openedPath = event;
   };
 
+  // tslint:disable-next-line:member-ordering
+  onSearch = _.debounce(() => {
+    if (!this.search || this.search.length === 0) {
+      this.tree = this.originalTree;
+      return;
+    }
+
+    const tempTree = _.cloneDeep(this.originalTree);
+    this.walkOnTree([], (currentPath, hasChildren) => {
+      if (!hasChildren && _.last(currentPath).toLowerCase().indexOf(this.search.toLowerCase()) === -1) {
+        _.unset(tempTree, currentPath);
+      }
+
+      if (hasChildren) {
+        const parent = _.get(tempTree, currentPath);
+
+        if (Object.keys(parent).length === 0) {
+          _.unset(tempTree, currentPath);
+        }
+      }
+    });
+
+    this.tree = tempTree;
+  }, 300);
+
   onContentChange() {
     this.buildTree();
 
@@ -106,6 +133,10 @@ export class FolderComponent implements OnInit {
     });
   }
 
+  get isLoading() {
+    return this.folderService.isLoading;
+  }
+
   get isSaving() {
     return this.folderService.isSaving;
   }
@@ -128,23 +159,34 @@ export class FolderComponent implements OnInit {
 
   private buildTree = () => {
     const folderData = _.cloneDeep(this.folder.map(i => i.data));
-    this.tree = _.merge.apply(null, folderData);
+    this.originalTree = _.merge.apply(null, folderData);
+    this.tree = this.originalTree;
+    this.onSearch();
 
-    this.updateTreeItemStatus([]);
+    this.updateTreeItemStatus();
   };
 
-  private updateTreeItemStatus = (path: string[]) => {
+  private updateTreeItemStatus = (path: string[] = []) => {
+    this.walkOnTree(path, (currentPath, hasChildren) => {
+      if (!hasChildren) {
+        _.set(this.tree, currentPath, this.getTreeItemStatus(currentPath));
+      }
+    });
+  };
+
+  private walkOnTree = (path: string[] = [], fn: (path: string[], hasChildren: boolean) => void) => {
     const treeKeys = path.length === 0
-      ? Object.keys(this.tree)
-      : Object.keys(_.get(this.tree, path));
+      ? Object.keys(this.originalTree)
+      : Object.keys(_.get(this.originalTree, path));
 
     for (const key of treeKeys) {
       const currentPath = path.concat(key);
 
-      if (typeof _.get(this.tree, currentPath) === 'string') {
-        _.set(this.tree, currentPath, this.getTreeItemStatus(currentPath));
+      if (typeof _.get(this.originalTree, currentPath) === 'string') {
+        fn(currentPath, false);
       } else {
-        this.updateTreeItemStatus(currentPath);
+        this.walkOnTree(currentPath, fn);
+        fn(currentPath, true);
       }
     }
   };
@@ -293,6 +335,10 @@ export class FolderComponent implements OnInit {
 
   async startTranslation() {
     const source = this.selectedSourceLanguage.value;
+    if (!source || this.selectedTargetLanguages.value.length === 0) {
+      return;
+    }
+
     const targets = this.selectedTargetLanguages.value.filter(it => it !== 'all');
     const overwrite = this.overwriteEmptyFields.value;
 
