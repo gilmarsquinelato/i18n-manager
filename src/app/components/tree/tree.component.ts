@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component, ElementRef,
   EventEmitter,
   Input,
@@ -16,7 +17,8 @@ import { GenericErrorStateMatcher } from '@app/lib/validation';
 @Component({
   selector: 'app-tree',
   templateUrl: './tree.component.html',
-  styleUrls: ['./tree.component.scss']
+  styleUrls: ['./tree.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TreeComponent implements OnInit, OnChanges {
 
@@ -50,6 +52,8 @@ export class TreeComponent implements OnInit, OnChanges {
   missingTranslations = 0;
   errorStateMatcher = new GenericErrorStateMatcher();
 
+  childrenKeys: string[] = null;
+
   constructor() {
     this.addingItemNameControl = new FormControl('', this.validateAddingItemName);
     this.renamingItemNameControl = new FormControl('', this.validateRenamingItemName);
@@ -75,17 +79,16 @@ export class TreeComponent implements OnInit, OnChanges {
       setTimeout(() => this.renameItemInput.nativeElement.focus(), 100);
     }
 
+    if (changes.tree) {
+      this.childrenKeys = changes.tree.currentValue && typeof changes.tree.currentValue !== 'string'
+        ? Object.keys(changes.tree.currentValue).sort((a, b) => a.localeCompare(b))
+        : null;
+    }
     this.updateMissingTranslationsCounter();
   }
 
   get hasChildren() {
-    return this.tree && typeof (this.tree) !== 'string';
-  }
-
-  get childrenKeys() {
-    return this.hasChildren
-      ? Object.keys(this.tree).sort((a, b) => a.localeCompare(b))
-      : null;
+    return this.childrenKeys;
   }
 
   toggleOrOpen() {

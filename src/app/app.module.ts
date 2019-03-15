@@ -25,6 +25,7 @@ import {
   MatToolbarModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ContentComponent,
     SettingsComponent,
     RemoteLinkComponent,
-    TranslateButtonComponent
+    TranslateButtonComponent,
   ],
   imports: [
     FormsModule,
@@ -56,6 +57,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatMenuModule,
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
+    ScrollingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

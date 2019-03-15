@@ -50,7 +50,7 @@
   </mat-error>
 </mat-form-field>
 
-<ul *ngIf="hasChildren" [class.hidden]="isCollapsed">
+<ul *ngIf="childrenKeys" [class.hidden]="isCollapsed">
   <li *ngFor="let key of childrenKeys">
     <app-tree [label]="key"
               [tree]="tree[key]"

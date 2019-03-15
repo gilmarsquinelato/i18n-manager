@@ -1,6 +1,6 @@
 {
   "name": "i18n-manager",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "main": "build/main/index.js",
   "license": "MIT",
   "description": "The app that will help to manage your app translations",
@@ -41,8 +41,8 @@
     "codacy-coverage": "^3.2.0",
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
-    "electron": "^4.0.0",
-    "electron-builder": "^20.36.2",
+    "electron": "^4.1.0",
+    "electron-builder": "^20.39.0",
     "electron-download": "^4.1.1",
     "jasmine-core": "~3.3.0",
     "jasmine-spec-reporter": "~4.2.1",
