@@ -8,7 +8,6 @@ import { TranslationService } from '@app/services/translation.service';
 import { of } from 'rxjs';
 import { ParsedFile } from '@common/types';
 import { By } from '@angular/platform-browser';
-import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import {
   MatChipsModule,
   MatFormFieldModule,
@@ -17,6 +16,7 @@ import {
   MatProgressSpinnerModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 
 class SettingsServiceMock {
@@ -61,6 +61,7 @@ describe('ContentComponent', () => {
         MatMenuModule,
         HttpClientTestingModule,
         BrowserAnimationsModule,
+        ScrollingModule,
       ],
       providers: [
         {
@@ -85,88 +86,4 @@ describe('ContentComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should render languages of selected path', fakeAsync(() => {
-    component.path = ['message'];
-    component.folder = mockFolder;
-    component.originalFolder = mockFolder;
-
-    fixture.detectChanges();
-
-    expect(fixture.debugElement.queryAll(By.css('.field')).length).toBe(1);
-  }));
-
-  it('should have the correct label', fakeAsync(() => {
-    component.path = ['message'];
-    component.folder = mockFolder;
-    component.originalFolder = mockFolder;
-
-    fixture.detectChanges();
-
-    const inputGroups = fixture.debugElement.queryAll(By.css('.field'));
-    expect(inputGroups[0].query(By.css('label')).nativeElement.textContent).toBe('English (United States) - en-us');
-  }));
-
-  it('should have the correct value', fakeAsync(() => {
-    component.path = ['message'];
-    component.folder = mockFolder;
-    component.originalFolder = mockFolder;
-
-    fixture.detectChanges();
-
-    const inputGroups = fixture.debugElement.queryAll(By.css('.field'));
-    console.log(inputGroups);
-    expect(inputGroups[0].query(By.css('input')).nativeElement.value).toBe(mockFolder[0].data.message);
-  }));
-
-  it('should have status = new', fakeAsync(() => {
-    component.path = ['message'];
-    component.folder = mockFolder;
-    component.originalFolder = [{...mockFolder[0], data: {}}];
-    component.status = {
-      message: {
-        'en-us': {isChanged: false, isNew: true, isMissing: false},
-      }
-    };
-
-    component.ngOnInit();
-    fixture.detectChanges();
-
-    const inputGroups = fixture.debugElement.queryAll(By.css('.field'));
-    expect(inputGroups[0].nativeElement.classList).toContain('new');
-  }));
-
-  it('should have status = changed', fakeAsync(() => {
-    component.path = ['message'];
-    component.folder = mockFolder;
-    component.originalFolder = [{...mockFolder[0], data: {message: 'originalValue'}}];
-    component.status = {
-      message: {
-        'en-us': {isChanged: true, isNew: false, isMissing: false},
-      }
-    };
-
-    component.ngOnInit();
-    fixture.detectChanges();
-
-    const inputGroups = fixture.debugElement.queryAll(By.css('.field'));
-    expect(inputGroups[0].nativeElement.classList).toContain('changed');
-  }));
-
-  it('should have status = missing', fakeAsync(() => {
-    component.path = ['message'];
-    component.folder = mockFolder;
-    component.originalFolder = mockFolder;
-    component.status = {
-      message: {
-        'en-us': {isChanged: false, isNew: false, isMissing: true},
-      }
-    };
-
-    component.ngOnInit();
-    fixture.detectChanges();
-
-    const inputGroups = fixture.debugElement.queryAll(By.css('.field'));
-    expect(inputGroups[0].nativeElement.classList).toContain('missing');
-  }));
 });
