@@ -1,35 +1,92 @@
 <div class="container">
-  <div class="tree scroll" (mouseup)="onTreeMouseUp($event)">
-    <app-tree [tree]="tree"
-              (openPath)="onOpenPath($event)"
-              (contextMenu)="onRightClickItemTree($event)"
-              [isAddingItem]="isAddingItem"
-              [addingItemData]="addingItemData"
-              (cancelAddItem)="addItemDone()"
-              (addItem)="onAddItem($event)"
-              [isRenamingItem]="isRenamingItem"
-              [renamingItemData]="renamingItemData"
-              (cancelRenameItem)="renameItemDone()"
-              (renameItem)="onRenameItem($event)"
-              [openedPath]="openedPath"
-              [folder]="folder"
-    ></app-tree>
+  <div class="tree-container">
+    <div class="search-container" *ngIf="tree">
+      <mat-form-field>
+        <input matInput
+               type="search"
+               placeholder="Search"
+               [(ngModel)]="search"
+               (keyup)="onSearch()">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
 
-    <div class="item-manipulate-overlay" *ngIf="isAddingItem || isRenamingItem" (click)="manipulateItemDone()"></div>
+    <div class="tree scroll" (mouseup)="onTreeMouseUp($event)">
+      <app-tree [tree]="tree"
+                (openPath)="onOpenPath($event)"
+                (contextMenu)="onRightClickItemTree($event)"
+                [isAddingItem]="isAddingItem"
+                [addingItemData]="addingItemData"
+                (cancelAddItem)="addItemDone()"
+                (addItem)="onAddItem($event)"
+                [isRenamingItem]="isRenamingItem"
+                [renamingItemData]="renamingItemData"
+                (cancelRenameItem)="renameItemDone()"
+                (renameItem)="onRenameItem($event)"
+                [openedPath]="openedPath"
+                [folder]="folder"
+      ></app-tree>
+
+      <div class="item-manipulate-overlay" *ngIf="isAddingItem || isRenamingItem" (click)="manipulateItemDone()"></div>
+    </div>
   </div>
 
-  <div class="content scroll">
-    <app-content *ngIf="openedPath && openedPath.length > 0"
-                 [path]="openedPath"
-                 [folder]="folder"
-                 [originalFolder]="originalFolder"
-                 (change)="onContentChange()"
-                 (contextMenu)="onContentRightClick($event)"
-    ></app-content>
+  <div class="content" *ngIf="openedPath && openedPath.length > 0">
+    <div class="toolbar">
+      <div>
+        <strong>Translate</strong>
+
+        <mat-form-field>
+          <mat-select placeholder="Target Language" multiple [formControl]="selectedTargetLanguages">
+            <mat-option (click)="toggleAllLanguages()" value="all">All languages</mat-option>
+            <mat-option *ngFor="let language of languageList"
+                        [value]="language.language">{{language.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <strong>from</strong>
+
+        <mat-form-field>
+          <mat-select placeholder="Source Language" [formControl]="selectedSourceLanguage">
+            <mat-option *ngFor="let language of languageList"
+                        [value]="language.language">{{language.label}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-radio-group [formControl]="keyTranslationMode">
+          <mat-radio-button color="primary" value="this">This Key</mat-radio-button>
+          <mat-radio-button color="primary" value="all">All Keys</mat-radio-button>
+        </mat-radio-group>
+
+        <mat-checkbox color="primary" [formControl]="overwriteEmptyFields">Overwrite not empty fields</mat-checkbox>
+
+        <app-translate-button [isTranslationEnabled]="isTranslationEnabled"
+                              [isTranslating]="isTranslating"
+                              (translate)="startTranslation()"></app-translate-button>
+      </div>
+    </div>
+
+    <div class="translations scroll">
+      <app-content *ngIf="openedPath && openedPath.length > 0"
+                   [path]="openedPath"
+                   [folder]="folder"
+                   [originalFolder]="originalFolder"
+                   [status]="languageStatus"
+                   [languageList]="languageList"
+                   (translate)="onTranslate($event)"
+                   (change)="onContentChange()"
+                   (contextMenu)="onContentRightClick($event)"
+      ></app-content>
+    </div>
   </div>
 </div>
 
 <div class="status-bar">
+  <div class="status-bar-item" *ngIf="isLoading">
+    <mat-spinner [diameter]="15" [strokeWidth]="3"></mat-spinner>
+    Loading...
+  </div>
   <div class="status-bar-item" *ngIf="isSaving">
     <mat-icon>save</mat-icon>
     Saving...

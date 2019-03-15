@@ -8,12 +8,20 @@ import { TranslateButtonComponent } from '@app/components/translate-button/trans
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import {
+  MatCheckboxModule,
   MatChipsModule,
   MatFormFieldModule,
   MatIconModule,
-  MatInputModule, MatProgressSpinnerModule
+  MatInputModule,
+  MatMenuModule,
+  MatOptionModule,
+  MatProgressSpinnerModule,
+  MatRadioModule,
+  MatSelectModule
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 describe('FolderComponent', () => {
   let component: FolderComponent;
@@ -42,9 +50,16 @@ describe('FolderComponent', () => {
         FormsModule,
         MatIconModule,
         MatChipsModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatRadioModule,
+        MatCheckboxModule,
+        MatMenuModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
         MatProgressSpinnerModule,
+        HttpClientTestingModule,
+        ScrollingModule,
       ],
       providers: [
         {

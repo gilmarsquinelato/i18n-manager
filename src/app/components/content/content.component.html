@@ -1,6 +1,8 @@
-<div class="scroll">
-  <div *ngFor="let folderItem of folder"
+<cdk-virtual-scroll-viewport itemSize="68" class="viewport scroll" #viewport>
+  <div *cdkVirtualFor="let folderItem of folder; index as i; trackBy: trackFn"
        class="field {{getStatus(folderItem.language)}}">
+    <mat-chip color="primary" selected disableRipple>{{i}}</mat-chip>
+
     <mat-form-field>
       <input matInput
              [placeholder]="getLanguageLabel(folderItem.language)"
@@ -9,12 +11,21 @@
              (mouseup)="onMouseUp($event)">
     </mat-form-field>
 
-    <app-translate-button [isTranslationEnabled]="isTranslationEnabled"
-                          [isTranslating]="isTranslating"
-                          (translate)="translateEmptyFields(folderItem.language)"
-    ></app-translate-button>
+    <mat-menu #languagesMenu="matMenu">
+      <span class="menu-label" (click)="$event.stopImmediatePropagation()">Translate this field from:</span>
+      <button mat-menu-item *ngFor="let language of languageList"
+              (click)="translateField(language.language, folderItem.language)">{{language.label}}</button>
+    </mat-menu>
+
+    <button mat-icon-button
+            color="primary"
+            tabindex="-1"
+            [matMenuTriggerFor]="languagesMenu"
+            [disabled]="!isTranslationEnabled || isTranslating">
+      <mat-icon>more_vert</mat-icon>
+    </button>
   </div>
-</div>
+</cdk-virtual-scroll-viewport>
 
 <div class="loading" *ngIf="isTranslating">
   <mat-spinner></mat-spinner>

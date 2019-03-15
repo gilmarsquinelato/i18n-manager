@@ -12,17 +12,24 @@
   flex: 1;
 }
 
-.tree {
-  min-width: 300px;
-  background-color: $black;
-  overflow: auto;
-  position: relative;
+
+.tree-container {
+  display: flex;
+  flex-direction: column;
+
+  .tree {
+    flex: 1;
+    min-width: 300px;
+    background-color: $black;
+    overflow: auto;
+    position: relative;
+  }
 }
 
 .content {
   display: flex;
+  flex-direction: column;
   flex: 1;
-  overflow: auto;
   min-width: 512px;
 }
 
@@ -51,4 +58,38 @@
   background-color: $darkBlack;
   opacity: 0.5;
   z-index: 20;
+}
+
+.toolbar {
+  position: fixed;
+  background-color: $black;
+  padding: 8px 8px 16px;
+  width: 100%;
+  z-index: 100;
+
+  strong {
+    margin: 0 8px;
+  }
+}
+
+.translations {
+  margin-top: 125px;
+  overflow: auto;
+  flex: 1;
+}
+
+mat-radio-button {
+  margin: 0 8px;
+}
+
+mat-checkbox {
+  margin: 0 8px;
+}
+
+.search-container {
+  padding: 8px;
+
+  mat-form-field {
+    width: 100%;
+  }
 }
