@@ -26,10 +26,16 @@ Any type of contributions are welcome.
 
 **If you want to test the features, you can open the testData folder!**
 
+## Projects using i18n Manager
+
+* [Phoenix - Burst Coin Wallet UI](https://github.com/burst-apps-team/phoenix)
+
 ## Screenshots
 
 ![](./screenshots/pic-1.jpg)
+
 ![](./screenshots/pic-2.jpg)
+
 ![](./screenshots/pic-3.jpg)
 
 ## Developing

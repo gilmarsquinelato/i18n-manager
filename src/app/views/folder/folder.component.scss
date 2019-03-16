@@ -1,4 +1,6 @@
 @import "../../_palette";
+@import "../../../styles";
+@import '~@angular/material/theming';
 
 :host {
   display: flex;
@@ -20,17 +22,23 @@
   .tree {
     flex: 1;
     min-width: 300px;
-    background-color: $black;
     overflow: auto;
     position: relative;
   }
 }
 
-.content {
+.content-container {
   display: flex;
-  flex-direction: column;
   flex: 1;
-  min-width: 512px;
+  @include _mat-theme-elevation(6, $app-theme);
+  z-index: 100;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 512px;
+  }
 }
 
 .status-bar {
@@ -38,6 +46,8 @@
   height: 24px;
   font-size: 14px;
   padding: 0 8px;
+  z-index: 200;
+  background-color: $background-color;
 
   .status-bar-item {
     display: flex;
@@ -62,10 +72,12 @@
 
 .toolbar {
   position: fixed;
-  background-color: $black;
   padding: 8px 8px 16px;
   width: 100%;
   z-index: 100;
+  background-color: $background-color;
+  border-bottom: 2px solid mat-color($mat-blue, 500);
+  @include _mat-theme-elevation(6, $app-theme);
 
   strong {
     margin: 0 8px;
@@ -74,7 +86,7 @@
 
 .translations {
   margin-top: 125px;
-  overflow: auto;
+  overflow: hidden;
   flex: 1;
 }
 
@@ -88,6 +100,8 @@ mat-checkbox {
 
 .search-container {
   padding: 8px;
+  border-bottom: 2px solid mat-color($mat-blue, 500);
+  @include _mat-theme-elevation(6, $app-theme);
 
   mat-form-field {
     width: 100%;
