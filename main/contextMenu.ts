@@ -27,29 +27,27 @@ export const getTreeMenuItems = (window: BrowserWindow, options: IContextMenuOpt
     return menuTemplate;
   }
 
-  if (!options.isNode) {
-    menuTemplate.push(
-      { type: 'separator' },
-      {
-        label: 'Add Item',
-        click() {
-          windowManager.sendAddTreeItem(window, {
-            path: options.path,
-            isNode: true,
-          });
-        },
+  menuTemplate.push(
+    { type: 'separator' },
+    {
+      label: 'Add Item',
+      click() {
+        windowManager.sendAddTreeItem(window, {
+          path: options.isNode ? options.path.slice(0, -1) : options.path,
+          isNode: true,
+        });
       },
-      {
-        label: 'Add Folder',
-        click() {
-          windowManager.sendAddTreeItem(window, {
-            path: options.path,
-            isNode: false,
-          });
-        },
+    },
+    {
+      label: 'Add Folder',
+      click() {
+        windowManager.sendAddTreeItem(window, {
+          path: options.isNode ? options.path.slice(0, -1) : options.path,
+          isNode: false,
+        });
       },
-    );
-  }
+    },
+  );
 
   if (options.path.length > 0) {
     menuTemplate.push(

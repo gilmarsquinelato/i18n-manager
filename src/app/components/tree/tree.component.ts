@@ -54,7 +54,9 @@ export class TreeComponent implements OnInit, OnChanges {
 
   childrenKeys: string[] = null;
 
-  constructor() {
+  constructor(
+    private ref: ElementRef
+  ) {
     this.addingItemNameControl = new FormControl('', this.validateAddingItemName);
     this.renamingItemNameControl = new FormControl('', this.validateRenamingItemName);
   }
@@ -84,6 +86,11 @@ export class TreeComponent implements OnInit, OnChanges {
         ? Object.keys(changes.tree.currentValue).sort((a, b) => a.localeCompare(b))
         : null;
     }
+
+    if (changes.openedPath && _.isEqual(this.openedPath, this.path) && changes.openedPath.previousValue === undefined) {
+      this.ref.nativeElement.scrollIntoView();
+    }
+
     this.updateMissingTranslationsCounter();
   }
 

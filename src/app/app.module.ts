@@ -20,7 +20,7 @@ import {
   MatInputModule, MatMenuModule,
   MatOptionModule,
   MatProgressSpinnerModule,
-  MatRadioModule,
+  MatRadioModule, MatRippleModule,
   MatSelectModule,
   MatToolbarModule
 } from '@angular/material';
@@ -58,6 +58,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatProgressSpinnerModule,
     BrowserAnimationsModule,
     ScrollingModule,
+    MatRippleModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

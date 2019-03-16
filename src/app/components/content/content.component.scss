@@ -48,10 +48,6 @@
 
 /deep/ cdk-virtual-scroll-viewport {
   flex: 1;
-
-  //.cdk-virtual-scroll-content-wrapper {
-  //  height: 100%;
-  //}
 }
 
 .loading {
@@ -82,4 +78,5 @@ mat-chip {
 .viewport {
   height: 100%;
   width: 100%;
+  margin-top: 8px;
 }
