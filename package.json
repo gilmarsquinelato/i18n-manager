@@ -78,7 +78,7 @@
     "@types/jest": "^24.0.0",
     "@types/js-yaml": "^3.11.2",
     "@types/lodash": "^4.14.118",
-    "@types/semver": "^5.5.0",
+    "@types/semver": "^6.0.0",
     "codelyzer": "^4.5.0",
     "core-js": "^2.5.7",
     "electron-is-dev": "^1.0.1",
