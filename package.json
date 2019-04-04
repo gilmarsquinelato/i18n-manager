@@ -44,7 +44,7 @@
     "electron": "^4.1.0",
     "electron-builder": "^20.39.0",
     "electron-download": "^4.1.1",
-    "jasmine-core": "~3.3.0",
+    "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
     "jest": "^23.6.0",
     "karma": "~4.0.1",
