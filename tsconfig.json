@@ -20,7 +20,10 @@
     "paths": {
       "@app/*": ["./src/app/*"],
       "@env/*": ["./src/environments/*"],
-      "@common/*": ["./common/*"]
+      "@common/*": ["./common/*"],
+      "core-js/es7/reflect": [
+        "node_modules/core-js/proposals/reflect-metadata"
+      ]
     }
   }
 }

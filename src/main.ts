@@ -9,7 +9,7 @@ import 'hammerjs';
 
 import { AppModule } from '@app/app.module';
 import { environment } from '@env/environment';
-import { sentryConfig } from '@common/sentry';
+// import { sentryConfig } from '@common/sentry';
 
 
 const disablePinchGesture = () => {
@@ -18,15 +18,15 @@ const disablePinchGesture = () => {
   webFrame.setLayoutZoomLevelLimits(0, 0);
 };
 
-const enableSentry = () => {
-  if (window.require) {
-    window.require('@sentry/electron').init(sentryConfig);
-  }
-};
+// const enableSentry = () => {
+//   if (window.require) {
+//     window.require('@sentry/electron').init(sentryConfig);
+//   }
+// };
 
 if (environment.production) {
   enableProdMode();
-  enableSentry();
+  // enableSentry();
   disablePinchGesture();
 }
 

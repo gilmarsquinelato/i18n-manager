@@ -1,17 +1,17 @@
-import { init } from '@sentry/electron';
+// import { init } from '@sentry/electron';
 import { app } from 'electron';
 
-import { sentryConfig } from '../common/sentry';
+// import { sentryConfig } from '../common/sentry';
 import loadMenu from './menu';
 import { hasWindows, createWindow } from './windowManager';
 import registerAppEvents from './events';
 
-const isDev = require('electron-is-dev');
+// const isDev = require('electron-is-dev');
 
 
-if (!isDev) {
-  init(sentryConfig);
-}
+// if (!isDev) {
+//   init(sentryConfig);
+// }
 
 registerAppEvents();
 
