@@ -38,6 +38,8 @@ export class FolderComponent implements OnInit {
   translationErrors: any[];
   languageStatus: {[k: string]: any} = {};
 
+  isContentChanged = false;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private location: Location,
@@ -102,7 +104,8 @@ export class FolderComponent implements OnInit {
   onContentChange() {
     this.buildTree();
 
-    this.folderService.dataChanged(!_.isEqual(this.folder, this.originalFolder));
+    this.isContentChanged = !_.isEqual(this.folder, this.originalFolder);
+    this.folderService.dataChanged(this.isContentChanged);
     this.buildLanguageStatus();
   }
 
@@ -329,11 +332,11 @@ export class FolderComponent implements OnInit {
     }
   }
 
-  get isTranslationEnabled() {
-    return this.settings.googleTranslateApiKey;
+  get isTranslationEnabled(): boolean {
+    return !!this.settings.googleTranslateApiKey;
   }
 
-  async startTranslation() {
+  startTranslation = async () => {
     const source = this.selectedSourceLanguage.value;
     if (!source || this.selectedTargetLanguages.value.length === 0) {
       return;
@@ -348,8 +351,10 @@ export class FolderComponent implements OnInit {
       await this.translateAll(source, targets, overwrite);
     }
 
-    this.buildTree();
-  }
+    this.folder = [...this.folder];
+
+    this.onContentChange();
+  };
 
   async onTranslate(event: any) {
     await this.translateOpenedPath(event.source, [event.target], true);
