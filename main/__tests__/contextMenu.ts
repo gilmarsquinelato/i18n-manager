@@ -54,8 +54,8 @@ describe('contextMenu', () => {
 
     const addItemMenu = menuItems.find(i => i.label === 'Add Item');
     const addFolderMenu = menuItems.find(i => i.label === 'Add Folder');
-    expect(addItemMenu).toBeUndefined();
-    expect(addFolderMenu).toBeUndefined();
+    expect(addItemMenu).toBeDefined();
+    expect(addFolderMenu).toBeDefined();
 
     expect(menuItems.find(i => i.label === 'Delete')).toBeDefined();
   });
