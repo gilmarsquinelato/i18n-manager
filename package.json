@@ -47,7 +47,7 @@
     "codelyzer": "^5.0.0",
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
-    "electron": "^4.1.4",
+    "electron": "^5.0.0",
     "electron-builder": "^20.39.0",
     "electron-download": "^4.1.1",
     "jasmine-core": "~3.4.0",
