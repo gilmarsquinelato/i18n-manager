@@ -126,28 +126,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    "globals": {
-      "ts-jest": {
-        "tsConfigFile": "tsconfig.json"
-      }
-    },
-    "projects": [
-      "./main",
-      "./common"
-    ],
-    "coverageDirectory": "coverage-jest",
-    "collectCoverageFrom": [
-      "**/*.{ts,tsx,js}",
-      "!**/src/*",
-      "!**/*.d.ts",
-      "!**/assets/*",
-      "!**/jest.setup.ts",
-      "!**/jest.config.js"
-    ]
   }
 }
