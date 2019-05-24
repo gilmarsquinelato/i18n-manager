@@ -1,6 +1,5 @@
 import { Menu } from 'electron';
 
-import { IMenuOptions } from '../../common/types';
 import appMenu from './app';
 import fileMenu from './file';
 import editMenu from './edit';

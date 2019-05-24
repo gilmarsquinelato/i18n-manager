@@ -1,8 +1,8 @@
 import { BrowserWindow, Menu, dialog } from 'electron';
 import isDev from 'electron-is-dev';
 
-import { IContextMenuOptions } from '../common/types';
 import * as windowManager from './windowManager';
+import { IContextMenuOptions } from '../typings';
 
 
 const webContents = (win: any) => win.webContents || win.getWebContents();
@@ -55,9 +55,7 @@ export const getTreeMenuItems = (window: BrowserWindow, options: IContextMenuOpt
       {
         label: 'Rename',
         click() {
-          windowManager.sendRenameTreeItem(window, {
-            path: options.path,
-          });
+          windowManager.sendRenameTreeItem(window, options.path);
         },
       },
       {
@@ -72,9 +70,7 @@ export const getTreeMenuItems = (window: BrowserWindow, options: IContextMenuOpt
             },
             (response: number) => {
               if (response === 0) {
-                windowManager.sendRemoveTreeItem(window, {
-                  path: options.path,
-                });
+                windowManager.sendRemoveTreeItem(window, options.path);
               }
             },
           );

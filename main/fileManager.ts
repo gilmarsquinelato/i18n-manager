@@ -5,7 +5,7 @@ import * as util from 'util';
 import { createWindow, getAvailableWindow, sendOpen, sendRecentFolders, } from './windowManager';
 import { getParsedFiles, saveFile } from './pluginManager';
 import * as settings from './settings';
-import { ParsedFile } from '../common/types';
+import { ParsedFile } from '../typings';
 
 
 export const openFolder = async (folderPath: string) => {

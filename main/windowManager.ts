@@ -3,7 +3,7 @@ import * as path from 'path';
 import * as _ from 'lodash';
 
 import * as ipcMessages from '../common/ipcMessages';
-import { ParsedFile } from '../common/types';
+import { ParsedFile } from '../typings';
 import * as settings from './settings';
 import { getFormattedFoldersPaths } from './pathUtils';
 
@@ -23,6 +23,9 @@ export const createWindow = (): BrowserWindow => {
     minHeight: 768,
     show: false,
     icon: '../icons/icon.png',
+    webPreferences: {
+      nodeIntegration: true,
+    },
   });
 
   window.loadURL(getUrl());
@@ -37,7 +40,7 @@ export const getCurrentWindow = (): BrowserWindow => BrowserWindow.getFocusedWin
 
 export const sendOpen = async (window: BrowserWindow, folderPath: string, folder: ParsedFile[]) => {
   sendToIpc(window, ipcMessages.navigateTo, {path: '/folder', query: {path: folderPath}});
-  sendToIpc(window, ipcMessages.open, {folder, folderPath});
+  sendToIpc(window, ipcMessages.open, folder);
 };
 
 export const sendSave = (window: BrowserWindow, data: any = {}) => {
@@ -52,12 +55,12 @@ export const sendAddTreeItem = (window: BrowserWindow, data: any = {}) => {
   sendToIpc(window, ipcMessages.addTreeItem, data);
 };
 
-export const sendRemoveTreeItem = (window: BrowserWindow, data: any = {}) => {
-  sendToIpc(window, ipcMessages.removeTreeItem, data);
+export const sendRemoveTreeItem = (window: BrowserWindow, path: string[] = []) => {
+  sendToIpc(window, ipcMessages.removeTreeItem, path);
 };
 
-export const sendRenameTreeItem = (window: BrowserWindow, data: any = {}) => {
-  sendToIpc(window, ipcMessages.renameTreeItem, data);
+export const sendRenameTreeItem = (window: BrowserWindow, path: string[] = []) => {
+  sendToIpc(window, ipcMessages.renameTreeItem, path);
 };
 
 export const sendNavigateTo = (window: BrowserWindow, data: any = {}) => {
@@ -120,7 +123,7 @@ export const getAvailableWindow = (): BrowserWindow =>
 
 const getUrl = () => (
   isDev ?
-    'http://localhost:4200' :
+    'http://localhost:3000' :
     `file://${path.join(__dirname, '../view/index.html')}`
 );
 

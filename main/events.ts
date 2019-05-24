@@ -1,12 +1,12 @@
 import * as path from 'path';
 import { app, ipcMain, BrowserWindow, dialog } from 'electron';
 
-import { ParsedFile, IContextMenuOptions } from '../common/types';
 import * as ipcMessages from '../common/ipcMessages';
 import * as fileManager from './fileManager';
 import * as windowManager from './windowManager';
 import { showContextMenu } from './contextMenu';
 import * as settings from './settings';
+import { IContextMenuOptions, ParsedFile } from '../typings';
 
 
 const onSave = async (e: any, data: any) => {

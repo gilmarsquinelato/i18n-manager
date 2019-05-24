@@ -1,0 +1,13 @@
+.Container {
+  padding: 8px;
+}
+
+.RecentFolder {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  > a {
+    margin-right: 8px;
+  }
+}

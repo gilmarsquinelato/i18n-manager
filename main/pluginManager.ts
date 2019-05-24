@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as util from 'util';
 import * as fs from 'fs';
-import { ParsedFile } from '../common/types';
+import { ParsedFile } from '../typings';
 import { getLocaleFromText } from '../common/language';
 import getPlugins, { Plugin } from './plugins';
 
