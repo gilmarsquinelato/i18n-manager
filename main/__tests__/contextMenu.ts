@@ -58,6 +58,7 @@ describe('contextMenu', () => {
     expect(addFolderMenu).toBeDefined();
 
     expect(menuItems.find(i => i.label === 'Delete')).toBeDefined();
+    expect(menuItems.find(i => i.label === 'Copy Key')).toBeDefined();
   });
 
   it('calling add item menu item', () => {

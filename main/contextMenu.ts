@@ -1,4 +1,4 @@
-import { BrowserWindow, Menu, dialog } from 'electron';
+import { BrowserWindow, Menu, dialog, clipboard } from 'electron';
 import isDev from 'electron-is-dev';
 
 import { IContextMenuOptions } from '../common/types';
@@ -78,6 +78,18 @@ export const getTreeMenuItems = (window: BrowserWindow, options: IContextMenuOpt
               }
             },
           );
+        },
+      },
+    );
+  }
+
+  if (options.path.length > 0 && options.isNode) {
+    menuTemplate.push(
+      { type: 'separator' },
+      {
+        label: 'Copy Key',
+        click() {
+          clipboard.writeText(options.path.join('.'));
         },
       },
     );
