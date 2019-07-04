@@ -3,5 +3,12 @@
   "home": {
     "welcome": "Welcome {{name}}!"
   },
-  "missing": "missing"
+  "missing": "missing",
+  "some": {
+    "deep": {
+      "tree": {
+        "here": ""
+      }
+    }
+  }
 }

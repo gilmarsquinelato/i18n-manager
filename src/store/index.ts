@@ -1,2 +1,4 @@
-export { default as store } from './store';
+import createStore from './store';
 export * from './hooks';
+
+export default createStore;

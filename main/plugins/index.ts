@@ -1,18 +1,18 @@
 import * as jsonPlugin from './json';
 import * as yamlPlugin from './yaml';
 
-export interface Plugin {
+export interface IPlugin {
   fileExtensions: string[];
-  parse: (content: string) => Promise<any>;
-  serialize: (data: any) => Promise<string>;
+  parse: (content: string) => Promise<any | undefined>;
+  serialize: (data: any) => Promise<string | undefined>;
 }
 
-let plugins: Plugin[] = [
+let plugins: IPlugin[] = [
   jsonPlugin,
   yamlPlugin,
 ];
 
-export const loadPlugins = (additionalPlugins: Plugin[]) => {
+export const loadPlugins = (additionalPlugins: IPlugin[]) => {
   plugins = [
     ...additionalPlugins,
     ...plugins,

@@ -1,11 +1,8 @@
 import { app } from 'electron';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as util from 'util';
-import { createWindow, getAvailableWindow, sendOpen, sendRecentFolders, } from './windowManager';
-import { getParsedFiles, saveFile } from './pluginManager';
-import * as settings from './settings';
-import { ParsedFile } from '../typings';
+import { ILoadedFolder, ILoadedGroup, ILoadedPath, IParsedFile } from '../typings';
+import { loadFolder, saveFile } from './pluginManager';
+import * as settings from './Settings';
+import { createWindow, getAvailableWindow, sendOpen, sendRecentFolders } from './windowManager';
 
 
 export const openFolder = async (folderPath: string) => {
@@ -16,32 +13,30 @@ export const openFolder = async (folderPath: string) => {
 export const openFolderInWindow = async (folderPath: string, window: Electron.BrowserWindow) => {
   app.addRecentDocument(folderPath);
   const recent = settings.addRecentFolder(folderPath);
-
   const parsedFiles = await parseFolder(folderPath);
 
-  sendOpen(window, folderPath, parsedFiles);
+  await sendOpen(window, folderPath, parsedFiles);
   sendRecentFolders(window, recent);
 };
 
-export const parseFolder = async (folderPath: string): Promise<ParsedFile[]> => {
-  const files = await getFiles(folderPath);
-  return await getParsedFiles(files);
+export const parseFolder = async (folderPath: string): Promise<ILoadedPath[]> => {
+  return await loadFolder(folderPath);
 };
 
-export const getFiles = async (folderPath: string): Promise<string[]> => {
-  const files = await util.promisify(fs.readdir)(folderPath);
-  return files
-    .filter(f => !f.startsWith('.'))
-    .map(f => path.join(folderPath, f))
-    .filter(f => fs.lstatSync(f).isFile());
-};
-
-export const saveFolder = async (data: ParsedFile[]) => {
-  const saveAll = data.map(item => saveFile(item));
+export const saveFolder = async (data: ILoadedPath[]) => {
+  const parsedFiles = getParsedFiles(data);
+  const saveAll = parsedFiles.map(it => saveFile(it));
   const result = await Promise.all(saveAll);
 
   return result
-    .map((success: boolean, index: number) => ({success, file: data[index].fileName}))
+    .map((success: boolean, index: number) => ({success, file: parsedFiles[index].fileName}))
     .filter((i: any) => !i.success)
     .map((i: any) => i.file);
 };
+
+const getParsedFiles = (data: ILoadedPath[]): IParsedFile[] =>
+  data
+    .map(it => it.type === 'file'
+      ? (it as ILoadedGroup).items
+      : getParsedFiles((it as ILoadedFolder).items))
+    .flat();

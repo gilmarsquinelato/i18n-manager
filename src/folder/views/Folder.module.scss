@@ -1,22 +1,6 @@
 .Container {
 }
 
-.TreeContainer {
-  overflow: auto;
-
-  &::-webkit-scrollbar {
-    width: 5px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, .1);
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #666;
-  }
-}
-
 .Sidebar {
   > div {
     display: flex;
@@ -34,6 +18,7 @@
   top: 0;
   width: 100%;
   height: 100%;
+  z-index: 10;
 
   background: rgba(0, 0, 0, .65);
 }
@@ -42,4 +27,34 @@
   border-right: 0;
   border-left: 0;
   border-top: 0;
+}
+
+.Footer {
+  padding: 4px;
+  height: 28px;
+  flex: initial;
+  display: flex;
+  flex-direction: row;
+
+  &:before {
+    content: ' ';
+    height: 28px;
+  }
+
+  :global {
+    .ant-spin {
+      display: flex;
+      flex-direction: row;
+
+      .ant-spin-text {
+        margin-left: 8px;
+      }
+    }
+  }
+}
+
+.ContentContainer {
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
 }

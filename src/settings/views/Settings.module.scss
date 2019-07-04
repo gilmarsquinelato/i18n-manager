@@ -1,0 +1,23 @@
+.Card {
+  margin: 8px;
+
+  :global {
+    .ant-card-head, .ant-card-head-title {
+      padding: 0;
+    }
+  }
+}
+
+.FormActions {
+  margin: 8px 0;
+
+  :global {
+    .ant-form-item-control {
+      text-align: center;
+    }
+
+    .ant-form-item-children > * {
+      margin: 0 8px;
+    }
+  }
+}

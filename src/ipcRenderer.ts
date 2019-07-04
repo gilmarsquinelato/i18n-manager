@@ -1,11 +1,11 @@
-let ipcRenderer = {
-  on: (message: string, cb: Function) => {},
-  removeListener: (message: string, cb: Function) => {},
-  send: (message: string, data: any) => {},
-};
+import { ipcRenderer } from 'electron';
+import { eventChannel } from 'redux-saga';
 
-if ((window as any).require) {
-  ipcRenderer = (window as any).require('electron').ipcRenderer;
-}
+
+export const ipcChannel = <Data>(messageChannel: string) => eventChannel(emitter => {
+  const cb = (event: any, data: Data) => emitter(data);
+  ipcRenderer.on(messageChannel, cb);
+  return () => ipcRenderer.removeListener(messageChannel, cb);
+});
 
 export default ipcRenderer;

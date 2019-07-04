@@ -1,39 +1,42 @@
-import * as path from 'path';
-import { app, ipcMain, BrowserWindow, dialog } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 
 import * as ipcMessages from '../common/ipcMessages';
-import * as fileManager from './fileManager';
-import * as windowManager from './windowManager';
+import { IContextMenuOptions, IParsedFile } from '../typings';
 import { showContextMenu } from './contextMenu';
-import * as settings from './settings';
-import { IContextMenuOptions, ParsedFile } from '../typings';
+import * as fileManager from './fileManager';
+import * as settings from './Settings';
+import * as windowManager from './windowManager';
 
 
 const onSave = async (e: any, data: any) => {
   const window = BrowserWindow.fromWebContents(e.sender);
   const closeWindow = data.data.close;
+  const closeDirectory = data.data.closeDirectory;
   const folder = data.payload;
 
-  if (!(folder as ParsedFile[])[0]) {
+  if ((folder as IParsedFile[]).length === 0) {
     windowManager.sendSaveComplete(window, []);
     return;
   }
 
 
   const result = await fileManager.saveFolder(folder);
-  const folderPath = path.dirname((folder as ParsedFile[])[0].filePath);
-  await fileManager.openFolderInWindow(folderPath, window);
-
-  window.setDocumentEdited(false);
-  windowManager.sendSaveComplete(window, result);
 
   if (result.length > 0) {
     dialog.showErrorBox('Failed to save the following files', result.join('\n'));
     return;
   }
 
+  window.setDocumentEdited(false);
+  windowManager.sendRefreshFolder(window, folder);
+  windowManager.sendSaveComplete(window, result);
+
   if (closeWindow) {
     window.close();
+  }
+
+  if (closeDirectory) {
+    windowManager.sendClose(window);
   }
 };
 
@@ -76,13 +79,13 @@ const onRecentFolders = (e: any) => {
 
 
 const registerAppEvents = () => {
-  ipcMain.on(ipcMessages.open as any, onOpen);
-  ipcMain.on(ipcMessages.save as any, onSave);
-  ipcMain.on(ipcMessages.dataChanged as any, onDataChanged);
-  ipcMain.on(ipcMessages.showContextMenu as any, onShowContextMenu);
-  ipcMain.on(ipcMessages.saveSettings as any, onSaveSettings);
-  ipcMain.on(ipcMessages.settings as any, onGetSettings);
-  ipcMain.on(ipcMessages.recentFolders as any, onRecentFolders);
+  ipcMain.on(ipcMessages.open, onOpen);
+  ipcMain.on(ipcMessages.save, onSave);
+  ipcMain.on(ipcMessages.dataChanged, onDataChanged);
+  ipcMain.on(ipcMessages.showContextMenu, onShowContextMenu);
+  ipcMain.on(ipcMessages.saveSettings, onSaveSettings);
+  ipcMain.on(ipcMessages.settings, onGetSettings);
+  ipcMain.on(ipcMessages.recentFolders, onRecentFolders);
 
   app.on('open-file', onOpenFile);
   app.on('will-finish-launching', () => {

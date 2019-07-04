@@ -1,5 +1,6 @@
 {
-  "extends": "tslint:recommended",
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-config-airbnb"],
   "rulesDirectory": [
   ],
   "rules": {
@@ -7,6 +8,15 @@
     "quotemark": [true, "single", "jsx-double"],
     "no-consecutive-blank-lines": [true, 2],
     "arrow-parens": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "no-var-requires": false,
+    "interface-over-type-literal": false,
+    "no-console": false,
+    "variable-name": false,
+    "import-name": false,
+    "object-curly-spacing": false,
+    "align": false,
+    "ter-arrow-parens": false,
+    "no-increment-decrement": false
   }
 }
