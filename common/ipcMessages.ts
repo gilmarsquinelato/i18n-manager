@@ -10,3 +10,5 @@ export const navigateTo = 'navigateTo';
 export const settings = 'settings';
 export const saveSettings = 'saveSettings';
 export const recentFolders = 'recentFolders';
+export const closeFolder = 'closeFolder';
+export const refreshFolder = 'refreshFolder';

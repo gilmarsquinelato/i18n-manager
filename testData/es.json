@@ -3,5 +3,10 @@
   "home": {
     "welcome": "Bienvenido {{name}}!"
   },
-  "missing": ""
+  "missing": "",
+  "some": {
+    "deep": {
+      "tree": {}
+    }
+  }
 }

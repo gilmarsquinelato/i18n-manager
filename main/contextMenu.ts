@@ -1,7 +1,7 @@
-import { BrowserWindow, Menu, dialog } from 'electron';
+import { BrowserWindow, dialog, Menu } from 'electron';
 import isDev from 'electron-is-dev';
 
-import { IContextMenuOptions } from '../common/types';
+import { IContextMenuOptions } from '../typings';
 import * as windowManager from './windowManager';
 
 
@@ -21,67 +21,63 @@ export const showContextMenu = (window: BrowserWindow, options: IContextMenuOpti
 };
 
 export const getTreeMenuItems = (window: BrowserWindow, options: IContextMenuOptions): any[] => {
-  const menuTemplate: any[] = [];
-
   if (!options.isFromTree) {
-    return menuTemplate;
+    return [];
   }
 
-  menuTemplate.push(
-    { type: 'separator' },
-    {
-      label: 'Add Item',
-      click() {
-        windowManager.sendAddTreeItem(window, {
-          path: options.isNode ? options.path.slice(0, -1) : options.path,
-          isNode: true,
-        });
-      },
-    },
-    {
-      label: 'Add Folder',
-      click() {
-        windowManager.sendAddTreeItem(window, {
-          path: options.isNode ? options.path.slice(0, -1) : options.path,
-          isNode: false,
-        });
-      },
-    },
-  );
+  const menuTemplate: any[] = [];
 
-  if (options.path.length > 0) {
+  if (options.isNode) {
     menuTemplate.push(
-      { type: 'separator' },
+      {type: 'separator'},
       {
-        label: 'Rename',
+        label: 'Add Item',
         click() {
-          windowManager.sendRenameTreeItem(window, {
-            path: options.path,
+          windowManager.sendAddTreeItem(window, {
+            itemId: options.itemId,
+            isNode: false,
           });
         },
       },
       {
-        label: 'Delete',
+        label: 'Add Node',
         click() {
-          dialog.showMessageBox(
-            window,
-            {
-              type: 'question',
-              buttons: ['Delete', 'Cancel'],
-              message: `Are you sure to delete the item ${options.path.join('/')}?`,
-            },
-            (response: number) => {
-              if (response === 0) {
-                windowManager.sendRemoveTreeItem(window, {
-                  path: options.path,
-                });
-              }
-            },
-          );
+          windowManager.sendAddTreeItem(window, {
+            itemId: options.itemId,
+            isNode: true,
+          });
         },
       },
     );
   }
+
+  menuTemplate.push(
+    {type: 'separator'},
+    {
+      label: 'Rename',
+      click() {
+        windowManager.sendRenameTreeItem(window, options.itemId);
+      },
+    },
+    {
+      label: 'Delete',
+      click() {
+        dialog.showMessageBox(
+          window,
+          {
+            type: 'question',
+            buttons: ['Delete', 'Cancel'],
+            message: `Are you sure to delete this item?`,
+          },
+          (response: number) => {
+            if (response === 0) {
+              windowManager.sendRemoveTreeItem(window, options.itemId);
+            }
+          },
+        );
+      },
+    },
+  );
 
   return menuTemplate;
 };
@@ -112,7 +108,7 @@ export const getDefaultMenuItems = (window: BrowserWindow, options: IContextMenu
 
   if (isDev) {
     menuTemplate.push(
-      { type: 'separator' },
+      {type: 'separator'},
       {
         label: 'Inspect Element',
         click() {

@@ -1,7 +1,7 @@
 import { app } from 'electron';
 import { onPreferencesClick } from './shared';
 
-let appMenu: Electron.MenuItemConstructorOptions = null;
+let appMenu: Electron.MenuItemConstructorOptions = {};
 
 if (process.platform === 'darwin') {
   appMenu = {

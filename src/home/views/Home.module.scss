@@ -1,0 +1,22 @@
+.Container {
+  padding: 8px;
+}
+
+.RecentFolder {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  > a {
+    margin-right: 8px;
+  }
+}
+
+.CardList {
+  margin: 16px 22px !important;
+}
+
+.Title {
+  font-size: 32px;
+  margin: 16px 32px;
+}

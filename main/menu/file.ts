@@ -1,6 +1,12 @@
 import { dialog } from 'electron';
 import { openFolder } from '../fileManager';
-import { createWindow, getCurrentWindow, sendSave } from '../windowManager';
+import {
+  createWindow,
+  getCurrentWindow, SaveResponse,
+  sendClose,
+  sendSave,
+  showSaveDialog,
+} from '../windowManager';
 import { onPreferencesClick } from './shared';
 
 
@@ -15,8 +21,31 @@ const openDirectory = () => {
   }
 };
 
+const closeDirectory = async () => {
+  const currentWindow = getCurrentWindow();
+  if (!currentWindow) {
+    return;
+  }
+
+  if (!currentWindow.isDocumentEdited()) {
+    sendClose(currentWindow);
+    return;
+  }
+
+  const response = await showSaveDialog(currentWindow);
+
+  if (response === SaveResponse.Save) {
+    sendSave(currentWindow, {closeDirectory: true});
+  } else if (response === SaveResponse.DontSave) {
+    sendClose(currentWindow);
+  }
+};
+
 const saveDirectory = () => {
-  sendSave(getCurrentWindow());
+  const currentWindow = getCurrentWindow();
+  if (currentWindow) {
+    sendSave(currentWindow);
+  }
 };
 
 
@@ -34,6 +63,11 @@ export default (): Electron.MenuItemConstructorOptions => {
         label: 'Open Folder',
         click: openDirectory,
         accelerator: 'CommandOrControl+O',
+      },
+      {
+        label: 'Close Folder',
+        click: closeDirectory,
+        accelerator: 'CommandOrControl+W',
       },
       { type: 'separator' },
       {

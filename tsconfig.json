@@ -1,29 +1,36 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./build/view",
-    "sourceMap": true,
-    "declaration": false,
-    "module": "es2015",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "target": "es5",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "lib": [
-      "es2017",
-      "dom"
+      "dom",
+      "dom.iterable",
+      "esnext"
     ],
+    "incremental": true,
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "preserve",
+    "typeRoots": [
+      "./node_modules/@types",
+      "./typings"
+    ],
+    "baseUrl": "./",
     "paths": {
-      "@app/*": ["./src/app/*"],
-      "@env/*": ["./src/environments/*"],
       "@common/*": ["./common/*"],
-      "core-js/es7/reflect": [
-        "node_modules/core-js/proposals/reflect-metadata"
-      ]
+      "@src/*": ["./src/*"],
+      "@typings/*": ["./typings/*"]
     }
-  }
+  },
+  "exclude": [
+    "node_modules"
+  ]
 }

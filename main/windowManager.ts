@@ -1,13 +1,12 @@
 import { BrowserWindow, dialog } from 'electron';
-import * as path from 'path';
+import electronIsDev = require('electron-is-dev');
 import * as _ from 'lodash';
 
 import * as ipcMessages from '../common/ipcMessages';
-import { ParsedFile } from '../common/types';
-import * as settings from './settings';
+import { ILoadedPath } from '../typings';
 import { getFormattedFoldersPaths } from './pathUtils';
+import * as settings from './Settings';
 
-const isDev = require('electron-is-dev');
 
 export const hasWindows = (): boolean => BrowserWindow.getAllWindows().length > 0;
 
@@ -23,21 +22,32 @@ export const createWindow = (): BrowserWindow => {
     minHeight: 768,
     show: false,
     icon: '../icons/icon.png',
+    webPreferences: {
+      nodeIntegration: true,
+    },
   });
 
-  window.loadURL(getUrl());
+  if (electronIsDev) {
+    window.loadURL('http://localhost:3000');
+  } else {
+    window.loadFile('build/view/index.html');
+  }
 
   registerEvents(window);
 
   return window;
 };
 
-export const getCurrentWindow = (): BrowserWindow => BrowserWindow.getFocusedWindow();
+export const getCurrentWindow = (): BrowserWindow | null => BrowserWindow.getFocusedWindow();
 
 
-export const sendOpen = async (window: BrowserWindow, folderPath: string, folder: ParsedFile[]) => {
-  sendToIpc(window, ipcMessages.navigateTo, {path: '/folder', query: {path: folderPath}});
-  sendToIpc(window, ipcMessages.open, {folder, folderPath});
+export const sendOpen = async (
+  window: Electron.BrowserWindow,
+  folderPath: string,
+  folder: ILoadedPath[],
+) => {
+  sendToIpc(window, ipcMessages.open, folder);
+  sendToIpc(window, ipcMessages.navigateTo, {path: '/folder'});
 };
 
 export const sendSave = (window: BrowserWindow, data: any = {}) => {
@@ -48,16 +58,20 @@ export const sendSaveComplete = (window: BrowserWindow, data: any = {}) => {
   sendToIpc(window, ipcMessages.saveComplete, data);
 };
 
+export const sendRefreshFolder = (window: BrowserWindow, folder: ILoadedPath[]) => {
+  sendToIpc(window, ipcMessages.refreshFolder, folder);
+};
+
 export const sendAddTreeItem = (window: BrowserWindow, data: any = {}) => {
   sendToIpc(window, ipcMessages.addTreeItem, data);
 };
 
-export const sendRemoveTreeItem = (window: BrowserWindow, data: any = {}) => {
-  sendToIpc(window, ipcMessages.removeTreeItem, data);
+export const sendRemoveTreeItem = (window: BrowserWindow, itemId: string = '') => {
+  sendToIpc(window, ipcMessages.removeTreeItem, itemId);
 };
 
-export const sendRenameTreeItem = (window: BrowserWindow, data: any = {}) => {
-  sendToIpc(window, ipcMessages.renameTreeItem, data);
+export const sendRenameTreeItem = (window: BrowserWindow, itemId: string = '') => {
+  sendToIpc(window, ipcMessages.renameTreeItem, itemId);
 };
 
 export const sendNavigateTo = (window: BrowserWindow, data: any = {}) => {
@@ -70,6 +84,10 @@ export const sendSettings = (window: BrowserWindow, data: any = {}) => {
 
 export const sendRecentFolders = (window: BrowserWindow, data: string[]) => {
   sendToIpc(window, ipcMessages.recentFolders, getFormattedFoldersPaths(data));
+};
+
+export const sendClose = (window: BrowserWindow) => {
+  sendToIpc(window, ipcMessages.closeFolder, {});
 };
 
 const sendToIpc = (window: BrowserWindow, message: string, data: any) => {
@@ -117,12 +135,6 @@ export const showSaveDialog = (window: BrowserWindow): Promise<SaveResponse> =>
 export const getAvailableWindow = (): BrowserWindow =>
   BrowserWindow.getAllWindows()
     .filter(w => !w.isDocumentEdited())[0];
-
-const getUrl = () => (
-  isDev ?
-    'http://localhost:4200' :
-    `file://${path.join(__dirname, '../view/index.html')}`
-);
 
 const registerEvents = (window: BrowserWindow) => {
   window.on('close', onClose(window));

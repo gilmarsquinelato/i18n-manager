@@ -1,13 +1,11 @@
 import { Menu } from 'electron';
 
-import { IMenuOptions } from '../../common/types';
 import appMenu from './app';
-import fileMenu from './file';
 import editMenu from './edit';
+import fileMenu from './file';
+import helpMenu from './help';
 import viewMenu from './view';
 import windowMenu from './window';
-import helpMenu from './help';
-
 
 
 const getMenuTemplate = () => {

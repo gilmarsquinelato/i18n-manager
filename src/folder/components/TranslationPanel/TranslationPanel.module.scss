@@ -1,0 +1,40 @@
+.Container {
+  .Content {
+    transition: .5s all;
+    max-height: 200px;
+    overflow: hidden;
+  }
+
+  .CollapseButton {
+    position: absolute;
+    right: 16px;
+    bottom: 8px;
+    transition: .5s all;
+  }
+
+  .TranslateMessage {
+    opacity: 0;
+    height: 0;
+    transition: .2s all;
+    position: absolute;
+    bottom: 8px;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 39.9999px;
+  }
+
+  &.Collapsed {
+    .Content {
+      max-height: 0;
+    }
+
+    .CollapseButton {
+      transform: rotate(-180deg);
+    }
+
+    .TranslateMessage {
+      transition: .5s all;
+      opacity: 1;
+      height: auto;
+    }
+  }
+}

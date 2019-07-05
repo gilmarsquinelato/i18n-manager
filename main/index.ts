@@ -1,12 +1,11 @@
 // import { init } from '@sentry/electron';
 import { app } from 'electron';
+import electronIsDev = require('electron-is-dev');
 
 // import { sentryConfig } from '../common/sentry';
-import loadMenu from './menu';
-import { hasWindows, createWindow } from './windowManager';
 import registerAppEvents from './events';
-
-// const isDev = require('electron-is-dev');
+import loadMenu from './menu';
+import { createWindow, hasWindows } from './windowManager';
 
 
 // if (!isDev) {
@@ -28,10 +27,30 @@ if (process.platform === 'darwin') {
 }
 
 
+const installDevTools = () => {
+  if (electronIsDev) {
+    const {
+      default: installExtension,
+      REACT_DEVELOPER_TOOLS,
+      REDUX_DEVTOOLS,
+    } = require('electron-devtools-installer');
+
+    const IMMUTABLE_FORMATTER = {
+      id: 'hgldghadipiblonfkkicmgcbbijnpeog',
+      electron: '>=1.2.1',
+    };
+
+    installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS, IMMUTABLE_FORMATTER])
+      .then((name: any) => console.log('Added Extension: ', name))
+      .catch((err: any) => console.log('An error occurred: ', err));
+  }
+};
+
 app.on('ready', () => {
   loadMenu();
   createWindow();
-  // autoUpdater.checkForUpdatesAndNotify();
+
+  installDevTools();
 });
 
 app.on('window-all-closed', () => {
