@@ -17,6 +17,7 @@
     "object-curly-spacing": false,
     "align": false,
     "ter-arrow-parens": false,
-    "no-increment-decrement": false
+    "no-increment-decrement": false,
+    "prefer-array-literal": false
   }
 }

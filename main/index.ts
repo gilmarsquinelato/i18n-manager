@@ -14,7 +14,6 @@ import { createWindow, hasWindows } from './windowManager';
 
 registerAppEvents();
 
-
 app.setName('i18n Manager');
 if (process.platform === 'darwin') {
   app.setAboutPanelOptions({
@@ -35,12 +34,7 @@ const installDevTools = () => {
       REDUX_DEVTOOLS,
     } = require('electron-devtools-installer');
 
-    const IMMUTABLE_FORMATTER = {
-      id: 'hgldghadipiblonfkkicmgcbbijnpeog',
-      electron: '>=1.2.1',
-    };
-
-    installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS, IMMUTABLE_FORMATTER])
+    installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
       .then((name: any) => console.log('Added Extension: ', name))
       .catch((err: any) => console.log('An error occurred: ', err));
   }

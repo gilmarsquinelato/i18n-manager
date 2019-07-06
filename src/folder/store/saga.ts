@@ -338,6 +338,10 @@ function* loadSupportedLanguages() {
   const settings = yield select(settingsSelectors.settings);
   const googleTranslateApiKey = settings.googleTranslateApiKey;
 
+  if (!googleTranslateApiKey || googleTranslateApiKey.length === 0) {
+    return;
+  }
+
   const supportedLanguagesResponse = yield call(
     fetchAPI,
     `${GOOGLE_TRANSLATE_LANGUAGES_URL}?key=${googleTranslateApiKey}`,
