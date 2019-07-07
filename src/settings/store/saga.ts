@@ -1,3 +1,4 @@
+import { notification } from 'antd';
 import { Action } from 'redux-actions';
 import { put, spawn, takeLatest } from 'redux-saga/effects';
 
@@ -26,5 +27,10 @@ function* receiveSettings(settings: ICustomSettings) {
 
 function* saveSettings(action: Action<ICustomSettings>) {
   yield put(actions.setSettings(action.payload));
+  yield put(folderActions.loadSupportedLanguages());
   ipc.send(ipcMessages.saveSettings, action.payload);
+  notification.success({
+    message: 'Your settings were saved successfully!',
+  });
+  history.back();
 }

@@ -1,6 +1,6 @@
 hello: こんにちは世界
 home:
-  welcome: 'ようこそ{{name}}!'
+  welcome: '{{name}}さん、ようこそ！'
 missing: ''
 some:
   deep:

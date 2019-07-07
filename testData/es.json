@@ -1,7 +1,7 @@
 {
   "hello": "Hola Mundo!",
   "home": {
-    "welcome": "Bienvenido {{name}}!"
+    "welcome": "¡Bienvenido {{name}}!"
   },
   "missing": "",
   "some": {

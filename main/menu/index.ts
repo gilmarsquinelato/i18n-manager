@@ -8,22 +8,20 @@ import viewMenu from './view';
 import windowMenu from './window';
 
 
-const getMenuTemplate = () => {
-  const template: any = [];
-  if (appMenu) {
-    template.push(appMenu);
-  }
-  template.push(fileMenu());
-  template.push(editMenu);
-  template.push(viewMenu);
-  template.push(windowMenu);
-  template.push(helpMenu);
-  return template;
-};
+import MenuItem = Electron.MenuItem;
+import MenuItemConstructorOptions = Electron.MenuItemConstructorOptions;
 
 
-export const getMenu = () => Menu.buildFromTemplate(getMenuTemplate());
+const menuTemplate: Array<MenuItemConstructorOptions | MenuItem> = [];
+if (Object.keys(appMenu).length > 0) {
+  menuTemplate.push(appMenu);
+}
+menuTemplate.push(fileMenu);
+menuTemplate.push(editMenu);
+menuTemplate.push(viewMenu);
+menuTemplate.push(windowMenu);
+menuTemplate.push(helpMenu);
 
-export default () => {
-  Menu.setApplicationMenu(getMenu());
-};
+export const getMenu = () => Menu.buildFromTemplate(menuTemplate);
+
+export default () => Menu.setApplicationMenu(getMenu());
