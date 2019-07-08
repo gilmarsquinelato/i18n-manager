@@ -108,7 +108,7 @@
     "tslint-config-airbnb": "^5.11.1",
     "url-loader": "2.0.1",
     "wait-on": "^3.2.0",
-    "webpack": "4.35.0",
+    "webpack": "4.35.3",
     "webpack-dev-server": "3.7.2",
     "webpack-manifest-plugin": "2.0.4",
     "workbox-webpack-plugin": "4.3.1"
