@@ -32,7 +32,7 @@ export const createWindow = (): BrowserWindow => {
     window.loadURL('http://localhost:3000');
   } else {
     // window.loadFile('build/view/index.html');
-    window.loadURL(`file://${path.join(__dirname, 'build', 'view', 'index.html')}`);
+    window.loadURL(`file://${__dirname}/build/view/index.html`);
   }
 
   registerEvents(window);
