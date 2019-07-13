@@ -13,9 +13,9 @@ import { Settings } from './settings';
 const store = createStore();
 
 const App: React.FC = () => {
-  useEffect(() => {
-    navigate('/');
-  }, []);
+  // useEffect(() => {
+  //   navigate('/');
+  // }, []);
 
   return (
     <>
