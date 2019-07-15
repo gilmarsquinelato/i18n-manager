@@ -1,6 +1,6 @@
-import { navigate, RouteComponentProps } from '@reach/router';
 import { Card, Col, Layout, List, Row, Tooltip } from 'antd';
 import React, { useCallback } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 import RemoteLink from '@src/components/RemoteLink';
 import { actions as folderActions } from '@src/folder/store';
@@ -11,7 +11,7 @@ import styles from './Home.module.scss';
 
 const RELEASES_TAG_URL = `https://github.com/gilmarsquinelato/i18n-manager/releases/tag`;
 
-const Home: React.FC<RouteComponentProps> = () => {
+const Home: React.FC<RouteComponentProps<any>> = ({ history }) => {
   const recentFolders = useStoreState(state => state.home.recentFolders);
   const currentVersion = useStoreState(state => state.home.currentVersion);
   const latestVersion = useStoreState(state => state.home.latestVersion);
@@ -23,7 +23,7 @@ const Home: React.FC<RouteComponentProps> = () => {
       e.preventDefault();
 
       loadFolder(item.fullPath);
-      navigate('/folder');
+      history.push('/folder');
     },
     [loadFolder]);
 
@@ -72,4 +72,4 @@ const Home: React.FC<RouteComponentProps> = () => {
   );
 };
 
-export default Home;
+export default withRouter(Home);

@@ -4,6 +4,7 @@ import { put, spawn, takeLatest } from 'redux-saga/effects';
 
 import * as ipcMessages from '@common/ipcMessages';
 import { actions as folderActions } from '@src/folder/store';
+import hashHistory from '@src/historyProvider';
 import ipc, { ipcChannel } from '@src/ipcRenderer';
 import { ICustomSettings } from '@typings/index';
 import * as actions from './actions';
@@ -32,5 +33,5 @@ function* saveSettings(action: Action<ICustomSettings>) {
   notification.success({
     message: 'Your settings were saved successfully!',
   });
-  history.back();
+  hashHistory.goBack();
 }

@@ -1,4 +1,3 @@
-import { RouteComponentProps } from '@reach/router';
 import { Card, Icon, Input, Layout, Spin } from 'antd';
 import * as _ from 'lodash';
 import React, { useCallback, useState } from 'react';
@@ -15,7 +14,7 @@ import { ITreeItem } from '../types';
 import styles from './Folder.module.scss';
 
 
-const Folder: React.FC<RouteComponentProps> = () => {
+const Folder: React.FC = () => {
   // App settings
   const settings = useStoreState(settingsSelectors.settings);
   const googleTranslateApiKey = settings.googleTranslateApiKey;

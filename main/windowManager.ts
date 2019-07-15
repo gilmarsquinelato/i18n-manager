@@ -1,7 +1,6 @@
 import { BrowserWindow, dialog } from 'electron';
 import electronIsDev = require('electron-is-dev');
 import * as _ from 'lodash';
-import * as path from 'path';
 
 import * as ipcMessages from '../common/ipcMessages';
 import { ILoadedPath } from '../typings';
@@ -31,8 +30,7 @@ export const createWindow = (): BrowserWindow => {
   if (electronIsDev) {
     window.loadURL('http://localhost:3000');
   } else {
-    // window.loadFile('build/view/index.html');
-    window.loadURL(`file://${__dirname}/build/view/index.html`);
+    window.loadFile('build/view/index.html');
   }
 
   registerEvents(window);
