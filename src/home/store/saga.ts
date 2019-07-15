@@ -1,7 +1,7 @@
 import { call, put, spawn, takeLatest } from 'redux-saga/effects';
 
 import * as ipcMessages from '@common/ipcMessages';
-import { navigate } from '@reach/router';
+import hashHistory from '@src/historyProvider';
 import ipc, { ipcChannel } from '@src/ipcRenderer';
 import { IFormattedFolderPath } from '@typings/index';
 import { setCurrentVersion, setLatestVersion, setRecentFolders } from './actions';
@@ -45,5 +45,5 @@ function navigateSaga(data: any) {
     return;
   }
 
-  navigate(data.path);
+  hashHistory.push(data.path);
 }

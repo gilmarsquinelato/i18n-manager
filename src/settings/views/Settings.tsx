@@ -1,4 +1,3 @@
-import { RouteComponentProps } from '@reach/router';
 import { Button, Card, Form, Input, Layout, PageHeader } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
@@ -14,7 +13,7 @@ import styles from './Settings.module.scss';
 const GOOGLE_API_WIZARD_URL =
   'https://console.cloud.google.com/apis/credentials/wizard?api=translate.googleapis.com';
 
-const Settings: React.FC<RouteComponentProps> = () => {
+const Settings: React.FC = () => {
   const settings = useStoreState(state => state.settings.settings);
   const saveSettings = useAction(actions.saveSettings);
 

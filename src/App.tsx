@@ -1,8 +1,9 @@
-import { navigate, Router } from '@reach/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { hot } from 'react-hot-loader/root';
 import { Provider } from 'react-redux';
+import { Route, Router } from 'react-router-dom';
 
+import hashHistory from './historyProvider';
 import createStore from './store';
 
 import { Folder } from './folder';
@@ -13,17 +14,13 @@ import { Settings } from './settings';
 const store = createStore();
 
 const App: React.FC = () => {
-  // useEffect(() => {
-  //   navigate('/');
-  // }, []);
-
   return (
     <>
       <Provider store={store}>
-        <Router>
-          <Home path="/"/>
-          <Folder path="/folder"/>
-          <Settings path="/settings"/>
+        <Router history={hashHistory}>
+          <Route path="/" exact component={Home}/>
+          <Route path="/folder" component={Folder}/>
+          <Route path="/settings" component={Settings}/>
         </Router>
       </Provider>
     </>

@@ -1,4 +1,3 @@
-import { navigate } from '@reach/router';
 import axios, { AxiosRequestConfig, Method } from 'axios';
 import * as _ from 'lodash/fp';
 import * as Redux from 'redux';
@@ -20,6 +19,7 @@ import {
 import uuid from 'uuid/v1';
 
 import * as ipcMessages from '@common/ipcMessages';
+import hashRouter from '@src/historyProvider';
 import ipc, { ipcChannel } from '@src/ipcRenderer';
 import { selectors as settingsSelectors } from '@src/settings/store';
 import { IContextMenuOptions, ICustomSettings, ILoadedPath } from '@typings/index';
@@ -175,7 +175,7 @@ function* receiveCloseFolder() {
   yield put(actions.cancelItemActions());
   yield put(actions.setIsLoading(false));
 
-  navigate('/', { replace: true });
+  hashRouter.replace('/');
 }
 
 function* receiveAddTreeItem(itemId: string) {

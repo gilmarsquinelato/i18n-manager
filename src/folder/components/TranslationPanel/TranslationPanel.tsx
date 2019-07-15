@@ -1,7 +1,7 @@
-import { navigate } from '@reach/router';
 import { Button, Card, Checkbox, Form, Radio, Row, Select } from 'antd';
 import React, { useCallback, useMemo } from 'react';
 import { useArray, useBoolean, useInput } from 'react-hanger';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 import { containsLanguage } from '../../functions';
 import { ILanguageListItem, ITranslatePayload } from '../../types';
@@ -17,7 +17,7 @@ interface ITranslationPanelProps {
   selectedId: string;
 }
 
-const TranslationPanel = React.memo<ITranslationPanelProps>(
+const TranslationPanel = React.memo<ITranslationPanelProps & RouteComponentProps<any>>(
   ({
      languageList,
      allLanguages,
@@ -25,6 +25,7 @@ const TranslationPanel = React.memo<ITranslationPanelProps>(
      onTranslate,
      isGoogleTranslateSetUp,
      selectedId,
+     history,
    }) => {
     const mode = useInput('');
     const overwrite = useBoolean(false);
@@ -34,7 +35,7 @@ const TranslationPanel = React.memo<ITranslationPanelProps>(
 
     const allSupportedLanguages = useMemo(
       () => allLanguages.filter(it => containsLanguage(supportedLanguages, it)),
-    [allLanguages, containsLanguage, supportedLanguages],
+      [allLanguages, containsLanguage, supportedLanguages],
     );
 
     const handleTargetChange = useCallback((values: string[]) => {
@@ -129,7 +130,7 @@ const TranslationPanel = React.memo<ITranslationPanelProps>(
               <Button
                 type="danger"
                 ghost
-                onClick={() => navigate('/settings')}
+                onClick={() => history.push('/settings')}
               >
                 Configure Google Translate™
               </Button>
@@ -144,4 +145,4 @@ const TranslationPanel = React.memo<ITranslationPanelProps>(
   },
 );
 
-export default TranslationPanel;
+export default withRouter(TranslationPanel);
