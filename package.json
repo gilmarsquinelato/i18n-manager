@@ -58,7 +58,7 @@
     "codacy-coverage": "^3.4.0",
     "concurrently": "^4.1.1",
     "cross-env": "^5.2.0",
-    "css-loader": "2.1.1",
+    "css-loader": "3.1.0",
     "dotenv": "8.0.0",
     "dotenv-expand": "5.1.0",
     "electron": "^5.0.6",
