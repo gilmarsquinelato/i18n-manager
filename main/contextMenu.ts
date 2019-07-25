@@ -1,5 +1,5 @@
 import { BrowserWindow, dialog, Menu } from 'electron';
-import isDev from 'electron-is-dev';
+import electronIsDev = require('electron-is-dev');
 
 import { IContextMenuOptions } from '../typings';
 import * as windowManager from './windowManager';
@@ -12,12 +12,14 @@ export const showContextMenu = (window: BrowserWindow, options: IContextMenuOpti
   menuTemplate.push(...getTreeMenuItems(window, options));
   menuTemplate.push(...getDefaultMenuItems(window, options));
 
-  const menu = Menu.buildFromTemplate(menuTemplate);
-  menu.popup({
-    window,
-    x: options.x,
-    y: options.y,
-  });
+  Menu.buildFromTemplate(menuTemplate).popup();
+
+  // const menu = Menu.buildFromTemplate(menuTemplate);
+  // menu.popup({
+  //   window,
+  //   x: options.x,
+  //   y: options.y,
+  // });
 };
 
 export const getTreeMenuItems = (window: BrowserWindow, options: IContextMenuOptions): any[] => {
@@ -106,7 +108,7 @@ export const getDefaultMenuItems = (window: BrowserWindow, options: IContextMenu
     });
   }
 
-  if (isDev) {
+  if (electronIsDev) {
     menuTemplate.push(
       {type: 'separator'},
       {
