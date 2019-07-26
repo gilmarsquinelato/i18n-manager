@@ -1,6 +1,6 @@
 {
   "name": "i18n-manager",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "main": "build/main/index.js",
   "license": "MIT",
   "description": "The app that will help to manage your app translations",
@@ -62,7 +62,6 @@
     "dotenv-expand": "5.1.0",
     "electron": "^5.0.6",
     "electron-builder": "^21.1.5",
-    "electron-devtools-installer": "^2.2.4",
     "electron-download": "^4.1.1",
     "eslint": "^6.0.1",
     "eslint-config-react-app": "^4.0.1",
@@ -115,6 +114,7 @@
   "dependencies": {
     "antd": "^3.19.8",
     "axios": "^0.19.0",
+    "electron-devtools-installer": "^2.2.4",
     "electron-is-dev": "^1.1.0",
     "electron-updater": "^4.1.2",
     "history": "^4.9.0",

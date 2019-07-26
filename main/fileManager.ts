@@ -1,9 +1,20 @@
-import { app } from 'electron';
+import { app, dialog } from 'electron';
+import { exists } from 'fs';
+import { promisify } from 'util';
+
 import { ILoadedFolder, ILoadedGroup, ILoadedPath, IParsedFile } from '../typings';
 import { loadFolder, saveFile } from './pluginManager';
 import * as settings from './Settings';
-import { createWindow, getAvailableWindow, sendOpen, sendRecentFolders } from './windowManager';
+import {
+  createWindow,
+  getAvailableWindow,
+  sendClose,
+  sendOpen,
+  sendRecentFolders,
+} from './windowManager';
 
+
+const existsAsync = promisify(exists);
 
 export const openFolder = async (folderPath: string) => {
   const window = getAvailableWindow() || createWindow();
@@ -11,27 +22,39 @@ export const openFolder = async (folderPath: string) => {
 };
 
 export const openFolderInWindow = async (folderPath: string, window: Electron.BrowserWindow) => {
-  app.addRecentDocument(folderPath);
-  const recent = settings.addRecentFolder(folderPath);
-  const parsedFiles = await parseFolder(folderPath);
+  let recentFolders: string[];
 
-  await sendOpen(window, folderPath, parsedFiles);
-  sendRecentFolders(window, recent);
+  const isValidPath = await existsAsync(folderPath);
+  if (!isValidPath) {
+    recentFolders = settings.removeRecentFolder(folderPath);
+    sendClose(window);
+
+    dialog.showMessageBox(
+      window,
+      {
+        type: 'error',
+        message: `Folder not found in the given path "${folderPath}"`,
+      },
+    );
+  } else {
+    const parsedFiles = await loadFolder(folderPath);
+    await sendOpen(window, folderPath, parsedFiles);
+
+    app.addRecentDocument(folderPath);
+    recentFolders = settings.addRecentFolder(folderPath);
+  }
+
+  sendRecentFolders(window, recentFolders);
 };
 
-export const parseFolder = async (folderPath: string): Promise<ILoadedPath[]> => {
-  return await loadFolder(folderPath);
-};
-
-export const saveFolder = async (data: ILoadedPath[]) => {
+export const saveFolder = async (data: ILoadedPath[]): Promise<string[]> => {
   const parsedFiles = getParsedFiles(data);
   const saveAll = parsedFiles.map(it => saveFile(it));
   const result = await Promise.all(saveAll);
 
   return result
-    .map((success: boolean, index: number) => ({success, file: parsedFiles[index].fileName}))
-    .filter((i: any) => !i.success)
-    .map((i: any) => i.file);
+    .map((success, index) => !success ? parsedFiles[index].fileName : undefined)
+    .filter(Boolean);
 };
 
 const getParsedFiles = (data: ILoadedPath[]): IParsedFile[] =>

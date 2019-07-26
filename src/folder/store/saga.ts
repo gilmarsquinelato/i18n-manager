@@ -19,7 +19,7 @@ import {
 import uuid from 'uuid/v1';
 
 import * as ipcMessages from '@common/ipcMessages';
-import hashRouter from '@src/historyProvider';
+import hashHistory from '@src/historyProvider';
 import ipc, { ipcChannel } from '@src/ipcRenderer';
 import { selectors as settingsSelectors } from '@src/settings/store';
 import { IContextMenuOptions, ICustomSettings, ILoadedPath } from '@typings/index';
@@ -175,7 +175,7 @@ function* receiveCloseFolder() {
   yield put(actions.cancelItemActions());
   yield put(actions.setIsLoading(false));
 
-  hashRouter.replace('/');
+  hashHistory.replace('/');
 }
 
 function* receiveAddTreeItem(itemId: string) {
