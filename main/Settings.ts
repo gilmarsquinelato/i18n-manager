@@ -58,5 +58,17 @@ export const addRecentFolder = (folderPath: string) => {
   settings.recentFolders = _.uniq(settings.recentFolders).slice(0, 10);
 
   saveSettings(settings);
-  return getRecentFolders();
+  return settings.recentFolders;
+};
+
+export const removeRecentFolder = (folderPath: string) => {
+  const settings = getSavedSettings();
+
+  settings.recentFolders =
+    _.uniq(settings.recentFolders)
+      .filter(it => it !== folderPath)
+      .slice(0, 10);
+
+  saveSettings(settings);
+  return settings.recentFolders;
 };

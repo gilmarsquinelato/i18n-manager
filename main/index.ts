@@ -1,5 +1,5 @@
 // import { init } from '@sentry/electron';
-import { app } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import electronIsDev = require('electron-is-dev');
 
 // import { sentryConfig } from '../common/sentry';
@@ -40,11 +40,18 @@ const installDevTools = () => {
   }
 };
 
+const openConsole = (window: BrowserWindow) => {
+  if (electronIsDev) {
+    window.webContents.openDevTools();
+  }
+};
+
 app.on('ready', () => {
   loadMenu();
-  createWindow();
+  const window = createWindow();
 
   installDevTools();
+  openConsole(window);
 });
 
 app.on('window-all-closed', () => {
