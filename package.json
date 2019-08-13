@@ -45,7 +45,7 @@
     "@types/redux-saga": "^0.10.5",
     "@types/semver": "^6.0.1",
     "@types/uuid": "^3.4.4",
-    "@typescript-eslint/eslint-plugin": "1.13.0",
+    "@typescript-eslint/eslint-plugin": "2.0.0",
     "@typescript-eslint/parser": "1.13.0",
     "babel-eslint": "10.0.2",
     "babel-jest": "^24.8.0",
