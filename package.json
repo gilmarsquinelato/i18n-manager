@@ -65,7 +65,7 @@
     "electron-download": "^4.1.1",
     "eslint": "^6.0.1",
     "eslint-config-react-app": "^5.0.0",
-    "eslint-loader": "2.1.2",
+    "eslint-loader": "3.0.0",
     "eslint-plugin-flowtype": "4.0.0",
     "eslint-plugin-import": "2.18.1",
     "eslint-plugin-jsx-a11y": "6.2.1",
