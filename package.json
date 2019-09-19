@@ -97,7 +97,7 @@
     "sass-loader": "8.0.0",
     "semver": "6.3.0",
     "style-loader": "1.0.0",
-    "terser-webpack-plugin": "2.0.1",
+    "terser-webpack-plugin": "2.1.0",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
     "ts-pnp": "1.1.4",
@@ -107,7 +107,7 @@
     "url-loader": "2.1.0",
     "wait-on": "^3.2.0",
     "webpack": "^4.37.0",
-    "webpack-dev-server": "3.8.0",
+    "webpack-dev-server": "3.8.1",
     "webpack-manifest-plugin": "2.0.4",
     "workbox-webpack-plugin": "4.3.1"
   },
