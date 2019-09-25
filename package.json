@@ -24,7 +24,7 @@
     "clean": "rimraf build dist"
   },
   "devDependencies": {
-    "@babel/core": "7.6.0",
+    "@babel/core": "7.6.2",
     "@sentry/cli": "^1.46.0",
     "@sentry/electron": "^0.17.1",
     "@svgr/webpack": "4.3.2",
