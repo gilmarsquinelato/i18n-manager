@@ -24,10 +24,10 @@
     "clean": "rimraf build dist"
   },
   "devDependencies": {
-    "@babel/core": "7.6.0",
+    "@babel/core": "7.6.2",
     "@sentry/cli": "^1.46.0",
     "@sentry/electron": "^0.17.1",
-    "@svgr/webpack": "4.3.2",
+    "@svgr/webpack": "4.3.3",
     "@types/electron": "^1.6.10",
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/electron-is-dev": "^1.1.1",
@@ -46,7 +46,7 @@
     "@types/semver": "^6.0.1",
     "@types/uuid": "^3.4.4",
     "@typescript-eslint/eslint-plugin": "2.3.1",
-    "@typescript-eslint/parser": "2.3.0",
+    "@typescript-eslint/parser": "2.3.1",
     "babel-eslint": "10.0.3",
     "babel-jest": "^24.8.0",
     "babel-loader": "8.0.6",
