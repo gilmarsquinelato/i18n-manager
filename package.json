@@ -108,7 +108,7 @@
     "wait-on": "^3.2.0",
     "webpack": "^4.37.0",
     "webpack-dev-server": "3.8.1",
-    "webpack-manifest-plugin": "2.1.1",
+    "webpack-manifest-plugin": "2.1.2",
     "workbox-webpack-plugin": "4.3.1"
   },
   "dependencies": {
