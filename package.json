@@ -24,10 +24,10 @@
     "clean": "rimraf build dist"
   },
   "devDependencies": {
-    "@babel/core": "7.6.0",
+    "@babel/core": "7.6.2",
     "@sentry/cli": "^1.46.0",
     "@sentry/electron": "^0.17.1",
-    "@svgr/webpack": "4.3.2",
+    "@svgr/webpack": "4.3.3",
     "@types/electron": "^1.6.10",
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/electron-is-dev": "^1.1.1",
@@ -108,7 +108,7 @@
     "wait-on": "^3.2.0",
     "webpack": "^4.37.0",
     "webpack-dev-server": "3.8.1",
-    "webpack-manifest-plugin": "2.1.0",
+    "webpack-manifest-plugin": "2.1.1",
     "workbox-webpack-plugin": "4.3.1"
   },
   "dependencies": {
