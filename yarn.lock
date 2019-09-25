@@ -1734,10 +1734,10 @@
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-replace-jsx-attribute-value/-/babel-plugin-replace-jsx-attribute-value-4.2.0.tgz#310ec0775de808a6a2e4fd4268c245fd734c1165"
   integrity sha512-U9m870Kqm0ko8beHawRXLGLvSi/ZMrl89gJ5BNcT452fAjtF2p4uRzXkdzvGJJJYBgx7BmqlDjBN/eCp5AAX2w==
 
-"@svgr/babel-plugin-svg-dynamic-title@^4.3.1":
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-svg-dynamic-title/-/babel-plugin-svg-dynamic-title-4.3.1.tgz#646c2f5b5770c2fe318d6e51492344c3d62ddb63"
-  integrity sha512-p6z6JJroP989jHWcuraeWpzdejehTmLUpyC9smhTBWyPN0VVGe2phbYxpPTV7Vh8XzmFrcG55idrnfWn/2oQEw==
+"@svgr/babel-plugin-svg-dynamic-title@^4.3.3":
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-svg-dynamic-title/-/babel-plugin-svg-dynamic-title-4.3.3.tgz#2cdedd747e5b1b29ed4c241e46256aac8110dd93"
+  integrity sha512-w3Be6xUNdwgParsvxkkeZb545VhXEwjGMwExMVBIdPQJeyMQHqm9Msnb2a1teHBqUYL66qtwfhNkbj1iarCG7w==
 
 "@svgr/babel-plugin-svg-em-dimensions@^4.2.0":
   version "4.2.0"
@@ -1754,26 +1754,26 @@
   resolved "https://registry.yarnpkg.com/@svgr/babel-plugin-transform-svg-component/-/babel-plugin-transform-svg-component-4.2.0.tgz#5f1e2f886b2c85c67e76da42f0f6be1b1767b697"
   integrity sha512-hYfYuZhQPCBVotABsXKSCfel2slf/yvJY8heTVX1PCTaq/IgASq1IyxPPKJ0chWREEKewIU/JMSsIGBtK1KKxw==
 
-"@svgr/babel-preset@^4.3.1":
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/@svgr/babel-preset/-/babel-preset-4.3.1.tgz#62ffcb85d756580e8ce608e9d2ac3b9063be9e28"
-  integrity sha512-rPFKLmyhlh6oeBv3j2vEAj2nd2QbWqpoJLKzBLjwQVt+d9aeXajVaPNEqrES2spjXKR4OxfgSs7U0NtmAEkr0Q==
+"@svgr/babel-preset@^4.3.3":
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/@svgr/babel-preset/-/babel-preset-4.3.3.tgz#a75d8c2f202ac0e5774e6bfc165d028b39a1316c"
+  integrity sha512-6PG80tdz4eAlYUN3g5GZiUjg2FMcp+Wn6rtnz5WJG9ITGEF1pmFdzq02597Hn0OmnQuCVaBYQE1OVFAnwOl+0A==
   dependencies:
     "@svgr/babel-plugin-add-jsx-attribute" "^4.2.0"
     "@svgr/babel-plugin-remove-jsx-attribute" "^4.2.0"
     "@svgr/babel-plugin-remove-jsx-empty-expression" "^4.2.0"
     "@svgr/babel-plugin-replace-jsx-attribute-value" "^4.2.0"
-    "@svgr/babel-plugin-svg-dynamic-title" "^4.3.1"
+    "@svgr/babel-plugin-svg-dynamic-title" "^4.3.3"
     "@svgr/babel-plugin-svg-em-dimensions" "^4.2.0"
     "@svgr/babel-plugin-transform-react-native-svg" "^4.2.0"
     "@svgr/babel-plugin-transform-svg-component" "^4.2.0"
 
-"@svgr/core@^4.3.2":
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/@svgr/core/-/core-4.3.2.tgz#939c89be670ad79b762f4c063f213f0e02535f2e"
-  integrity sha512-N+tP5CLFd1hP9RpO83QJPZY3NL8AtrdqNbuhRgBkjE/49RnMrrRsFm1wY8pueUfAGvzn6tSXUq29o6ah8RuR5w==
+"@svgr/core@^4.3.3":
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/@svgr/core/-/core-4.3.3.tgz#b37b89d5b757dc66e8c74156d00c368338d24293"
+  integrity sha512-qNuGF1QON1626UCaZamWt5yedpgOytvLj5BQZe2j1k1B8DUG4OyugZyfEwBeXozCUwhLEpsrgPrE+eCu4fY17w==
   dependencies:
-    "@svgr/plugin-jsx" "^4.3.2"
+    "@svgr/plugin-jsx" "^4.3.3"
     camelcase "^5.3.1"
     cosmiconfig "^5.2.1"
 
@@ -1784,13 +1784,13 @@
   dependencies:
     "@babel/types" "^7.4.4"
 
-"@svgr/plugin-jsx@^4.3.2":
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/@svgr/plugin-jsx/-/plugin-jsx-4.3.2.tgz#ce9ddafc8cdd74da884c9f7af014afcf37f93d3c"
-  integrity sha512-+1GW32RvmNmCsOkMoclA/TppNjHPLMnNZG3/Ecscxawp051XJ2MkO09Hn11VcotdC2EPrDfT8pELGRo+kbZ1Eg==
+"@svgr/plugin-jsx@^4.3.3":
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/@svgr/plugin-jsx/-/plugin-jsx-4.3.3.tgz#e2ba913dbdfbe85252a34db101abc7ebd50992fa"
+  integrity sha512-cLOCSpNWQnDB1/v+SUENHH7a0XY09bfuMKdq9+gYvtuwzC2rU4I0wKGFEp1i24holdQdwodCtDQdFtJiTCWc+w==
   dependencies:
     "@babel/core" "^7.4.5"
-    "@svgr/babel-preset" "^4.3.1"
+    "@svgr/babel-preset" "^4.3.3"
     "@svgr/hast-util-to-babel-ast" "^4.3.2"
     svg-parser "^2.0.0"
 
@@ -1803,17 +1803,17 @@
     merge-deep "^3.0.2"
     svgo "^1.2.2"
 
-"@svgr/webpack@4.3.2":
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/@svgr/webpack/-/webpack-4.3.2.tgz#319d4471c8f3d5c3af35059274834d9b5b8fb956"
-  integrity sha512-F3VE5OvyOWBEd2bF7BdtFRyI6E9it3mN7teDw0JQTlVtc4HZEYiiLSl+Uf9Uub6IYHVGc+qIrxxDyeedkQru2w==
+"@svgr/webpack@4.3.3":
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/@svgr/webpack/-/webpack-4.3.3.tgz#13cc2423bf3dff2d494f16b17eb7eacb86895017"
+  integrity sha512-bjnWolZ6KVsHhgyCoYRFmbd26p8XVbulCzSG53BDQqAr+JOAderYK7CuYrB3bDjHJuF6LJ7Wrr42+goLRV9qIg==
   dependencies:
     "@babel/core" "^7.4.5"
     "@babel/plugin-transform-react-constant-elements" "^7.0.0"
     "@babel/preset-env" "^7.4.5"
     "@babel/preset-react" "^7.0.0"
-    "@svgr/core" "^4.3.2"
-    "@svgr/plugin-jsx" "^4.3.2"
+    "@svgr/core" "^4.3.3"
+    "@svgr/plugin-jsx" "^4.3.3"
     "@svgr/plugin-svgo" "^4.3.1"
     loader-utils "^1.2.3"
 
