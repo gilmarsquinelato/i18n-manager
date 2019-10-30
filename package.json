@@ -116,7 +116,7 @@
     "axios": "^0.19.0",
     "electron-devtools-installer": "^2.2.4",
     "electron-is-dev": "^1.1.0",
-    "electron-updater": "^4.1.2",
+    "electron-updater": "^4.2.0",
     "history": "^4.9.0",
     "immutable": "^4.0.0-rc.12",
     "js-yaml": "^3.13.1",
