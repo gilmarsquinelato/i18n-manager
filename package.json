@@ -74,7 +74,7 @@
     "file-loader": "4.2.0",
     "fs-extra": "8.1.0",
     "fsevents": "^2.0.7",
-    "html-webpack-plugin": "4.0.0-beta.8",
+    "html-webpack-plugin": "4.0.0-beta.9",
     "identity-obj-proxy": "3.0.0",
     "is-wsl": "^2.1.0",
     "jest": "^24.8.0",
