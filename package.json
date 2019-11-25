@@ -24,7 +24,7 @@
     "clean": "rimraf build dist"
   },
   "devDependencies": {
-    "@babel/core": "7.6.3",
+    "@babel/core": "7.7.0",
     "@sentry/cli": "^1.46.0",
     "@sentry/electron": "^1.0.0",
     "@svgr/webpack": "4.3.3",
@@ -45,8 +45,8 @@
     "@types/redux-saga": "^0.10.5",
     "@types/semver": "^6.0.1",
     "@types/uuid": "^3.4.4",
-    "@typescript-eslint/eslint-plugin": "2.3.3",
-    "@typescript-eslint/parser": "2.3.3",
+    "@typescript-eslint/eslint-plugin": "2.6.1",
+    "@typescript-eslint/parser": "2.6.1",
     "babel-eslint": "10.0.3",
     "babel-jest": "^24.8.0",
     "babel-loader": "8.0.6",
