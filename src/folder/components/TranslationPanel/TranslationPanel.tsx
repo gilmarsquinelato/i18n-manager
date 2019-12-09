@@ -112,7 +112,7 @@ const TranslationPanel = React.memo<ITranslationPanelProps & RouteComponentProps
               <Radio value="all">All Keys</Radio>
             </Radio.Group>
 
-            <Checkbox value={overwrite.value} onChange={overwrite.toggle}>
+            <Checkbox value={overwrite.value || false} onChange={overwrite.toggle}>
               Overwrite not empty fields
             </Checkbox>
 

@@ -14,7 +14,7 @@ import { createWindow, hasWindows } from './windowManager';
 
 registerAppEvents();
 
-app.setName('i18n Manager');
+app.name = 'i18n Manager';
 if (process.platform === 'darwin') {
   app.setAboutPanelOptions({
     applicationName: 'i18n Manager',
