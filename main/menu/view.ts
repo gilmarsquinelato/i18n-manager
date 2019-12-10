@@ -4,9 +4,9 @@ const isDev = require('electron-is-dev');
 const viewMenu: Electron.MenuItemConstructorOptions = {
   label: 'View',
   submenu: [
-    { role: 'resetzoom' },
-    { role: 'zoomin' },
-    { role: 'zoomout' },
+    { role: 'resetZoom' },
+    { role: 'zoomIn' },
+    { role: 'zoomOut' },
     { type: 'separator' },
     { role: 'togglefullscreen' },
   ],

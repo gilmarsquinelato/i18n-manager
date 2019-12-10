@@ -1,5 +1,5 @@
 import * as _ from 'lodash/fp';
-import immutable from 'object-path-immutable';
+import * as immutable from 'object-path-immutable';
 import uuid from 'uuid/v1';
 
 import { getLocaleLabel } from '@common/language';
