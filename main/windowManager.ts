@@ -106,30 +106,26 @@ export enum SaveResponse {
   DontSave,
 }
 
-export const showSaveDialog = (window: BrowserWindow): Promise<SaveResponse> =>
-  new Promise((resolve) => {
-    dialog.showMessageBox(
-      window,
-      {
-        type: 'question',
-        buttons: ['Save', 'Cancel', 'Don\'t Save'],
-        message: 'Do you want to save the changes you made?',
-        detail: 'Your changes will be lost if you don\'t save them.',
-      },
-      (response: number) => {
-        switch (response) {
-          case 0:
-            resolve(SaveResponse.Save);
-            break;
-          case 1:
-            resolve(SaveResponse.Cancel);
-            break;
-          case 2:
-            resolve(SaveResponse.DontSave);
-            break;
-        }
-      });
-  });
+export const showSaveDialog = async (window: BrowserWindow): Promise<SaveResponse> => {
+  const result = await dialog.showMessageBox(
+    window,
+    {
+      type: 'question',
+      buttons: ['Save', 'Cancel', 'Don\'t Save'],
+      message: 'Do you want to save the changes you made?',
+      detail: 'Your changes will be lost if you don\'t save them.',
+    },
+  );
+
+  switch (result.response) {
+    case 0:
+      return SaveResponse.Save;
+    case 1:
+      return SaveResponse.Cancel;
+    case 2:
+      return SaveResponse.DontSave;
+  }
+};
 
 
 export const getAvailableWindow = (): BrowserWindow =>

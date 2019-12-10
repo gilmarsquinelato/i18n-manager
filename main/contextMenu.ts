@@ -63,20 +63,19 @@ export const getTreeMenuItems = (window: BrowserWindow, options: IContextMenuOpt
     },
     {
       label: 'Delete',
-      click() {
-        dialog.showMessageBox(
+      async click() {
+        const result = await dialog.showMessageBox(
           window,
           {
             type: 'question',
             buttons: ['Delete', 'Cancel'],
             message: `Are you sure to delete this item?`,
           },
-          (response: number) => {
-            if (response === 0) {
-              windowManager.sendRemoveTreeItem(window, options.itemId);
-            }
-          },
         );
+
+        if (result.response === 0) {
+          windowManager.sendRemoveTreeItem(window, options.itemId);
+        }
       },
     },
   );

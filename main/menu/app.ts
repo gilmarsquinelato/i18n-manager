@@ -5,7 +5,7 @@ let appMenu: Electron.MenuItemConstructorOptions = {};
 
 if (process.platform === 'darwin') {
   appMenu = {
-    label: app.getName(),
+    label: app.name,
     submenu: [
       { role: 'about' },
       { type: 'separator' },
@@ -18,7 +18,7 @@ if (process.platform === 'darwin') {
       { role: 'services', submenu: [] },
       { type: 'separator' },
       { role: 'hide' },
-      { role: 'hideothers' },
+      { role: 'hideOthers' },
       { role: 'unhide' },
       { type: 'separator' },
       { role: 'quit' },

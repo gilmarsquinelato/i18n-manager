@@ -13,12 +13,12 @@ import { onPreferencesClick } from './shared';
 
 const newWindow = () => createWindow();
 
-const openDirectory = () => {
-  const result = dialog.showOpenDialog({
+const openDirectory = async () => {
+  const result = await dialog.showOpenDialog({
     properties: ['openDirectory'],
   });
   if (result) {
-    openFolder(result[0]);
+    openFolder(result.filePaths[0]);
   }
 };
 
