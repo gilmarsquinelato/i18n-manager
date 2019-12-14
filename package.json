@@ -98,7 +98,7 @@
     "rimraf": "^3.0.0",
     "sass-loader": "8.0.0",
     "schema-utils": "^2.6.1",
-    "semver": "6.3.0",
+    "semver": "7.0.0",
     "serialize-javascript": "^2.1.2",
     "style-loader": "1.0.1",
     "terser-webpack-plugin": "2.2.2",
