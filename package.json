@@ -94,7 +94,7 @@
     "postcss-safe-parser": "4.0.1",
     "react-app-polyfill": "^1.0.1",
     "react-dev-utils": "^10.0.0",
-    "resolve": "1.12.1",
+    "resolve": "1.14.0",
     "rimraf": "^3.0.0",
     "sass-loader": "8.0.0",
     "schema-utils": "^2.6.1",
