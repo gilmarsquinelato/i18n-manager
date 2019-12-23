@@ -27,7 +27,7 @@
     "@babel/core": "7.7.5",
     "@sentry/cli": "^1.46.0",
     "@sentry/electron": "^1.0.0",
-    "@svgr/webpack": "4.3.3",
+    "@svgr/webpack": "5.0.0",
     "@types/electron": "^1.6.10",
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/electron-is-dev": "^1.1.1",
