@@ -43,7 +43,7 @@
     "@types/redux": "^3.6.0",
     "@types/redux-actions": "^2.6.1",
     "@types/redux-saga": "^0.10.5",
-    "@types/semver": "^6.0.1",
+    "@types/semver": "^7.1.0",
     "@types/uuid": "^3.4.4",
     "@typescript-eslint/eslint-plugin": "2.8.0",
     "@typescript-eslint/parser": "2.8.0",
