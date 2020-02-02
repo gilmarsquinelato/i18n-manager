@@ -4852,10 +4852,10 @@ eslint-plugin-flowtype@4.3.1:
   dependencies:
     lodash "^4.17.15"
 
-eslint-plugin-import@2.19.0:
-  version "2.19.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.19.0.tgz#560ddc8236b4e68df57a95c5ba33bcf23300c780"
-  integrity sha512-J13f9Slu7BCZq1N2NnWmK7tci/Y1SWWHUaj0J+I1NpzUm8l/Gwnz6KO+JMbM4TcnxU8O/DJ4psa6eZrmNREsOg==
+eslint-plugin-import@2.20.1:
+  version "2.20.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.20.1.tgz#802423196dcb11d9ce8435a5fc02a6d3b46939b3"
+  integrity sha512-qQHgFOTjguR+LnYRoToeZWT62XM55MBVXObHM6SKFd1VzDcX/vqT1kAz8ssqigh5eMj8qXcRoXXGZpPP6RfdCw==
   dependencies:
     array-includes "^3.0.3"
     array.prototype.flat "^1.2.1"
