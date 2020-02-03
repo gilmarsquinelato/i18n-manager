@@ -62,7 +62,7 @@
     "css-loader": "3.2.1",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
-    "electron": "^7.0.0",
+    "electron": "^8.0.0",
     "electron-builder": "^22.1.0",
     "electron-download": "^4.1.1",
     "eslint": "^6.0.1",
