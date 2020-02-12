@@ -66,6 +66,12 @@ export const updateTreeItemStatus = (
   return {
     ...item,
     status: treeItemStatus,
+    untranslated: content
+      .some((it, index, array) =>
+        array
+          .filter(haystack => haystack.language !== it.language)
+          .map(({value}) => value)
+          .includes(it.value)),
     missingCount: treeItemStatus === 'missing'
       ? content.filter(it => !it.value).length
       : 0,
@@ -115,6 +121,7 @@ export const createTree = (
         status: 'normal',
         label: it.name,
         missingCount: 0,
+        untranslated: false,
       };
 
       if (it.type === 'folder') {
@@ -225,6 +232,7 @@ const createTreeFromObject = (
         status: 'normal',
         label: it,
         missingCount: 0,
+        untranslated: false,
       };
 
       if (isItem) {

@@ -218,6 +218,7 @@ const Label = React.memo<ILabelProps>(
         </span>
 
         {item.missingCount > 0 && <span className={styles.Badge}>{item.missingCount}</span>}
+        {item.untranslated && <span className={styles.Untranslated}>?</span>}
 
         <span className={styles.Label}>
           {item.label}

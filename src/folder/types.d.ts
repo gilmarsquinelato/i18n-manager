@@ -9,6 +9,7 @@ export interface ITreeItem {
   label: string;
   status: TreeItemStatus;
   missingCount: number;
+  untranslated: boolean;
 }
 
 export interface IChangeFolderValuePayload {

@@ -224,6 +224,7 @@ function* addTreeItem(action: Action<string>) {
     status: getTreeItemStatus(content, originalContent),
     label: action.payload,
     missingCount: 0,
+    untranslated: false,
   });
 
   // Finish action
