@@ -99,7 +99,7 @@
     "sass-loader": "8.0.0",
     "schema-utils": "^2.6.1",
     "semver": "6.3.0",
-    "serialize-javascript": "^2.1.2",
+    "serialize-javascript": "^3.0.0",
     "style-loader": "1.0.1",
     "terser-webpack-plugin": "2.2.2",
     "ts-jest": "^24.0.2",
