@@ -104,7 +104,7 @@
     "terser-webpack-plugin": "2.2.2",
     "ts-jest": "^24.0.2",
     "ts-node": "^8.3.0",
-    "ts-pnp": "1.1.5",
+    "ts-pnp": "1.1.6",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
     "tslint": "^5.18.0",
     "tslint-config-airbnb": "^5.11.1",
