@@ -1,7 +1,7 @@
 import * as path from 'path';
-import { IFormattedFolderPath } from '../typings';
+import { FormattedFolderPath } from '../common/types';
 
-export const getFormattedFoldersPaths = (folders: string[]): IFormattedFolderPath[] => {
+export const getFormattedFoldersPaths = (folders: string[]): FormattedFolderPath[] => {
   return folders.map(folder => ({
     fullPath: folder,
     folder: path.basename(folder),

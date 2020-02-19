@@ -1,7 +1,7 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 
 import * as ipcMessages from '../common/ipcMessages';
-import { IContextMenuOptions, IParsedFile } from '../typings';
+import { ContextMenuOptions, ParsedFile } from '../common/types';
 import { showContextMenu } from './contextMenu';
 import * as fileManager from './fileManager';
 import * as settings from './Settings';
@@ -14,7 +14,7 @@ const onSave = async (e: any, data: any) => {
   const closeDirectory = data.data.closeDirectory;
   const folder = data.payload;
 
-  if ((folder as IParsedFile[]).length === 0) {
+  if ((folder as ParsedFile[]).length === 0) {
     windowManager.sendSaveComplete(window, []);
     return;
   }
@@ -50,7 +50,7 @@ const onDataChanged = (e: any, data: boolean) => {
   window.setDocumentEdited(data);
 };
 
-const onShowContextMenu = (e: any, data: IContextMenuOptions) => {
+const onShowContextMenu = (e: any, data: ContextMenuOptions) => {
   const window = BrowserWindow.fromWebContents(e.sender);
   showContextMenu(window, data);
 };
