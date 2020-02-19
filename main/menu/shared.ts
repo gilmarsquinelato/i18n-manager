@@ -6,5 +6,5 @@ export const onPreferencesClick = () => {
     return;
   }
 
-  windowManager.sendNavigateTo(window, { path: '/settings' });
+  windowManager.sendShowSettings(window);
 };

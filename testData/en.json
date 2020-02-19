@@ -1,11 +1,12 @@
 {
+  "missing": "missing",
   "hello": "Hello World!",
   "home": {
     "welcome": "Welcome {{name}}!"
   },
-  "missing": "missing",
   "some": {
     "deep": {
+      "multi-line": "aaa\nbbb\nccc",
       "tree": {
         "here": ""
       }

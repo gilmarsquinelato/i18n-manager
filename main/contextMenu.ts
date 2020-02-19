@@ -1,13 +1,12 @@
 import { BrowserWindow, dialog, Menu } from 'electron';
-import electronIsDev = require('electron-is-dev');
+import electronIsDev from 'electron-is-dev';
 
-import { IContextMenuOptions } from '../typings';
+import { ContextMenuOptions } from '../common/types';
 import * as windowManager from './windowManager';
-
 
 const webContents = (win: any) => win.webContents || win.getWebContents();
 
-export const showContextMenu = (window: BrowserWindow, options: IContextMenuOptions) => {
+export const showContextMenu = (window: BrowserWindow, options: ContextMenuOptions) => {
   const menuTemplate: any[] = [];
   menuTemplate.push(...getTreeMenuItems(window, options));
   menuTemplate.push(...getDefaultMenuItems(window, options));
@@ -22,7 +21,7 @@ export const showContextMenu = (window: BrowserWindow, options: IContextMenuOpti
   // });
 };
 
-export const getTreeMenuItems = (window: BrowserWindow, options: IContextMenuOptions): any[] => {
+export const getTreeMenuItems = (window: BrowserWindow, options: ContextMenuOptions): any[] => {
   if (!options.isFromTree) {
     return [];
   }
@@ -31,7 +30,7 @@ export const getTreeMenuItems = (window: BrowserWindow, options: IContextMenuOpt
 
   if (options.isNode) {
     menuTemplate.push(
-      {type: 'separator'},
+      { type: 'separator' },
       {
         label: 'Add Item',
         click() {
@@ -54,7 +53,7 @@ export const getTreeMenuItems = (window: BrowserWindow, options: IContextMenuOpt
   }
 
   menuTemplate.push(
-    {type: 'separator'},
+    { type: 'separator' },
     {
       label: 'Rename',
       click() {
@@ -64,14 +63,11 @@ export const getTreeMenuItems = (window: BrowserWindow, options: IContextMenuOpt
     {
       label: 'Delete',
       async click() {
-        const result = await dialog.showMessageBox(
-          window,
-          {
-            type: 'question',
-            buttons: ['Delete', 'Cancel'],
-            message: `Are you sure to delete this item?`,
-          },
-        );
+        const result = await dialog.showMessageBox(window, {
+          type: 'question',
+          buttons: ['Delete', 'Cancel'],
+          message: `Are you sure to delete this item?`,
+        });
 
         if (result.response === 0) {
           windowManager.sendRemoveTreeItem(window, options.itemId);
@@ -83,7 +79,7 @@ export const getTreeMenuItems = (window: BrowserWindow, options: IContextMenuOpt
   return menuTemplate;
 };
 
-export const getDefaultMenuItems = (window: BrowserWindow, options: IContextMenuOptions): any[] => {
+export const getDefaultMenuItems = (window: BrowserWindow, options: ContextMenuOptions): any[] => {
   const menuTemplate: any[] = [];
 
   if (options.enableCut) {
@@ -109,7 +105,7 @@ export const getDefaultMenuItems = (window: BrowserWindow, options: IContextMenu
 
   if (electronIsDev) {
     menuTemplate.push(
-      {type: 'separator'},
+      { type: 'separator' },
       {
         label: 'Inspect Element',
         click() {

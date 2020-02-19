@@ -2,10 +2,9 @@ import { app } from 'electron';
 import * as fs from 'fs';
 import * as _ from 'lodash';
 import * as path from 'path';
-import { ISettings } from '../typings';
+import { Settings } from '../common/types';
 
-
-export const defaultSettings: ISettings = {
+export const defaultSettings: Settings = {
   window: {
     width: 1024,
     height: 768,
@@ -18,7 +17,7 @@ export const defaultSettings: ISettings = {
 
 const settingsFilePath = path.join(app.getPath('userData'), 'settings.json');
 
-export const getSavedSettings = (): ISettings => {
+export const getSavedSettings = (): Settings => {
   const existsSettingsFile = fs.existsSync(settingsFilePath);
   if (!existsSettingsFile) {
     return defaultSettings;
@@ -29,7 +28,7 @@ export const getSavedSettings = (): ISettings => {
   return _.merge(defaultSettings, parsed);
 };
 
-export const saveSettings = (settings: ISettings) => {
+export const saveSettings = (settings: Settings) => {
   fs.writeFileSync(settingsFilePath, JSON.stringify(settings, null, 2));
 
   return getSavedSettings();
