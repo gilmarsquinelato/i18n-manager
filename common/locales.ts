@@ -1,4 +1,4 @@
-/* tslint:disable:object-literal-key-quotes */
+/* eslint-disable */
 const locales: {[key: string]: string; } = {
   'af': 'Afrikaans',
   'af-NA': 'Afrikaans (Namibia)',

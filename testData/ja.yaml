@@ -5,3 +5,7 @@ missing: ''
 some:
   deep:
     tree: {}
+    multi-line: |-
+      aaa
+      www
+      eee
