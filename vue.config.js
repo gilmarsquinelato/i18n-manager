@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   css: {
-    sourceMap: true,
+    sourceMap: process.env.NODE_ENV !== 'production',
   },
   transpileDependencies: ['vuetify'],
 

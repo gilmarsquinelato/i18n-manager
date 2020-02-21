@@ -10,6 +10,8 @@ import * as windowManager from './windowManager';
 
 const onSave = async (e: any, data: any) => {
   const window = BrowserWindow.fromWebContents(e.sender);
+  if (!window) return;
+
   const closeWindow = data.data.close;
   const closeDirectory = data.data.closeDirectory;
   const folder = data.payload;
@@ -18,7 +20,6 @@ const onSave = async (e: any, data: any) => {
     windowManager.sendSaveComplete(window, []);
     return;
   }
-
 
   const result = await fileManager.saveFolder(folder);
 
@@ -42,21 +43,25 @@ const onSave = async (e: any, data: any) => {
 
 const onOpen = (e: any, data: string) => {
   const window = BrowserWindow.fromWebContents(e.sender);
+  if (!window) return;
   fileManager.openFolderInWindow(data, window);
 };
 
 const onDataChanged = (e: any, data: boolean) => {
   const window = BrowserWindow.fromWebContents(e.sender);
+  if (!window) return;
   window.setDocumentEdited(data);
 };
 
 const onShowContextMenu = (e: any, data: ContextMenuOptions) => {
   const window = BrowserWindow.fromWebContents(e.sender);
+  if (!window) return;
   showContextMenu(window, data);
 };
 
 const onGetSettings = (e: any) => {
   const window = BrowserWindow.fromWebContents(e.sender);
+  if (!window) return;
   windowManager.sendSettings(window, settings.getCustomSettings());
 };
 
@@ -74,6 +79,7 @@ const onOpenFile = (e: any, data: any) => {
 
 const onRecentFolders = (e: any) => {
   const window = BrowserWindow.fromWebContents(e.sender);
+  if (!window) return;
   windowManager.sendRecentFolders(window, settings.getRecentFolders());
 };
 

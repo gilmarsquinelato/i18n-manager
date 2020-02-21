@@ -4,10 +4,10 @@
       @click="select"
       @click.right="handleRightClick"
       class="label"
-      :class="item.status"
-      :style="{ paddingLeft: item.level * 16 + 'px' }"
+      :class="[item.status, item.type]"
+      :style="{ paddingLeft: (item.level * 16) + 8 + 'px' }"
     >
-      <v-icon v-if="item.type !== 'item'" class="folder-arrow">
+      <v-icon class="folder-arrow">
         mdi-menu-right
       </v-icon>
 
@@ -208,6 +208,12 @@
         background-color: var(--selected-background-color);
       }
 
+      &.item {
+        .folder-arrow {
+          opacity: 0;
+        }
+      }
+
       &.missing {
         color: var(--v-error-base);
       }
@@ -222,7 +228,6 @@
     }
 
     .folder-arrow {
-      margin-left: -32px;
       transform: rotate(0);
     }
 

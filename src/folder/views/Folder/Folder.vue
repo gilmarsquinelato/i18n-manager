@@ -1,10 +1,22 @@
 <template>
   <div class="folder">
-    <v-row class="main ma-0">
-      <v-col cols="4" class="left-side pa-0 pb-1 mr-4">
-        <v-card class="left-card">
-          <v-app-bar extended extension-height="64">
+    <v-row>
+      <v-col class="pa-0">
+        <v-card tile>
+          <v-toolbar color="primary" dark class="flex-grow-0">
             <v-row>
+              <v-col cols="2">
+                <v-select
+                  v-model="treeVisibilityFilter"
+                  :items="treeVisibilityFilterOptions"
+                  item-value="value"
+                  item-text="label"
+                  label="Show"
+                  outlined
+                  hide-details
+                  dense
+                />
+              </v-col>
               <v-col>
                 <v-text-field
                   v-model="treeFilter"
@@ -12,49 +24,37 @@
                   hide-details
                   prepend-icon="mdi-magnify"
                   single-line
-                  placeholder="Search"
+                  label="Search"
                   outlined
                   dense
                 />
               </v-col>
             </v-row>
-            <template v-slot:extension>
-              <v-row>
-                <v-col cols="4">
-                  <v-select
-                    v-model="treeVisibilityFilter"
-                    :items="treeVisibilityFilterOptions"
-                    item-value="value"
-                    item-text="label"
-                    label="Show"
-                    outlined
-                    hide-details
-                    dense
-                  />
-                </v-col>
-              </v-row>
-            </template>
-          </v-app-bar>
-          <div class="tree-container">
-            <RecycleScroller
-              :items="expandedTreeItems"
-              :item-size="40"
-              key-field="id"
-              class="tree-scroller py-4 pl-8"
-              v-slot="{ item }"
-            >
-              <Tree
-                :key="item.id"
-                :item="item"
-                :selected-item="selectedItem"
-                :expanded="isParentExpanded(item)"
-                @select="selectItem"
-                @deleteTreeItem="deleteTreeItem"
-                @renameTreeItem="renameTreeItem"
-                @addTreeItem="addTreeItem"
-              />
-            </RecycleScroller>
-          </div>
+          </v-toolbar>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row class="main ma-0 mt-2">
+      <v-col cols="4" class="left-side pa-0 pb-1 mr-4">
+        <v-card class="left-card">
+          <RecycleScroller
+            :items="expandedTreeItems"
+            :item-size="40"
+            key-field="id"
+            class="tree-scroller"
+            v-slot="{ item }"
+          >
+            <Tree
+              :key="item.id"
+              :item="item"
+              :selected-item="selectedItem"
+              :expanded="isParentExpanded(item)"
+              @select="selectItem"
+              @deleteTreeItem="deleteTreeItem"
+              @renameTreeItem="renameTreeItem"
+              @addTreeItem="addTreeItem"
+            />
+          </RecycleScroller>
         </v-card>
       </v-col>
       <v-col class="right-side pa-2 pr-0">
@@ -87,8 +87,8 @@
       </v-col>
     </v-row>
     <v-row class="status-bar">
-      <v-col class="pb-0">
-        <v-card>
+      <v-col class="pb-0 pt-2">
+        <v-card tile>
           <div class="status-item" v-if="isSaving">
             <v-icon>mdi-content-save-outline</v-icon>
           </div>
@@ -120,13 +120,13 @@
           />
         </v-card-text>
 
-        <v-spacer />
+        <v-spacer/>
 
         <v-card-actions>
-          <v-spacer />
+          <v-spacer/>
           <v-btn text @click="itemActionCancel">Cancel</v-btn>
           <v-btn color="primary" @click="itemActionDone">Ok</v-btn>
-          <v-spacer />
+          <v-spacer/>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -157,7 +157,7 @@
 
   export default createComponent({
     name: 'Folder',
-    components: { TranslationProgressPanel, Translate, Content, Tree },
+    components: {TranslationProgressPanel, Translate, Content, Tree},
     setup() {
       const globalModule = useNamespace('global');
       const showSettings = globalModule.useMutation('showSettings');
@@ -253,14 +253,12 @@
 
 <style scoped lang="scss">
   .folder {
-    display: flex;
-    flex-direction: column;
     height: 100vh;
   }
 
   .main {
     flex: 1;
-    height: 100%;
+    height: calc(100vh - 64px - 46px);
   }
 
   .left-side {
@@ -303,9 +301,6 @@
   }
 
   .status-bar {
-    flex: 0;
-    height: 42px;
-
     .v-card {
       height: 30px;
     }
