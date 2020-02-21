@@ -1,0 +1,28 @@
+name: Build
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: NPM or Yarn install with caching
+      uses: bahmutov/npm-install@v1.1.0
+    - run: yarn
+    - name: Ïnstall Greenkeeper
+      run: yarn global add greenkeeper-lockfile@1
+    - name: Greenkeeper
+      run: greenkeeper-lockfile-update
+    - name: Greenkeeper upload
+      run: greenkeeper-lockfile-upload
