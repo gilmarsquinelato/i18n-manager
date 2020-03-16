@@ -1,28 +1,30 @@
-import axios, { CancelTokenSource } from 'axios';
-import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators';
-import deepEqual from 'fast-deep-equal';
-import _ from 'lodash/fp';
-
 import router from '@/router';
 import { sendIpc } from '@/store/plugins/ipc';
 import * as ipcMessages from '@common/ipcMessages';
 import { LoadedPath } from '@common/types';
+import axios, { CancelTokenSource } from 'axios';
+import deepEqual from 'fast-deep-equal';
+import _ from 'lodash/fp';
+import { Action, Module, Mutation, VuexModule } from 'vuex-module-decorators';
 
 import {
   AddItemPayload,
   ChangeFolderValuePayload,
+  ClipboardItemAction,
   DeleteItemPayload,
   LanguageListItem,
+  PasteItemPayload,
   RenameItemPayload,
+  SetClipboardPayload,
   TranslatePayload,
   TranslationError,
   TranslationProgress,
-  TreeMap,
   TreeItem,
+  TreeMap,
 } from './types';
-import { translate, getTranslationItems } from './utils/translate';
-import { addItem, deleteItem, renameItem } from './utils/files';
+import { addItem, deleteItem, pasteItem, renameItem } from './utils/files';
 import { createLanguageList, getLanguageLabel, getLanguagePath } from './utils/language';
+import { getTranslationItems, translate } from './utils/translate';
 import { createTree, createTreeStatus, pathToString, updateTreeStatus } from './utils/tree';
 
 const GOOGLE_TRANSLATE_LANGUAGES_URL =
@@ -45,6 +47,9 @@ export default class FolderModule extends VuexModule {
   translationErrors: TranslationError[] = [];
   cancelToken: CancelTokenSource | null = null;
 
+  clipboardItemId: string | null = null;
+  clipboardItemAction: ClipboardItemAction | null = null;
+
   isSaving = false;
 
   get treeItems() {
@@ -62,6 +67,7 @@ export default class FolderModule extends VuexModule {
     commit('setOriginalFolder', []);
     commit('setSelectedItem', null);
     commit('setModifiedContent', false);
+    commit('setClipboard', { item: null, action: null });
     await dispatch('sendModifiedContent');
   }
 
@@ -87,7 +93,7 @@ export default class FolderModule extends VuexModule {
     commit('setTree', tree);
     // after we update the status
     // since this second part takes a longer time
-    createTreeStatus(tree, folder);
+    createTreeStatus(tree, folder, folder);
     commit('setTree', tree);
 
     await dispatch('createLanguageList');
@@ -403,7 +409,68 @@ export default class FolderModule extends VuexModule {
     updateTreeStatus(tree, this.folder, this.originalFolder, newId);
 
     this.tree = tree;
-    this.selectedItem = tree[newId];
     this.modifiedContent = true;
+    if (tree[newId].type === 'item') {
+      this.selectedItem = tree[newId];
+    }
+  }
+
+  @Mutation
+  setClipboard({ item, action }: SetClipboardPayload) {
+    if (!item) {
+      this.clipboardItemId = null;
+      this.clipboardItemAction = null;
+      return;
+    }
+
+    this.clipboardItemId = item.id;
+    this.clipboardItemAction = action;
+  }
+
+  @Mutation
+  pasteItem({ parent, label }: PasteItemPayload) {
+    if (!this.clipboardItemId) return;
+
+    const item = this.tree[this.clipboardItemId];
+
+    const newPath = parent.path.slice();
+    newPath.push(label);
+
+    this.folder = pasteItem(this.folder, item.path, newPath);
+
+    // Hack to retrieve pure object instead the Observer one
+    let tree = Object.assign({}, this.tree);
+
+    if (this.clipboardItemAction === ClipboardItemAction.cut) {
+      this.folder = deleteItem(this.folder, item.path);
+
+      tree = _.pipe(
+        Object.entries,
+        // Remove the removed item and its children
+        _.filter(([id]) => id !== item.id && !id.startsWith(`${item.id}.`)),
+        Object.fromEntries,
+      )(tree);
+    }
+
+    createTree(tree, this.folder);
+
+    tree = _.pipe(
+      Object.entries,
+      _.sortBy(([id]) => id),
+      Object.fromEntries,
+    )(tree);
+
+    createTreeStatus(tree, this.folder, this.originalFolder);
+
+    this.tree = tree;
+    this.modifiedContent = true;
+
+    this.clipboardItemId = null;
+    this.clipboardItemAction = null;
+
+    const newId = pathToString(newPath);
+    if (tree[newId].type === 'item') {
+      this.selectedItem = tree[newId];
+    }
   }
 }

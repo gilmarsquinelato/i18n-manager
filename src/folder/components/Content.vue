@@ -88,7 +88,7 @@
       });
 
       function updateValue(event: any, index: number) {
-        emit('updateValue', {
+        emit('update-value', {
           index,
           value: event.target.value,
           itemId: props.selectedItem!.id,
