@@ -13,17 +13,18 @@ export default function useTree(
   let expandedItems: string[] = [''];
 
   const treeFilter = ref('');
-  const treeVisibilityFilter = ref<'all' | 'missing'>('all');
+  const treeVisibilityFilter = ref<'all' | 'missing' | 'duplicated'>('all');
   const treeVisibilityFilterOptions = ref([
     { label: 'All', value: 'all' },
     { label: 'Missing', value: 'missing' },
+    { label: 'Duplicated', value: 'duplicated' },
   ]);
 
   const filteredTreeItems = ref<TreeItem[]>(treeItems.value ?? []);
   const expandedTreeItems = ref<TreeItem[]>([]);
 
   watch(treeItems, () => {
-    filterTreeItems();
+    filterTreeItems(false);
     updateExpandedTreeItems();
   });
 
@@ -32,8 +33,9 @@ export default function useTree(
   });
 
   function expandTreeNode(item: TreeItem) {
-    if (expandedItems.indexOf(item.id) === -1) return;
+    if (expandedItems.includes(item.id)) return;
     expandedItems.push(item.id);
+    updateExpandedTreeItems();
   }
 
   function toggleTreeNode(item: TreeItem) {
@@ -62,6 +64,9 @@ export default function useTree(
     if (treeVisibilityFilter.value === 'missing') {
       filteredByVisibility = filteredByVisibility.filter(it => it.missingCount > 0);
     }
+    if (treeVisibilityFilter.value === 'duplicated') {
+      filteredByVisibility = filteredByVisibility.filter(it => it.duplicatedCount > 0);
+    }
 
     expandedTreeItems.value = filteredByVisibility.filter(
       it => expandedItems.includes(it.id) || expandedItems.includes(it.parent),
@@ -72,12 +77,14 @@ export default function useTree(
     return expandedItems.includes(item.id);
   }
 
-  function filterTreeItems() {
+  function filterTreeItems(resetExpandedItems: boolean = true) {
     if (!treeItems.value) return;
 
     if (treeFilter.value.length === 0) {
       filteredTreeItems.value = treeItems.value;
-      expandedItems = [''];
+      if (resetExpandedItems) {
+        expandedItems = [''];
+      }
       updateExpandedTreeItems();
       return;
     }

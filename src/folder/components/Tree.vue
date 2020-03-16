@@ -1,11 +1,14 @@
 <template>
-  <div class="tree-item" :class="{ expanded, selected }">
+  <div
+    class="tree-item"
+    :class="{ expanded, selected, copy: isItemBeingCopied(), cut: isItemBeingCut() }"
+  >
     <div
       @click="select"
       @click.right="handleRightClick"
       class="label"
       :class="[item.status, item.type]"
-      :style="{ paddingLeft: (item.level * 16) + 8 + 'px' }"
+      :style="{ paddingLeft: item.level * 16 + 8 + 'px' }"
     >
       <v-icon class="folder-arrow">
         mdi-menu-right
@@ -23,44 +26,22 @@
         {{ item.label }}
       </v-tooltip>
 
-      <span v-if="item.missingCount > 0" class="missing-count">
+      <span v-if="item.missingCount > 0" class="badge missing-count" title="Missing items">
         {{ item.missingCount }}
       </span>
+      <span v-if="item.duplicatedCount > 0" class="badge duplicated-count" title="Duplicated items">
+        {{ item.duplicatedCount }}
+      </span>
     </div>
-
-    <v-menu
-      absolute
-      v-model="isContextMenuOpen"
-      :position-x="contextMenuX"
-      :position-y="contextMenuY"
-    >
-      <v-list>
-        <v-list-item v-if="item.type === 'node'" @click="addItem">
-          <v-list-item-title>Add Item</v-list-item-title>
-        </v-list-item>
-        <v-list-item v-if="item.type === 'node'" @click="addNode">
-          <v-list-item-title>Add Node</v-list-item-title>
-        </v-list-item>
-
-        <v-divider v-if="item.type === 'node'" />
-
-        <v-list-item @click="renameTreeItem">
-          <v-list-item-title>Rename</v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="deleteTreeItem">
-          <v-list-item-title>Delete</v-list-item-title>
-        </v-list-item>
-      </v-list>
-    </v-menu>
   </div>
 </template>
 
 <script lang="ts">
-  import { createComponent, onMounted, reactive, ref, toRefs, watch } from '@vue/composition-api';
+  import { createComponent, ref, watch } from '@vue/composition-api';
 
   import { ComponentEmit } from '@/index';
 
-  import { TreeItem } from '../types';
+  import { ClipboardItemAction, TreeItem } from '../types';
 
   export default createComponent({
     name: 'Tree',
@@ -71,49 +52,28 @@
       },
       selectedItem: Object as () => TreeItem,
       expanded: Boolean,
+      hasCopiedItem: Boolean,
+      clipboardItemId: String,
+      clipboardItemAction: Number as () => ClipboardItemAction,
     },
     setup(props, { emit }) {
       const icon = getIcon(props.item);
       const selectedItem = useSelectedItem(emit, props);
-      const contextMenu = useContextMenu();
 
-      function handleRightClick(event: MouseEvent) {
-        if (props.item.type !== 'node' && props.item.type !== 'item') {
-          return;
-        }
+      const handleRightClick = (event: MouseEvent) => emit('right-click', event, props.item);
 
-        contextMenu.openContextMenu(event);
-      }
-
-      function addItem() {
-        contextMenu.closeContextMenu();
-        emit('addTreeItem', props.item, true);
-      }
-
-      function addNode() {
-        contextMenu.closeContextMenu();
-        emit('addTreeItem', props.item, false);
-      }
-
-      function renameTreeItem() {
-        contextMenu.closeContextMenu();
-        emit('renameTreeItem', props.item);
-      }
-
-      function deleteTreeItem() {
-        contextMenu.closeContextMenu();
-        emit('deleteTreeItem', props.item);
-      }
+      const isClipboardItem = () => props.item.id === props.clipboardItemId;
+      const isItemBeingCopied = () =>
+        isClipboardItem() && props.clipboardItemAction === ClipboardItemAction.copy;
+      const isItemBeingCut = () =>
+        isClipboardItem() && props.clipboardItemAction === ClipboardItemAction.cut;
 
       return {
         icon,
-        addItem,
-        addNode,
-        renameTreeItem,
-        deleteTreeItem,
         handleRightClick,
+        isItemBeingCopied,
+        isItemBeingCut,
         ...selectedItem,
-        ...contextMenu,
       };
     },
   });
@@ -139,30 +99,6 @@
     };
   }
 
-  function useContextMenu() {
-    const state = reactive({
-      isContextMenuOpen: false,
-      contextMenuX: 0,
-      contextMenuY: 0,
-    });
-
-    function openContextMenu(event: MouseEvent) {
-      state.contextMenuX = event.clientX;
-      state.contextMenuY = event.clientY;
-      state.isContextMenuOpen = true;
-    }
-
-    function closeContextMenu() {
-      state.isContextMenuOpen = false;
-    }
-
-    return {
-      ...toRefs(state),
-      openContextMenu,
-      closeContextMenu,
-    };
-  }
-
   function getIcon(item: TreeItem) {
     switch (item.type) {
       case 'folder':
@@ -182,6 +118,8 @@
     --selected-background-color: #f0f2f5;
     min-width: 100%;
 
+    border: 2px solid transparent;
+
     &.selected {
       .label {
         background-color: var(--selected-background-color);
@@ -192,6 +130,14 @@
       .folder-arrow {
         transform: rotate(45deg);
       }
+    }
+
+    &.copy {
+      border: 2px solid var(--v-primary-base);
+    }
+
+    &.cut {
+      border: 2px dashed var(--v-primary-base);
     }
 
     .label {
@@ -231,7 +177,7 @@
       transform: rotate(0);
     }
 
-    .missing-count {
+    .badge {
       $size: 24px;
       width: auto;
       height: $size;
@@ -241,12 +187,20 @@
       line-height: 16px;
       padding: 4px;
 
-      background-color: var(--v-error-base);
-      color: #ffffff;
       text-align: center;
       font-size: 14px;
 
       margin-left: 8px;
+    }
+
+    .missing-count {
+      background-color: var(--v-error-base);
+      color: #ffffff;
+    }
+
+    .duplicated-count {
+      background-color: var(--v-warning-base);
+      color: #ffffff;
     }
 
     .item-name {

@@ -13,14 +13,14 @@ export const getContentFromPath = (folder: LoadedPath[], path: any[]): ContentIt
   }));
 };
 
+const getLanguageIndex = (path: any[]) => path.indexOf(LANGUAGE_INDEX_SYMBOL);
+
 export const getLanguageCount = (items: LoadedPath[], path: any[]): number => {
-  const parentPath = path.slice(0, path.indexOf(LANGUAGE_INDEX_SYMBOL));
-  const data = _.getOr([], parentPath, items) as any[];
-  return data.length;
+  return getParsedFiles(items, path).length;
 };
 
 export const getParsedFiles = (items: LoadedPath[], path: any[]): ParsedFile[] => {
-  const parentPath = path.slice(0, path.indexOf(LANGUAGE_INDEX_SYMBOL));
+  const parentPath = path.slice(0, getLanguageIndex(path));
   return (_.getOr([], parentPath, items) as unknown) as ParsedFile[];
 };
 
@@ -64,7 +64,7 @@ export const getFormattedPath = (
 };
 
 export const renameItem = (items: LoadedPath[], oldPath: any[], newPath: any[]): LoadedPath[] => {
-  const languageIndex = oldPath.indexOf(LANGUAGE_INDEX_SYMBOL);
+  const languageIndex = getLanguageIndex(oldPath);
   const languageCount = getLanguageCount(items, oldPath);
 
   let newItems = items;
@@ -90,7 +90,7 @@ export const addItem = (
   label: string,
   isItem: boolean,
 ): LoadedPath[] => {
-  const languageIndex = path.indexOf(LANGUAGE_INDEX_SYMBOL);
+  const languageIndex = getLanguageIndex(path);
   const languageCount = getLanguageCount(items, path);
 
   let newItems = items;
@@ -109,7 +109,7 @@ export const addItem = (
 };
 
 export const deleteItem = (items: LoadedPath[], path: any[]): LoadedPath[] => {
-  const languageIndex = path.indexOf(LANGUAGE_INDEX_SYMBOL);
+  const languageIndex = getLanguageIndex(path);
   const languageCount = getLanguageCount(items, path);
 
   let newItems = items;
@@ -120,6 +120,37 @@ export const deleteItem = (items: LoadedPath[], path: any[]): LoadedPath[] => {
     pathCopy[languageIndex] = i;
 
     newItems = _.unset(pathCopy, newItems);
+  }
+
+  return newItems;
+};
+
+export const pasteItem = (items: LoadedPath[], oldPath: any[], newPath: any[]): LoadedPath[] => {
+  const oldLanguageIndex = getLanguageIndex(oldPath);
+  const newLanguageIndex = getLanguageIndex(newPath);
+
+  const oldPathLanguages = getParsedFiles(items, oldPath).map(it => it.language);
+  const newPathLanguages = getParsedFiles(items, newPath).map(it => it.language);
+
+  let newItems = items;
+
+  for (let i = 0; i < newPathLanguages.length; i++) {
+    const oldPathCopy = oldPath.slice();
+    const newPathCopy = newPath.slice();
+
+    const newPathLanguage = newPathLanguages[i];
+    newPathCopy[newLanguageIndex] = i;
+
+    oldPathCopy[oldLanguageIndex] = oldPathLanguages.indexOf(newPathLanguage);
+
+    let value = _.get(oldPathCopy, items);
+    // Fallback to the first language found
+    if (!value) {
+      oldPathCopy[oldLanguageIndex] = 0;
+      value = _.get(oldPathCopy, items);
+    }
+
+    newItems = _.set(newPathCopy, value, newItems);
   }
 
   return newItems;

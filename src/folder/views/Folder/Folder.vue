@@ -39,7 +39,7 @@
         <v-card class="left-card">
           <RecycleScroller
             :items="expandedTreeItems"
-            :item-size="40"
+            :item-size="44"
             key-field="id"
             class="tree-scroller"
             v-slot="{ item }"
@@ -49,10 +49,10 @@
               :item="item"
               :selected-item="selectedItem"
               :expanded="isParentExpanded(item)"
+              :clipboard-item-id="clipboardItemId"
+              :clipboard-item-action="clipboardItemAction"
               @select="selectItem"
-              @deleteTreeItem="deleteTreeItem"
-              @renameTreeItem="renameTreeItem"
-              @addTreeItem="addTreeItem"
+              @right-click="handleItemRightClick"
             />
           </RecycleScroller>
         </v-card>
@@ -104,42 +104,30 @@
       @cancelTranslate="cancelTranslate"
     />
 
-    <v-dialog v-model="isItemActionActive" eager width="500">
-      <v-card class="px-0 d-flex flex-column">
-        <v-card-title v-if="currentAction === 'renameItem'">Rename item</v-card-title>
-        <v-card-title v-if="currentAction === 'addItem'">Add item</v-card-title>
-        <v-card-title v-if="currentAction === 'addNode'">Add node</v-card-title>
-
-        <v-card-text>
-          <v-text-field
-            ref="actionTextFieldRef"
-            label="Name"
-            v-model="itemLabel"
-            :error-messages="!isValidLabel ? 'There is another item with this name' : ''"
-            @keyup.enter="itemActionDone"
-          />
-        </v-card-text>
-
-        <v-spacer/>
-
-        <v-card-actions>
-          <v-spacer/>
-          <v-btn text @click="itemActionCancel">Cancel</v-btn>
-          <v-btn color="primary" @click="itemActionDone">Ok</v-btn>
-          <v-spacer/>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+    <ContextMenu
+      ref="contextMenuRef"
+      :tree="tree"
+      :tree-items="treeItems"
+      :clipboard-item-id="clipboardItemId"
+      @add-item="onAddItem"
+      @paste-item="onPasteItem"
+      @rename-item="renameItem"
+      @delete-item="deleteItem"
+      @send-modified-content="sendModifiedContent"
+      @set-clipboard="setClipboard"
+    />
   </div>
 </template>
 
 <script lang="ts">
-  import { createComponent } from '@vue/composition-api';
+  import { createComponent, ref } from '@vue/composition-api';
 
   import {
     AddItemPayload,
     ChangeFolderValuePayload,
+    ClipboardItemAction,
     LanguageListItem,
+    PasteItemPayload,
     TranslationError,
     TranslationProgress,
     TreeItem,
@@ -148,16 +136,16 @@
   import { useNamespace } from '@/store/utils';
   import { CustomSettings, LoadedPath } from '@common/types';
   import useTree from './compositions/tree';
-  import useItemActions from './compositions/itemActions';
 
   import Content from '../../components/Content.vue';
   import Translate from '../../components/Translate.vue';
   import TranslationProgressPanel from '../../components/TranslationProgressPanel.vue';
   import Tree from '../../components/Tree.vue';
+  import ContextMenu from '../../components/ContextMenu.vue';
 
   export default createComponent({
     name: 'Folder',
-    components: {TranslationProgressPanel, Translate, Content, Tree},
+    components: { TranslationProgressPanel, Translate, Content, Tree, ContextMenu },
     setup() {
       const globalModule = useNamespace('global');
       const showSettings = globalModule.useMutation('showSettings');
@@ -190,8 +178,14 @@
 
       const isSaving = folderModule.useState<boolean>('isSaving');
 
+      const setClipboard = folderModule.useMutation('setClipboard');
+      const pasteItem = folderModule.useMutation('pasteItem');
+      const clipboardItemId = folderModule.useState<string>('clipboardItemId');
+      const clipboardItemAction = folderModule.useState<ClipboardItemAction>('clipboardItemAction');
+
       const treeComposition = useTree(tree, treeItems, folder);
-      const itemActions = useItemActions(deleteItem, renameItem, onAddItem, sendModifiedContent);
+
+      const contextMenuRef = ref<any>(null);
 
       function selectItem(item: TreeItem) {
         if (item.type === 'item') {
@@ -212,13 +206,14 @@
         treeComposition.expandTreeNode(payload.parent);
       }
 
-      const addTreeItem = (item: TreeItem, isItem: boolean) =>
-        itemActions.itemActionAddItem(item, isItem, treeItems.value ?? []);
+      function onPasteItem(payload: PasteItemPayload) {
+        pasteItem(payload);
+        treeComposition.expandTreeNode(payload.parent);
+      }
 
-      const renameTreeItem = (item: TreeItem) =>
-        itemActions.itemActionRename(item, treeItems.value ?? []);
-
-      const deleteTreeItem = (item: TreeItem) => itemActions.itemActionDelete(item);
+      function handleItemRightClick(event: MouseEvent, item: TreeItem) {
+        contextMenuRef.value?.handleRightClick(event, item);
+      }
 
       return {
         showSettings,
@@ -229,12 +224,18 @@
         selectItem,
         updateFolderValue,
 
-        ...treeComposition,
-        ...itemActions,
+        tree,
+        treeItems,
 
-        addTreeItem,
-        renameTreeItem,
-        deleteTreeItem,
+        ...treeComposition,
+        contextMenuRef,
+        handleItemRightClick,
+        onAddItem,
+        onPasteItem,
+        renameItem,
+        deleteItem,
+        setClipboard,
+        sendModifiedContent,
 
         languageList,
         isTranslationEnabled,
@@ -246,6 +247,9 @@
         cancelTranslate,
 
         isSaving,
+
+        clipboardItemId,
+        clipboardItemAction,
       };
     },
   });
@@ -291,6 +295,7 @@
 
     .content-container {
       height: 100%;
+      overflow: auto;
 
       > div {
         height: 100%;
