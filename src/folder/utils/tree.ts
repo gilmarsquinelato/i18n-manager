@@ -36,6 +36,7 @@ export const createTree = (
         status: 'normal',
         label: item.name,
         missingCount: 0,
+        duplicatedCount: 0,
         level,
       };
 
@@ -96,6 +97,7 @@ const createTreeFromObject = (
         status: 'normal',
         label: key,
         missingCount: 0,
+        duplicatedCount: 0,
         level,
       };
       tree[id] = item;
@@ -108,16 +110,20 @@ const createTreeFromObject = (
 };
 
 // TREE STATUS
-export const createTreeStatus = (tree: TreeMap, folder: LoadedPath[]) => {
+export const createTreeStatus = (
+  tree: TreeMap,
+  folder: LoadedPath[],
+  originalFolder: LoadedPath[],
+) => {
   const items = Object.values(tree).filter(it => it.type === 'item');
 
   for (const item of items) {
-    updateTreeItemStatus(item, folder, folder);
+    updateTreeItemStatus(item, folder, originalFolder);
   }
 
   const parents = _.uniq(items.map(it => it.parent));
   for (const parent of parents) {
-    updateTreeStatus(tree, folder, folder, parent);
+    updateTreeStatus(tree, folder, originalFolder, parent);
   }
 };
 
@@ -153,28 +159,40 @@ export const updateTreeItemStatus = (
 
   item.status = treeItemStatus;
   item.missingCount = treeItemStatus === 'missing' ? content.filter(it => !it.value).length : 0;
+  item.duplicatedCount = getDuplicatedCount(content);
 };
 
 export const updateNonItemMissingCount = (item: TreeItem, tree: TreeMap) => {
-  item.missingCount = getMissingCount(tree, item.id);
+  item.missingCount = getMissingChildrenCount(tree, item.id);
+  item.duplicatedCount = getDuplicatedChildrenCount(tree, item.id);
 };
 
-const getMissingCount = (tree: TreeMap, itemId: string) =>
+const getMissingChildrenCount = (tree: TreeMap, itemId: string) =>
+  getChildrenPropertyCount(tree, itemId, it => it.missingCount);
+
+const getDuplicatedChildrenCount = (tree: TreeMap, itemId: string) =>
+  getChildrenPropertyCount(tree, itemId, it => it.duplicatedCount);
+
+const getChildrenPropertyCount = (
+  tree: TreeMap,
+  itemId: string,
+  propertyFn: (item: TreeItem) => number,
+) =>
   Object.values(tree)
     .filter(it => it.parent === itemId) // item children
-    .map(it => it.missingCount)
+    .map(propertyFn)
     .reduce((acc, curr) => acc + curr, 0);
 
 export const getTreeItemStatus = (
   content: ContentItem[],
   originalContent: ContentItem[],
 ): TreeItemStatus => {
-  if (isNewItem(originalContent)) {
-    return 'new';
-  }
-
   if (isMissingItem(content)) {
     return 'missing';
+  }
+
+  if (isNewItem(originalContent)) {
+    return 'new';
   }
 
   if (isChangedItem(content, originalContent)) {
@@ -183,6 +201,15 @@ export const getTreeItemStatus = (
 
   return 'normal';
 };
+
+export const getDuplicatedCount = (content: ContentItem[]): number =>
+  _.flow(
+    _.filter((it: ContentItem) => it.value),
+    _.groupBy('value'),
+    Object.entries,
+    _.filter(([key, value]) => key !== undefined && value.length > 1),
+    _.sumBy(([key, value]) => value.length),
+  )(content);
 
 const isNewItem = (originalContent: ContentItem[]) =>
   originalContent.filter(it => it.value !== undefined).length === 0;

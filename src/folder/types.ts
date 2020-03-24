@@ -11,6 +11,7 @@ export interface TreeItem {
   label: string;
   status: TreeItemStatus;
   missingCount: number;
+  duplicatedCount: number;
   level: number;
 }
 
@@ -63,6 +64,21 @@ export interface RenameItemPayload {
   label: string;
 }
 
+export interface PasteItemPayload {
+  parent: TreeItem;
+  label: string;
+}
+
 export interface DeleteItemPayload {
   item: TreeItem;
+}
+
+export interface SetClipboardPayload {
+  item: TreeItem;
+  action: ClipboardItemAction;
+}
+
+export enum ClipboardItemAction {
+  copy,
+  cut,
 }
