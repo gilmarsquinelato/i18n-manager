@@ -1,9 +1,7 @@
 language: node_js
-os:
-- osx
-
-node_js:
-- '13'
+os: osx
+osx_image: xcode11.3
+node_js: '13'
 
 cache: yarn
 
