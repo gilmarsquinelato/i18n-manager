@@ -188,9 +188,8 @@
       const contextMenuRef = ref<any>(null);
 
       function selectItem(item: TreeItem) {
-        if (item.type === 'item') {
-          setSelectedItem(item);
-        } else {
+        setSelectedItem(item);
+        if (item.type !== 'item') {
           treeComposition.toggleTreeNode(item);
         }
       }

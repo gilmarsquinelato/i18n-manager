@@ -10,6 +10,7 @@
             @keyup="onChange($event, item.languageIndex)"
             v-model="item.value"
             :label="getLanguageLabel(item.language)"
+            placeholder=" "
             :tabindex="index"
             outlined
             class="item-input"
@@ -17,6 +18,7 @@
             hide-details
             rows="1"
             auto-grow
+            dense
           />
         </v-col>
         <v-col cols="1">
@@ -135,7 +137,7 @@
       originalFolder: LoadedPath[],
       selectedItem?: TreeItem,
     ) {
-      if (!selectedItem) {
+      if (!selectedItem || selectedItem.type !== 'item') {
         content.value = [];
         return;
       }

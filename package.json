@@ -80,6 +80,9 @@
     "vuex-class": "^0.3.2",
     "vuex-module-decorators": "^0.16.1"
   },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ],
   "build": {
     "productName": "i18n Manager",
     "appId": "com.i18n-manager.app",
