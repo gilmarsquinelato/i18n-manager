@@ -31,13 +31,11 @@ Any type of contributions are welcome.
 
 ## Screenshots
 
-![](./screenshots/pic-1.jpg)
+![](./screenshots/pic-1.png)
 
-![](./screenshots/pic-2.jpg)
+![](./screenshots/pic-2.png)
 
-![](./screenshots/pic-3.jpg)
-
-![](./screenshots/pic-4.jpg)
+![](./screenshots/pic-3.png)
 
 ## Developing
 
