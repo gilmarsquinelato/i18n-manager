@@ -1,14 +1,14 @@
 import { BrowserWindow, dialog } from 'electron';
-import electronIsDev = require('electron-is-dev');
+import electronIsDev from 'electron-is-dev';
 import * as _ from 'lodash';
 
 import * as ipcMessages from '../common/ipcMessages';
-import { ILoadedPath } from '../typings';
+import { LoadedPath } from '../common/types';
 import { getFormattedFoldersPaths } from './pathUtils';
 import * as settings from './Settings';
 
-
-export const hasWindows = (): boolean => BrowserWindow.getAllWindows().length > 0;
+export const hasWindows = (): boolean =>
+  BrowserWindow.getAllWindows().length > 0;
 
 export const getOrCreateAvailableWindow = (): BrowserWindow => {
   const window = getAvailableWindow();
@@ -18,8 +18,8 @@ export const getOrCreateAvailableWindow = (): BrowserWindow => {
 export const createWindow = (): BrowserWindow => {
   const window = new BrowserWindow({
     ...settings.getSavedSettings().window,
-    minWidth: 1024,
-    minHeight: 768,
+    minWidth: 1280,
+    minHeight: 720,
     show: false,
     icon: '../icons/icon.png',
     webPreferences: {
@@ -28,7 +28,7 @@ export const createWindow = (): BrowserWindow => {
   });
 
   if (electronIsDev) {
-    window.loadURL('http://localhost:3000');
+    window.loadURL('http://localhost:8080/');
   } else {
     window.loadFile('build/view/index.html');
   }
@@ -38,16 +38,16 @@ export const createWindow = (): BrowserWindow => {
   return window;
 };
 
-export const getCurrentWindow = (): BrowserWindow | null => BrowserWindow.getFocusedWindow();
-
+export const getCurrentWindow = (): BrowserWindow | null =>
+  BrowserWindow.getFocusedWindow();
 
 export const sendOpen = async (
   window: Electron.BrowserWindow,
   folderPath: string,
-  folder: ILoadedPath[],
+  folder: LoadedPath[],
 ) => {
+  sendToIpc(window, ipcMessages.navigateTo, { path: '/folder' });
   sendToIpc(window, ipcMessages.open, folder);
-  sendToIpc(window, ipcMessages.navigateTo, {path: '/folder'});
 };
 
 export const sendSave = (window: BrowserWindow, data: any = {}) => {
@@ -58,7 +58,10 @@ export const sendSaveComplete = (window: BrowserWindow, data: any = {}) => {
   sendToIpc(window, ipcMessages.saveComplete, data);
 };
 
-export const sendRefreshFolder = (window: BrowserWindow, folder: ILoadedPath[]) => {
+export const sendRefreshFolder = (
+  window: BrowserWindow,
+  folder: LoadedPath[],
+) => {
   sendToIpc(window, ipcMessages.refreshFolder, folder);
 };
 
@@ -66,16 +69,26 @@ export const sendAddTreeItem = (window: BrowserWindow, data: any = {}) => {
   sendToIpc(window, ipcMessages.addTreeItem, data);
 };
 
-export const sendRemoveTreeItem = (window: BrowserWindow, itemId: string = '') => {
+export const sendRemoveTreeItem = (
+  window: BrowserWindow,
+  itemId: string = '',
+) => {
   sendToIpc(window, ipcMessages.removeTreeItem, itemId);
 };
 
-export const sendRenameTreeItem = (window: BrowserWindow, itemId: string = '') => {
+export const sendRenameTreeItem = (
+  window: BrowserWindow,
+  itemId: string = '',
+) => {
   sendToIpc(window, ipcMessages.renameTreeItem, itemId);
 };
 
 export const sendNavigateTo = (window: BrowserWindow, data: any = {}) => {
   sendToIpc(window, ipcMessages.navigateTo, data);
+};
+
+export const sendShowSettings = (window: BrowserWindow) => {
+  sendToIpc(window, ipcMessages.showSettings);
 };
 
 export const sendSettings = (window: BrowserWindow, data: any = {}) => {
@@ -90,11 +103,11 @@ export const sendClose = (window: BrowserWindow) => {
   sendToIpc(window, ipcMessages.closeFolder, {});
 };
 
-const sendToIpc = (window: BrowserWindow, message: string, data: any) => {
+const sendToIpc = (window: BrowserWindow, message: string, data?: any) => {
   const send = () => window.webContents.send(message, data);
 
   if (window.webContents.isLoading()) {
-    window.webContents.on('did-finish-load', send);
+    window.webContents.once('did-finish-load', send);
   } else {
     send();
   }
@@ -106,35 +119,30 @@ export enum SaveResponse {
   DontSave,
 }
 
-export const showSaveDialog = (window: BrowserWindow): Promise<SaveResponse> =>
-  new Promise((resolve) => {
-    dialog.showMessageBox(
-      window,
-      {
-        type: 'question',
-        buttons: ['Save', 'Cancel', 'Don\'t Save'],
-        message: 'Do you want to save the changes you made?',
-        detail: 'Your changes will be lost if you don\'t save them.',
-      },
-      (response: number) => {
-        switch (response) {
-          case 0:
-            resolve(SaveResponse.Save);
-            break;
-          case 1:
-            resolve(SaveResponse.Cancel);
-            break;
-          case 2:
-            resolve(SaveResponse.DontSave);
-            break;
-        }
-      });
+export const showSaveDialog = async (
+  window: BrowserWindow,
+): Promise<SaveResponse> => {
+  const result = await dialog.showMessageBox(window, {
+    type: 'question',
+    buttons: ['Save', 'Cancel', "Don't Save"],
+    message: 'Do you want to save the changes you made?',
+    detail: "Your changes will be lost if you don't save them.",
   });
 
+  switch (result.response) {
+    case 0:
+      return SaveResponse.Save;
+    case 1:
+      return SaveResponse.Cancel;
+    case 2:
+      return SaveResponse.DontSave;
+    default:
+      return SaveResponse.Cancel;
+  }
+};
 
 export const getAvailableWindow = (): BrowserWindow =>
-  BrowserWindow.getAllWindows()
-    .filter(w => !w.isDocumentEdited())[0];
+  BrowserWindow.getAllWindows().filter(w => !w.isDocumentEdited())[0];
 
 const registerEvents = (window: BrowserWindow) => {
   window.on('close', onClose(window));
@@ -154,7 +162,7 @@ const onClose = (window: BrowserWindow) => async (e: Electron.Event) => {
   const response = await showSaveDialog(window);
 
   if (response === SaveResponse.Save) {
-    sendSave(window, {close: true});
+    sendSave(window, { close: true });
   } else if (response === SaveResponse.DontSave) {
     window.destroy();
   }

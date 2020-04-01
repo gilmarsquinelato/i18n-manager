@@ -1,36 +1,41 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
     "incremental": true,
-    "allowJs": true,
-    "skipLibCheck": true,
+    "target": "ES2015",
+    "module": "esnext",
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "preserve",
+    "sourceMap": true,
+    "baseUrl": ".",
+    "types": [
+      "webpack-env",
+      "vuetify"
+    ],
     "typeRoots": [
       "./node_modules/@types",
       "./typings"
     ],
-    "baseUrl": "./",
     "paths": {
-      "@common/*": ["./common/*"],
-      "@src/*": ["./src/*"],
-      "@typings/*": ["./typings/*"]
-    }
+      "@/*": ["src/*"],
+      "@common/*": ["common/*"]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost",
+      "es2019"
+    ]
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "old_src"
   ]
 }

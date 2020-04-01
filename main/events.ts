@@ -1,7 +1,7 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 
 import * as ipcMessages from '../common/ipcMessages';
-import { IContextMenuOptions, IParsedFile } from '../typings';
+import { ContextMenuOptions, ParsedFile } from '../common/types';
 import { showContextMenu } from './contextMenu';
 import * as fileManager from './fileManager';
 import * as settings from './Settings';
@@ -10,15 +10,16 @@ import * as windowManager from './windowManager';
 
 const onSave = async (e: any, data: any) => {
   const window = BrowserWindow.fromWebContents(e.sender);
+  if (!window) return;
+
   const closeWindow = data.data.close;
   const closeDirectory = data.data.closeDirectory;
   const folder = data.payload;
 
-  if ((folder as IParsedFile[]).length === 0) {
+  if ((folder as ParsedFile[]).length === 0) {
     windowManager.sendSaveComplete(window, []);
     return;
   }
-
 
   const result = await fileManager.saveFolder(folder);
 
@@ -28,7 +29,7 @@ const onSave = async (e: any, data: any) => {
   }
 
   window.setDocumentEdited(false);
-  windowManager.sendRefreshFolder(window, folder);
+  // windowManager.sendRefreshFolder(window, folder);
   windowManager.sendSaveComplete(window, result);
 
   if (closeWindow) {
@@ -42,21 +43,25 @@ const onSave = async (e: any, data: any) => {
 
 const onOpen = (e: any, data: string) => {
   const window = BrowserWindow.fromWebContents(e.sender);
+  if (!window) return;
   fileManager.openFolderInWindow(data, window);
 };
 
 const onDataChanged = (e: any, data: boolean) => {
   const window = BrowserWindow.fromWebContents(e.sender);
+  if (!window) return;
   window.setDocumentEdited(data);
 };
 
-const onShowContextMenu = (e: any, data: IContextMenuOptions) => {
+const onShowContextMenu = (e: any, data: ContextMenuOptions) => {
   const window = BrowserWindow.fromWebContents(e.sender);
+  if (!window) return;
   showContextMenu(window, data);
 };
 
 const onGetSettings = (e: any) => {
   const window = BrowserWindow.fromWebContents(e.sender);
+  if (!window) return;
   windowManager.sendSettings(window, settings.getCustomSettings());
 };
 
@@ -74,6 +79,7 @@ const onOpenFile = (e: any, data: any) => {
 
 const onRecentFolders = (e: any) => {
   const window = BrowserWindow.fromWebContents(e.sender);
+  if (!window) return;
   windowManager.sendRecentFolders(window, settings.getRecentFolders());
 };
 

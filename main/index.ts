@@ -1,12 +1,11 @@
 // import { init } from '@sentry/electron';
 import { app, BrowserWindow } from 'electron';
-import electronIsDev = require('electron-is-dev');
+import electronIsDev from 'electron-is-dev';
 
 // import { sentryConfig } from '../common/sentry';
 import registerAppEvents from './events';
 import loadMenu from './menu';
 import { createWindow, hasWindows } from './windowManager';
-
 
 // if (!isDev) {
 //   init(sentryConfig);
@@ -14,7 +13,7 @@ import { createWindow, hasWindows } from './windowManager';
 
 registerAppEvents();
 
-app.setName('i18n Manager');
+app.name = 'i18n Manager';
 if (process.platform === 'darwin') {
   app.setAboutPanelOptions({
     applicationName: 'i18n Manager',
@@ -25,16 +24,14 @@ if (process.platform === 'darwin') {
   });
 }
 
-
 const installDevTools = () => {
   if (electronIsDev) {
     const {
       default: installExtension,
-      REACT_DEVELOPER_TOOLS,
-      REDUX_DEVTOOLS,
+      VUEJS_DEVTOOLS,
     } = require('electron-devtools-installer');
 
-    installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
+    installExtension([VUEJS_DEVTOOLS])
       .then((name: any) => console.log('Added Extension: ', name))
       .catch((err: any) => console.log('An error occurred: ', err));
   }
