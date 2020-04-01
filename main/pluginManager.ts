@@ -36,20 +36,17 @@ export const loadFolder = async (folderPath: string): Promise<LoadedPath[]> => {
   return groupedFiles.concat(groupedLanguageFolders).concat(subFolders);
 };
 
-export const parseFile = async (filePath: string): Promise<any | undefined> => {
+export const parseFile = async (filePath: string): Promise<any> => {
   try {
     const fileContent = await readFileAsync(filePath);
 
     const plugin = getPluginForFile(filePath);
     if (!plugin) {
-      return undefined;
-    }
-    const data = await plugin.parse(fileContent.toString());
-    if (!data) {
-      return undefined;
+      return {};
     }
 
-    return data;
+    const data = await plugin.parse(fileContent.toString());
+    return data ?? {};
   } catch (e) {
     return undefined;
   }

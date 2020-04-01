@@ -43,10 +43,10 @@
 <script lang="ts">
   import { useNamespace } from '@/store/utils';
   import { CustomSettings } from '@common/types';
-  import { createComponent, watch } from '@vue/composition-api';
+  import { defineComponent, watch } from '@vue/composition-api';
   import RemoteLink from '@/components/RemoteLink.vue';
 
-  export default createComponent({
+  export default defineComponent({
     name: 'Settings',
     components: {
       RemoteLink,

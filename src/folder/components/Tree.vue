@@ -37,13 +37,13 @@
 </template>
 
 <script lang="ts">
-  import { createComponent, ref, watch } from '@vue/composition-api';
+  import { defineComponent, ref, watch } from '@vue/composition-api';
 
   import { ComponentEmit } from '@/index';
 
   import { ClipboardItemAction, TreeItem } from '../types';
 
-  export default createComponent({
+  export default defineComponent({
     name: 'Tree',
     props: {
       item: {

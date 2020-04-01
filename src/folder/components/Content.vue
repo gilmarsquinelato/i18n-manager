@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts">
-  import { createComponent, Ref, ref, watch } from '@vue/composition-api';
+  import { defineComponent, Ref, ref, watch } from '@vue/composition-api';
   import _ from 'lodash';
 
   import { LoadedPath } from '@common/types';
@@ -60,7 +60,7 @@
     TreeItem,
   } from '../types';
 
-  export default createComponent({
+  export default defineComponent({
     name: 'Content',
     props: {
       selectedItem: Object as () => TreeItem,

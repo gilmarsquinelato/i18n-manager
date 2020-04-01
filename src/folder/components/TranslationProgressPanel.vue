@@ -80,11 +80,11 @@
 
 <script lang="ts">
   import { getLanguageLabel } from '@/folder/utils/language';
-  import { computed, createComponent } from '@vue/composition-api';
+  import { computed, defineComponent } from '@vue/composition-api';
   import * as _ from 'lodash/fp';
   import { TranslationError, TranslationProgress } from '../types';
 
-  export default createComponent({
+  export default defineComponent({
     name: 'TranslationProgressPanel',
     props: {
       isTranslating: {

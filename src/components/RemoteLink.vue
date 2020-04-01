@@ -7,11 +7,11 @@
 </template>
 
 <script lang="ts">
-  import { createComponent } from '@vue/composition-api';
+  import { defineComponent } from '@vue/composition-api';
 
   const shell = (window as any).require('electron').shell;
 
-  export default createComponent({
+  export default defineComponent({
     name: 'RemoteLink',
     props: {
       href: {

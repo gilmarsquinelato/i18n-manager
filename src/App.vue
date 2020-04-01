@@ -10,10 +10,10 @@
 
 <script lang="ts">
   import { provideStore } from '@/store/utils';
-  import { createComponent } from '@vue/composition-api';
+  import { defineComponent } from '@vue/composition-api';
   import Settings from '@/settings/views/Settings.vue';
 
-  export default createComponent({
+  export default defineComponent({
     name: 'App',
     components: {
       Settings,

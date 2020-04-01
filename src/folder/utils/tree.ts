@@ -1,4 +1,5 @@
 import * as _ from 'lodash/fp';
+import deepmerge from 'deepmerge';
 
 import { getContentFromPath } from './files';
 import { LANGUAGE_INDEX_SYMBOL } from './language';
@@ -6,7 +7,7 @@ import { ContentItem, TreeMap, TreeItem, TreeItemStatus } from '../types';
 import { LoadedFolder, LoadedGroup, LoadedPath, ParsedFile } from '@common/types';
 
 export const pathToString = (path: any[]): string =>
-  path.map(it => (typeof it === 'symbol' ? `Symbol(${it.description})` : it)).join('.');
+  path.map((it) => (typeof it === 'symbol' ? `Symbol(${it.description})` : it)).join('.');
 
 export const createTree = (
   tree: TreeMap,
@@ -64,8 +65,8 @@ const createParsedFileTree = (
   parentPath: any[] = [],
   level: number = 0,
 ) => {
-  const folderData = items.map(it => it.data);
-  const objectTree = _.mergeAll.call(null, folderData as any);
+  const folderData = items.map((it) => it.data);
+  const objectTree = deepmerge.all(folderData);
 
   createTreeFromObject(tree, objectTree, parent, parentPath, level);
 };
@@ -84,7 +85,10 @@ const createTreeFromObject = (
     const key = keys[i];
 
     const path = parentPath.concat(key);
-    const isItem = typeof objectTree[key] === 'string';
+    const isItem =
+      typeof objectTree[key] === 'string' ||
+      objectTree[key] === null ||
+      objectTree[key] === undefined;
 
     const id = pathToString(path);
     let item = tree[id];
@@ -115,13 +119,13 @@ export const createTreeStatus = (
   folder: LoadedPath[],
   originalFolder: LoadedPath[],
 ) => {
-  const items = Object.values(tree).filter(it => it.type === 'item');
+  const items = Object.values(tree).filter((it) => it.type === 'item');
 
   for (const item of items) {
     updateTreeItemStatus(item, folder, originalFolder);
   }
 
-  const parents = _.uniq(items.map(it => it.parent));
+  const parents = _.uniq(items.map((it) => it.parent));
   for (const parent of parents) {
     updateTreeStatus(tree, folder, originalFolder, parent);
   }
@@ -158,7 +162,7 @@ export const updateTreeItemStatus = (
   const treeItemStatus = getTreeItemStatus(content, originalContent);
 
   item.status = treeItemStatus;
-  item.missingCount = treeItemStatus === 'missing' ? content.filter(it => !it.value).length : 0;
+  item.missingCount = treeItemStatus === 'missing' ? content.filter((it) => !it.value).length : 0;
   item.duplicatedCount = getDuplicatedCount(content);
 };
 
@@ -168,10 +172,10 @@ export const updateNonItemMissingCount = (item: TreeItem, tree: TreeMap) => {
 };
 
 const getMissingChildrenCount = (tree: TreeMap, itemId: string) =>
-  getChildrenPropertyCount(tree, itemId, it => it.missingCount);
+  getChildrenPropertyCount(tree, itemId, (it) => it.missingCount);
 
 const getDuplicatedChildrenCount = (tree: TreeMap, itemId: string) =>
-  getChildrenPropertyCount(tree, itemId, it => it.duplicatedCount);
+  getChildrenPropertyCount(tree, itemId, (it) => it.duplicatedCount);
 
 const getChildrenPropertyCount = (
   tree: TreeMap,
@@ -179,7 +183,7 @@ const getChildrenPropertyCount = (
   propertyFn: (item: TreeItem) => number,
 ) =>
   Object.values(tree)
-    .filter(it => it.parent === itemId) // item children
+    .filter((it) => it.parent === itemId) // item children
     .map(propertyFn)
     .reduce((acc, curr) => acc + curr, 0);
 
@@ -212,11 +216,11 @@ export const getDuplicatedCount = (content: ContentItem[]): number =>
   )(content);
 
 const isNewItem = (originalContent: ContentItem[]) =>
-  originalContent.filter(it => it.value !== undefined).length === 0;
+  originalContent.filter((it) => it.value !== undefined).length === 0;
 
 const isChangedItem = (content: ContentItem[], originalContent: ContentItem[]) =>
   _.zip(content, originalContent).filter(
     ([item, originalItem]) => item?.value !== originalItem?.value,
   ).length > 0;
 
-const isMissingItem = (content: ContentItem[]) => content.filter(it => !it.value).length > 0;
+const isMissingItem = (content: ContentItem[]) => content.filter((it) => !it.value).length > 0;

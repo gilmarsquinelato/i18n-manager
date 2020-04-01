@@ -112,7 +112,6 @@ export default class FolderModule extends VuexModule {
 
   @Action
   async saveComplete(data: any) {
-    console.log(data);
     this.context.commit('setIsSaving', false);
   }
 

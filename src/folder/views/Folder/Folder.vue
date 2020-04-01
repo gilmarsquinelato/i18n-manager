@@ -120,7 +120,7 @@
 </template>
 
 <script lang="ts">
-  import { createComponent, ref } from '@vue/composition-api';
+  import { defineComponent, ref } from '@vue/composition-api';
 
   import {
     AddItemPayload,
@@ -143,7 +143,7 @@
   import Tree from '../../components/Tree.vue';
   import ContextMenu from '../../components/ContextMenu.vue';
 
-  export default createComponent({
+  export default defineComponent({
     name: 'Folder',
     components: { TranslationProgressPanel, Translate, Content, Tree, ContextMenu },
     setup() {

@@ -1,6 +1,6 @@
 export const fileExtensions = ['.json', '.arb'];
 
-export const parse = (content: string): Promise<any | undefined> => {
+export const parse = (content: string): Promise<any> => {
   try {
     return JSON.parse(content);
   } catch (e) {

@@ -60,6 +60,7 @@
     "@mdi/font": "^5.0.45",
     "@vue/composition-api": "^0.5.0",
     "axios": "^0.19.2",
+    "deepmerge": "^4.2.2",
     "electron": "^8.2.0",
     "electron-devtools-installer": "^2.2.4",
     "electron-is-dev": "^1.1.0",

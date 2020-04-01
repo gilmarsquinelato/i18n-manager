@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts">
-  import { createComponent, reactive, Ref, ref, toRefs, watch } from '@vue/composition-api';
+  import { defineComponent, reactive, Ref, ref, toRefs, watch } from '@vue/composition-api';
 
   import {
     AddItemPayload,
@@ -71,7 +71,7 @@
     TreeMap,
   } from '@/folder/types';
 
-  export default createComponent({
+  export default defineComponent({
     props: {
       tree: {
         required: true,

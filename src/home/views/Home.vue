@@ -56,14 +56,14 @@
 </template>
 
 <script lang="ts">
-  import { createComponent } from '@vue/composition-api';
+  import { defineComponent } from '@vue/composition-api';
   import { useNamespace } from '@/store/utils';
   import { sendIpc } from '@/store/plugins/ipc';
   import { FormattedFolderPath } from '@common/types';
   import * as ipcMessages from '@common/ipcMessages';
   import RemoteLink from '@/components/RemoteLink.vue';
 
-  export default createComponent({
+  export default defineComponent({
     name: 'Home',
     components: {
       RemoteLink,
