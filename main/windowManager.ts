@@ -7,8 +7,7 @@ import { LoadedPath } from '../common/types';
 import { getFormattedFoldersPaths } from './pathUtils';
 import * as settings from './Settings';
 
-export const hasWindows = (): boolean =>
-  BrowserWindow.getAllWindows().length > 0;
+export const hasWindows = (): boolean => BrowserWindow.getAllWindows().length > 0;
 
 export const getOrCreateAvailableWindow = (): BrowserWindow => {
   const window = getAvailableWindow();
@@ -38,8 +37,7 @@ export const createWindow = (): BrowserWindow => {
   return window;
 };
 
-export const getCurrentWindow = (): BrowserWindow | null =>
-  BrowserWindow.getFocusedWindow();
+export const getCurrentWindow = (): BrowserWindow | null => BrowserWindow.getFocusedWindow();
 
 export const sendOpen = async (
   window: Electron.BrowserWindow,
@@ -58,33 +56,8 @@ export const sendSaveComplete = (window: BrowserWindow, data: any = {}) => {
   sendToIpc(window, ipcMessages.saveComplete, data);
 };
 
-export const sendRefreshFolder = (
-  window: BrowserWindow,
-  folder: LoadedPath[],
-) => {
+export const sendRefreshFolder = (window: BrowserWindow, folder: LoadedPath[]) => {
   sendToIpc(window, ipcMessages.refreshFolder, folder);
-};
-
-export const sendAddTreeItem = (window: BrowserWindow, data: any = {}) => {
-  sendToIpc(window, ipcMessages.addTreeItem, data);
-};
-
-export const sendRemoveTreeItem = (
-  window: BrowserWindow,
-  itemId: string = '',
-) => {
-  sendToIpc(window, ipcMessages.removeTreeItem, itemId);
-};
-
-export const sendRenameTreeItem = (
-  window: BrowserWindow,
-  itemId: string = '',
-) => {
-  sendToIpc(window, ipcMessages.renameTreeItem, itemId);
-};
-
-export const sendNavigateTo = (window: BrowserWindow, data: any = {}) => {
-  sendToIpc(window, ipcMessages.navigateTo, data);
 };
 
 export const sendShowSettings = (window: BrowserWindow) => {
@@ -119,9 +92,7 @@ export enum SaveResponse {
   DontSave,
 }
 
-export const showSaveDialog = async (
-  window: BrowserWindow,
-): Promise<SaveResponse> => {
+export const showSaveDialog = async (window: BrowserWindow): Promise<SaveResponse> => {
   const result = await dialog.showMessageBox(window, {
     type: 'question',
     buttons: ['Save', 'Cancel', "Don't Save"],
@@ -142,7 +113,7 @@ export const showSaveDialog = async (
 };
 
 export const getAvailableWindow = (): BrowserWindow =>
-  BrowserWindow.getAllWindows().filter(w => !w.isDocumentEdited())[0];
+  BrowserWindow.getAllWindows().filter((w) => !w.isDocumentEdited())[0];
 
 const registerEvents = (window: BrowserWindow) => {
   window.on('close', onClose(window));

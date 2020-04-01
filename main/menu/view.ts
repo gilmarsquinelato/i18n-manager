@@ -1,6 +1,5 @@
 const isDev = require('electron-is-dev');
 
-
 const viewMenu: Electron.MenuItemConstructorOptions = {
   label: 'View',
   submenu: [

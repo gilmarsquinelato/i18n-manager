@@ -13,16 +13,12 @@ const editMenu: Electron.MenuItemConstructorOptions = {
   ],
 };
 
-
 if (process.platform === 'darwin') {
   (editMenu.submenu as any).push(
     { type: 'separator' },
     {
       label: 'Speech',
-      submenu: [
-        { role: 'startspeaking' },
-        { role: 'stopspeaking' },
-      ],
+      submenu: [{ role: 'startspeaking' }, { role: 'stopspeaking' }],
     },
   );
 }

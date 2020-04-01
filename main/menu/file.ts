@@ -10,7 +10,6 @@ import {
 } from '../windowManager';
 import { onPreferencesClick } from './shared';
 
-
 const newWindow = () => createWindow();
 
 const openDirectory = async () => {
@@ -36,7 +35,7 @@ const closeDirectory = async () => {
   const response = await showSaveDialog(currentWindow);
 
   if (response === SaveResponse.Save) {
-    sendSave(currentWindow, {closeDirectory: true});
+    sendSave(currentWindow, { closeDirectory: true });
   } else if (response === SaveResponse.DontSave) {
     sendClose(currentWindow);
   }
@@ -78,11 +77,14 @@ const fileMenu: Electron.MenuItemConstructorOptions = {
 };
 
 if (process.platform === 'linux') {
-  (fileMenu.submenu as any).push({ type: 'separator' }, {
-    label: 'Preferences',
-    click: onPreferencesClick,
-    accelerator: 'CommandOrControl+,',
-  });
+  (fileMenu.submenu as any).push(
+    { type: 'separator' },
+    {
+      label: 'Preferences',
+      click: onPreferencesClick,
+      accelerator: 'CommandOrControl+,',
+    },
+  );
 }
 
 export default fileMenu;

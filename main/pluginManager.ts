@@ -4,12 +4,7 @@ import * as path from 'path';
 import * as util from 'util';
 
 import { getLocale } from '../common/language';
-import {
-  LoadedFolder,
-  LoadedGroup,
-  LoadedPath,
-  ParsedFile,
-} from '../common/types';
+import { LoadedFolder, LoadedGroup, LoadedPath, ParsedFile } from '../common/types';
 import getPlugins, { IPlugin } from './plugins';
 
 const readdirAsync = util.promisify(fs.readdir);
@@ -26,11 +21,7 @@ export const loadFolder = async (folderPath: string): Promise<LoadedPath[]> => {
   const stats = await getFolderStats(folderPath, folderContent);
 
   const groupedFiles = await getGroupedFiles(folderPath, folderContent, stats);
-  const groupedLanguageFolders = await getGroupedLanguageFolders(
-    folderPath,
-    folderContent,
-    stats,
-  );
+  const groupedLanguageFolders = await getGroupedLanguageFolders(folderPath, folderContent, stats);
   const subFolders = await getSubFolders(folderPath, folderContent, stats);
 
   return groupedFiles.concat(groupedLanguageFolders).concat(subFolders);
@@ -75,14 +66,11 @@ export const saveFile = async (parsedFile: ParsedFile): Promise<boolean> => {
 };
 
 const getPluginForFile = (filePath: string) =>
-  getPlugins().filter(plugin =>
-    pluginSupportsFileExtension(plugin, filePath),
-  )[0];
+  getPlugins().filter((plugin) => pluginSupportsFileExtension(plugin, filePath))[0];
 
 const pluginSupportsFileExtension = (plugin: IPlugin, filePath: string) =>
-  plugin.fileExtensions.filter(extension =>
-    filePath.toLowerCase().endsWith(extension),
-  ).length > 0;
+  plugin.fileExtensions.filter((extension) => filePath.toLowerCase().endsWith(extension)).length >
+  0;
 
 type LoadItemsFn = (
   folderPath: string,
@@ -90,39 +78,26 @@ type LoadItemsFn = (
   stats: Record<string, fs.Stats>,
 ) => Promise<LoadedPath[]>;
 
-const getGroupedFiles: LoadItemsFn = async (
-  folderPath,
-  folderContent,
-  stats,
-) => {
+const getGroupedFiles: LoadItemsFn = async (folderPath, folderContent, stats) => {
   const files = folderContent
-    .filter(it => !stats[it].isDirectory())
-    .map(it => getFileDetails(it, path.join(folderPath, it)))
+    .filter((it) => !stats[it].isDirectory())
+    .map((it) => getFileDetails(it, path.join(folderPath, it)))
     .filter(Boolean) as IFileDetails[];
 
   return parseFilesWithGroup(folderPath, files);
 };
 
-const getGroupedLanguageFolders: LoadItemsFn = async (
-  folderPath,
-  folderContent,
-  stats,
-) => {
-  const languageFolders = folderContent.filter(
-    it => stats[it].isDirectory() && getLocale(it),
-  );
+const getGroupedLanguageFolders: LoadItemsFn = async (folderPath, folderContent, stats) => {
+  const languageFolders = folderContent.filter((it) => stats[it].isDirectory() && getLocale(it));
 
   const foldersFiles: Record<string, string[]> = (
     await Promise.all(
-      languageFolders.map(async folder => {
+      languageFolders.map(async (folder) => {
         const languageFolderPath = path.join(folderPath, folder);
         const folderItems = await readdirAsync(languageFolderPath);
-        const folderStats = await getFolderStats(
-          languageFolderPath,
-          folderItems,
-        );
+        const folderStats = await getFolderStats(languageFolderPath, folderItems);
         return {
-          [folder]: folderItems.filter(it => !folderStats[it].isDirectory()),
+          [folder]: folderItems.filter((it) => !folderStats[it].isDirectory()),
         };
       }),
     )
@@ -130,7 +105,7 @@ const getGroupedLanguageFolders: LoadItemsFn = async (
 
   const files: IFileDetails[] = _.flatMap(
     Object.entries(foldersFiles).map(([folder, folderFiles]) =>
-      folderFiles.map(file => {
+      folderFiles.map((file) => {
         const fileName = getFileNameWithoutExtension(file);
         return {
           fileName: file,
@@ -146,12 +121,10 @@ const getGroupedLanguageFolders: LoadItemsFn = async (
 };
 
 const getSubFolders: LoadItemsFn = async (folderPath, folderContent, stats) => {
-  const folders = folderContent.filter(
-    it => stats[it].isDirectory() && !getLocale(it),
-  );
+  const folders = folderContent.filter((it) => stats[it].isDirectory() && !getLocale(it));
 
   return Promise.all(
-    folders.map(async it => {
+    folders.map(async (it) => {
       const items = await loadFolder(path.join(folderPath, it));
       return {
         items,
@@ -166,7 +139,7 @@ const parseFilesWithGroup = async (
   folderPath: string,
   files: IFileDetails[],
 ): Promise<LoadedGroup[]> => {
-  const groupedByPrefix = _.groupBy(files, it => it.prefix);
+  const groupedByPrefix = _.groupBy(files, (it) => it.prefix);
 
   const entries = Object.entries(groupedByPrefix);
 
@@ -182,15 +155,13 @@ const parseFilesWithGroup = async (
         } as LoadedGroup;
       }),
     ),
-  ).filter(it => it.items.length > 0);
+  ).filter((it) => it.items.length > 0);
 };
 
 const parseFilesFromDetails = async (items: IFileDetails[]) =>
   await Promise.all(items.map(parseFileFromDetails));
 
-const parseFileFromDetails = async (
-  details: IFileDetails,
-): Promise<ParsedFile | undefined> => {
+const parseFileFromDetails = async (details: IFileDetails): Promise<ParsedFile | undefined> => {
   const plugin = getPluginForFile(details.fileName);
   if (!plugin) {
     return undefined;
@@ -218,22 +189,14 @@ const getFolderStats = async (
 };
 
 const getFileNameWithoutExtension = (fileName: string) =>
-  fileName
-    .split('.')
-    .slice(0, -1)
-    .join('.');
+  fileName.split('.').slice(0, -1).join('.');
 
 const separators = /[._]/g;
-const getFileDetails = (
-  fileName: string,
-  filePath: string,
-): IFileDetails | undefined => {
+const getFileDetails = (fileName: string, filePath: string): IFileDetails | undefined => {
   const nameWithoutExtension = getFileNameWithoutExtension(fileName);
 
   // Split to get locales and files groups, will only split by "." or "_"
-  const normalizedName = nameWithoutExtension
-    .replace(separators, '||')
-    .split('||');
+  const normalizedName = nameWithoutExtension.replace(separators, '||').split('||');
 
   const locale = getLocale(nameWithoutExtension); // the entire fileName is it's locale
   if (locale) {

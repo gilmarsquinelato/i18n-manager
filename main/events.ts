@@ -1,12 +1,10 @@
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 
 import * as ipcMessages from '../common/ipcMessages';
-import { ContextMenuOptions, ParsedFile } from '../common/types';
-import { showContextMenu } from './contextMenu';
+import { ParsedFile } from '../common/types';
 import * as fileManager from './fileManager';
 import * as settings from './Settings';
 import * as windowManager from './windowManager';
-
 
 const onSave = async (e: any, data: any) => {
   const window = BrowserWindow.fromWebContents(e.sender);
@@ -29,7 +27,6 @@ const onSave = async (e: any, data: any) => {
   }
 
   window.setDocumentEdited(false);
-  // windowManager.sendRefreshFolder(window, folder);
   windowManager.sendSaveComplete(window, result);
 
   if (closeWindow) {
@@ -51,12 +48,6 @@ const onDataChanged = (e: any, data: boolean) => {
   const window = BrowserWindow.fromWebContents(e.sender);
   if (!window) return;
   window.setDocumentEdited(data);
-};
-
-const onShowContextMenu = (e: any, data: ContextMenuOptions) => {
-  const window = BrowserWindow.fromWebContents(e.sender);
-  if (!window) return;
-  showContextMenu(window, data);
 };
 
 const onGetSettings = (e: any) => {
@@ -83,12 +74,10 @@ const onRecentFolders = (e: any) => {
   windowManager.sendRecentFolders(window, settings.getRecentFolders());
 };
 
-
 const registerAppEvents = () => {
   ipcMain.on(ipcMessages.open, onOpen);
   ipcMain.on(ipcMessages.save, onSave);
   ipcMain.on(ipcMessages.dataChanged, onDataChanged);
-  ipcMain.on(ipcMessages.showContextMenu, onShowContextMenu);
   ipcMain.on(ipcMessages.saveSettings, onSaveSettings);
   ipcMain.on(ipcMessages.settings, onGetSettings);
   ipcMain.on(ipcMessages.recentFolders, onRecentFolders);

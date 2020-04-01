@@ -2,10 +2,7 @@ import { onPreferencesClick } from './shared';
 
 const windowMenu: Electron.MenuItemConstructorOptions = {
   role: 'window',
-  submenu: [
-    { role: 'minimize' },
-    { role: 'close' },
-  ],
+  submenu: [{ role: 'minimize' }, { role: 'close' }],
 };
 
 if (process.platform === 'darwin') {

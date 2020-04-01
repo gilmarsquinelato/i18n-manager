@@ -26,10 +26,7 @@ if (process.platform === 'darwin') {
 
 const installDevTools = () => {
   if (electronIsDev) {
-    const {
-      default: installExtension,
-      VUEJS_DEVTOOLS,
-    } = require('electron-devtools-installer');
+    const { default: installExtension, VUEJS_DEVTOOLS } = require('electron-devtools-installer');
 
     installExtension([VUEJS_DEVTOOLS])
       .then((name: any) => console.log('Added Extension: ', name))
