@@ -29,7 +29,7 @@ const onSave = async (e: any, data: any) => {
   }
 
   window.setDocumentEdited(false);
-  windowManager.sendRefreshFolder(window, folder);
+  // windowManager.sendRefreshFolder(window, folder);
   windowManager.sendSaveComplete(window, result);
 
   if (closeWindow) {
