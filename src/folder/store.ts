@@ -302,7 +302,9 @@ export default class FolderModule extends VuexModule {
     await dispatch('sendModifiedContent');
 
     if (this.translationErrors.length === 0) {
-      commit('setIsTranslating', false);
+      setTimeout(() => {
+        commit('setIsTranslating', false);
+      }, 500);
     }
   }
 
