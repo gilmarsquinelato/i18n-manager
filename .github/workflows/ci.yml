@@ -21,11 +21,8 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-      
+
     - name: Yarn install with caching
       uses: bahmutov/npm-install@v1.1.0
 
-    - name: Build
-      uses: thonatos/github-actions-nodejs@v0.1.1
-      with:
-        args: npm run build:all
+    - run: yarn build:all
