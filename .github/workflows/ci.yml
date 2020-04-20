@@ -26,6 +26,6 @@ jobs:
       uses: bahmutov/npm-install@v1.1.0
 
     - name: Build
-      uses: Borales/actions-yarn@v2.1.0
+      uses: CultureHQ/actions-yarn@master
       with:
-        cmd: yarn build:all
+        args: build:all
