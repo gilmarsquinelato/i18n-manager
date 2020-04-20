@@ -24,10 +24,12 @@ jobs:
       id: yarn-cache
       with:
         path: node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+        key: ${{ runner.os }}-yarn-lock-${{ hashFiles('yarn.lock') }}
         restore-keys: |
-          ${{ runner.os }}-yarn-
+          ${{ runner.os }}-yarn-lock
 
     - run: yarn install
 
     - run: yarn build
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
