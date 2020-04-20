@@ -34,6 +34,14 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-yarn-
 
+    - uses: actions/cache@v1
+      id: yarn-cache-node-modules
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-yarn-local-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-local
+
     - run: yarn install
 
     - run: yarn build:all
