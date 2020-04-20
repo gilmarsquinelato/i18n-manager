@@ -1,8 +1,8 @@
 <p align="left"><img src="logo/horizontal.png" alt="i18n-manager" height="120px"></p>
 
 [![Build Status](https://travis-ci.com/gilmarsquinelato/i18n-manager.svg?branch=development)](https://travis-ci.com/gilmarsquinelato/i18n-manager)
-[![Greenkeeper badge](https://badges.greenkeeper.io/gilmarsquinelato/i18n-manager.svg)](https://greenkeeper.io/)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8acca046a7fc462fbfe69677984cff91)](https://www.codacy.com/project/gilmarsquinelato/i18n-manager/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=gilmarsquinelato/i18n-manager&amp;utm_campaign=Badge_Grade_Dashboard)
+[![Known Vulnerabilities](https://snyk.io/test/github/gilmarsquinelato/i18n-manager/badge.svg?targetFile=package.json)](https://snyk.io/test/github/gilmarsquinelato/i18n-manager?targetFile=package.json)
 ![GitHub All Releases](https://img.shields.io/github/downloads/gilmarsquinelato/i18n-manager/total)
 ![GitHub Releases](https://img.shields.io/github/downloads/gilmarsquinelato/i18n-manager/latest/total)
 

@@ -11,12 +11,9 @@ env:
 
 jobs:
   include:
-    - stage: greenkeeper
-      name: "GreenKeeper"
-      script: greenkeeper-lockfile-update
-      before_install: yarn global add greenkeeper-lockfile@1
-      after_script: greenkeeper-lockfile-upload
-      if: branch = development
+    - stage: build
+      name: "Build"
+      script: yarn build:all
 
     - stage: deploy
       name: "Deploy"
