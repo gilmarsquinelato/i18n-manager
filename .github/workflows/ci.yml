@@ -26,6 +26,6 @@ jobs:
       uses: bahmutov/npm-install@v1.1.0
 
     - name: Build
-      uses: CultureHQ/actions-yarn@master
+      uses: thonatos/github-actions-nodejs@v0.1.1
       with:
-        args: build:all
+        args: npm run build:all
