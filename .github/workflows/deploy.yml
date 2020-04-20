@@ -11,7 +11,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  deploy:
     # The type of runner that the job will run on
     runs-on: macos-latest
 
@@ -24,10 +24,12 @@ jobs:
       id: yarn-cache
       with:
         path: node_modules
-        key: ${{ runner.os }}-yarn-${{ hashFiles('yarn.lock') }}
+        key: ${{ runner.os }}-yarn-lock-${{ hashFiles('yarn.lock') }}
         restore-keys: |
-          ${{ runner.os }}-yarn-
+          ${{ runner.os }}-yarn-lock
 
     - run: yarn install
 
     - run: yarn build
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
