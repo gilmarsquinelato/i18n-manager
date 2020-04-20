@@ -24,7 +24,7 @@
         <v-col cols="1">
           <v-menu max-height="90vh">
             <template v-slot:activator="{ on }">
-              <v-btn v-on="on" icon>
+              <v-btn v-on="on" icon tabindex="-1">
                 <v-icon>mdi-dots-vertical</v-icon>
               </v-btn>
             </template>
