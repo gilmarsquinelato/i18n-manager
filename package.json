@@ -63,7 +63,7 @@
     "axios": "^0.19.2",
     "deepmerge": "^4.2.2",
     "electron-devtools-installer": "^2.2.4",
-    "electron-is-dev": "^1.1.0",
+    "electron-is-dev": "^1.2.0",
     "electron-updater": "^4.3.0",
     "fast-deep-equal": "^3.1.1",
     "js-yaml": "^3.13.1",
