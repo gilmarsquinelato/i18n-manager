@@ -26,8 +26,8 @@ const onSave = async (e: any, data: any) => {
     return;
   }
 
-  window.setDocumentEdited(false);
   windowManager.sendSaveComplete(window, result);
+  window.setDocumentEdited(false);
 
   if (closeWindow) {
     window.close();

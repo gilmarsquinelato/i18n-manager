@@ -48,9 +48,9 @@ export const sendOpen = async (
   sendToIpc(window, ipcMessages.open, folder);
 };
 
-export const sendSave = (window: BrowserWindow, data: any = {}) => {
+export const sendSave = _.debounce((window: BrowserWindow, data: any = {}) => {
   sendToIpc(window, ipcMessages.save, data);
-};
+}, 500);
 
 export const sendSaveComplete = (window: BrowserWindow, data: any = {}) => {
   sendToIpc(window, ipcMessages.saveComplete, data);

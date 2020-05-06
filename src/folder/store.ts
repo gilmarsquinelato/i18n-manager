@@ -97,6 +97,7 @@ export default class FolderModule extends VuexModule {
     commit('setTree', tree);
 
     await dispatch('createLanguageList');
+    await dispatch('sendModifiedContent');
   }
 
   @Action
@@ -161,11 +162,13 @@ export default class FolderModule extends VuexModule {
   @Mutation
   setFolder(folder: LoadedPath[]) {
     this.folder = folder;
+    this.modifiedContent = !deepEqual(this.folder, this.originalFolder);
   }
 
   @Mutation
   setOriginalFolder(folder: LoadedPath[]) {
     this.originalFolder = folder;
+    this.modifiedContent = !deepEqual(this.folder, this.originalFolder);
   }
 
   @Mutation
