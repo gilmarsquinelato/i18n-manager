@@ -53,6 +53,7 @@ export const saveFile = async (parsedFile: ParsedFile): Promise<boolean> => {
     const data = await plugin.parse(fileContent.toString());
     const updatedData = mergeDrop(data, parsedFile.data);
 
+
     const serializedContent = await plugin.serialize(updatedData);
     if (serializedContent === null) {
       return false;
@@ -61,6 +62,7 @@ export const saveFile = async (parsedFile: ParsedFile): Promise<boolean> => {
     await writeFileAsync(parsedFile.filePath, serializedContent);
     return true;
   } catch (e) {
+    console.log(e);
     return false;
   }
 };
@@ -73,6 +75,9 @@ export const saveFile = async (parsedFile: ParsedFile): Promise<boolean> => {
  * @param obj2
  */
 const mergeDrop = (obj1: any, obj2: any) => {
+  // if one of them is not an object we don't need to proceed with the mergind process
+  if (!obj1 || !obj2) return obj2;
+
   // Drop the non existing properties recursively
   const obj1Keys = Object.keys(obj1);
   for (let i = 0; i < obj1Keys.length; i++) {
