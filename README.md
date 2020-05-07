@@ -12,10 +12,11 @@ Any type of contributions are welcome.
 
 ## Features
 
-* Detect changed, missing and added translations
+* Detect changed, missing, duplicated/untranslated keys and added translations
 * Add, remove and rename translation keys (context menu)
-* Add and remove folders (translation key inside another key, context menu)
+* Nested keys support
 * Google Translate™ API Integration
+* File changes detection
 * It's free! 🙂
 
 ## Current plugins and their supported extensions
