@@ -26,9 +26,8 @@ If applicable, add screenshots to help explain your problem.
 **App version:** [e.g. 3.0.0]
 
 **Desktop:**
- - OS: [e.g. Windows]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+ - OS: 
+ - OS Version: 
 
 **Additional context**
 Add any other context about the problem here.
