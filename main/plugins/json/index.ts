@@ -10,7 +10,7 @@ export const parse = (content: string): Promise<any> => {
 
 export const serialize = async (data: object): Promise<string | undefined> => {
   try {
-    return JSON.stringify(data, null, 2);
+    return JSON.stringify(data, Object.keys(data).sort(), 2);
   } catch (e) {
     return undefined;
   }
