@@ -48,14 +48,16 @@ export default function useTree(
   }
 
   function dropExpandedChildren(id: string) {
-    expandedItems = expandedItems.filter(it => it !== id);
+    if (expandedItems.find(it => it === id) != null) {
+      expandedItems = expandedItems.filter((it) => it !== id);
 
-    const children = (filteredTreeItems.value ?? [])
-      .filter(it => it.parent === id)
-      .map(it => it.id);
+      const children = (filteredTreeItems.value ?? [])
+        .filter(it => it.parent === id)
+        .map(it => it.id);
 
-    for (let i = 0; i < children.length; ++i) {
-      dropExpandedChildren(children[i]);
+      for (let i = 0; i < children.length; ++i) {
+        dropExpandedChildren(children[i]);
+      }
     }
   }
 
