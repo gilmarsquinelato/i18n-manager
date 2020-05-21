@@ -115,12 +115,17 @@ export default function useTree(
 
   function filterItems(filter: string) {
     return (treeItems.value ?? []).filter(it => {
-      return filterByKey(it, filter) || filterByValue(it, filter);
+      return filterByKey(it, filter) || filterByPath(it, filter) || filterByValue(it, filter);
     });
   }
 
   function filterByKey(item: TreeItem, filter: string) {
     return item.label.toLowerCase().includes(filter);
+  }
+
+  function filterByPath(item: TreeItem, filter: string) {
+      return filter.includes('.') && (item.path.filter(p => typeof p === "string")
+      .join('.').replace('items.data.', '').toLowerCase().includes(filter));
   }
 
   function filterByValue(item: TreeItem, filter: string) {
