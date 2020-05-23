@@ -48,7 +48,7 @@ export default function useTree(
   }
 
   function dropExpandedChildren(id: string) {
-    if (expandedItems.find(it => it === id) != null) {
+    if (expandedItems.find(it => it === id)) {
       expandedItems = expandedItems.filter((it) => it !== id);
 
       const children = (filteredTreeItems.value ?? [])
@@ -124,8 +124,11 @@ export default function useTree(
   }
 
   function filterByPath(item: TreeItem, filter: string) {
-      return filter.includes('.') && (item.path.filter(p => typeof p === "string")
-      .join('.').replace('items.data.', '').toLowerCase().includes(filter));
+      return filter.includes('.') && 
+      (item.path.filter(p => typeof p === 'string')
+      .join('.')
+      .replace('items.data.', '')
+      .toLowerCase().includes(filter));
   }
 
   function filterByValue(item: TreeItem, filter: string) {
