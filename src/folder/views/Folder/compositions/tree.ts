@@ -48,14 +48,16 @@ export default function useTree(
   }
 
   function dropExpandedChildren(id: string) {
-    expandedItems = expandedItems.filter(it => it !== id);
+    if (expandedItems.find(it => it === id)) {
+      expandedItems = expandedItems.filter((it) => it !== id);
 
-    const children = (filteredTreeItems.value ?? [])
-      .filter(it => it.parent === id)
-      .map(it => it.id);
+      const children = (filteredTreeItems.value ?? [])
+        .filter(it => it.parent === id)
+        .map(it => it.id);
 
-    for (let i = 0; i < children.length; ++i) {
-      dropExpandedChildren(children[i]);
+      for (let i = 0; i < children.length; ++i) {
+        dropExpandedChildren(children[i]);
+      }
     }
   }
 
@@ -113,12 +115,20 @@ export default function useTree(
 
   function filterItems(filter: string) {
     return (treeItems.value ?? []).filter(it => {
-      return filterByKey(it, filter) || filterByValue(it, filter);
+      return filterByKey(it, filter) || filterByPath(it, filter) || filterByValue(it, filter);
     });
   }
 
   function filterByKey(item: TreeItem, filter: string) {
     return item.label.toLowerCase().includes(filter);
+  }
+
+  function filterByPath(item: TreeItem, filter: string) {
+      return filter.includes('.') && 
+      (item.path.filter(p => typeof p === 'string')
+      .join('.')
+      .replace('items.data.', '')
+      .toLowerCase().includes(filter));
   }
 
   function filterByValue(item: TreeItem, filter: string) {
