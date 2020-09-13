@@ -1,5 +1,6 @@
 import * as jsonPlugin from './json';
 import * as yamlPlugin from './yaml';
+import * as javascriptPlugin from './javascript';
 
 export interface IPlugin {
   fileExtensions: string[];
@@ -10,6 +11,7 @@ export interface IPlugin {
 let plugins: IPlugin[] = [
   jsonPlugin,
   yamlPlugin,
+  javascriptPlugin,
 ];
 
 export const loadPlugins = (additionalPlugins: IPlugin[]) => {
