@@ -12,7 +12,7 @@
 This project has entered on looking for new owner stage.
 
 Developing this tool has being great, but recently I ([@gilmarsquinelato](https://github.com/gilmarsquinelato)) am not contributing too much with it, and I don't think it's fair to the people that are 
-using this tool, so I am stopping to contribute with this tool and able to transfer the project to the people that really wants to keep maintaining it.
+using this tool, so I am stopping to contribute with this tool and happy to transfer the project to the people that really wants to keep maintaining it.
 
 Thank you!
 
