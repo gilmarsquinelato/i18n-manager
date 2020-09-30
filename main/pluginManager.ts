@@ -54,7 +54,7 @@ export const saveFile = async (parsedFile: ParsedFile): Promise<boolean> => {
     const updatedData = mergeDrop(data, parsedFile.data);
 
 
-    const serializedContent = await plugin.serialize(updatedData);
+    const serializedContent = await plugin.serialize(updatedData, fileContent.toString());
     if (serializedContent === null) {
       return false;
     }

@@ -35,6 +35,7 @@ Any type of contributions are welcome.
 
 * json - [.json, .arb (Flutter Internationalization)]
 * yaml - [.yaml, .yml]
+* javascript - [.js]
 
 **Feature requests and/or pull requests with new plugins are welcomed 🙂**
 
