@@ -86,6 +86,14 @@ const sendToIpc = (window: BrowserWindow, message: string, data?: any) => {
   }
 };
 
+export const sendShowExport = (window: BrowserWindow) => {
+  sendToIpc(window, ipcMessages.showExport);
+};
+
+export const sendExportComplete = (window: BrowserWindow) => {
+  sendToIpc(window, ipcMessages.exportComplete)
+};
+
 export enum SaveResponse {
   Save,
   Cancel,

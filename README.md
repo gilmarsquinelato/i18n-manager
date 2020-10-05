@@ -36,6 +36,11 @@ Any type of contributions are welcome.
 * json - [.json, .arb (Flutter Internationalization)]
 * yaml - [.yaml, .yml]
 
+#### Import / export translations
+
+* Import translations from XLSX [.xlsx, .xls] files
+* Export translations to XLSX or Comma-separated  [.xlsx,  .csv] files
+
 **Feature requests and/or pull requests with new plugins are welcomed 🙂**
 
 **If you want to test the features, you can open the testData folder!**

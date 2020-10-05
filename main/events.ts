@@ -5,6 +5,7 @@ import { ParsedFile } from '../common/types';
 import * as fileManager from './fileManager';
 import * as settings from './Settings';
 import * as windowManager from './windowManager';
+import { getCurrentWindow } from './windowManager'
 
 const onSave = async (e: any, data: any) => {
   const window = BrowserWindow.fromWebContents(e.sender);
@@ -37,6 +38,23 @@ const onSave = async (e: any, data: any) => {
     windowManager.sendClose(window);
   }
 };
+
+const createXLS = async (e: any, data: Object) => {
+  const window = getCurrentWindow();
+  if (!window) {
+    return false;
+  }
+  try {
+    const res = await fileManager.saveXls(data, window);
+    if (res) {
+      dialog.showMessageBox(window, { message: 'Export complete' });
+    }
+  } catch (e) {
+    dialog.showErrorBox('Failed export', 'Failed to create xls or csv file');
+  } finally {
+    windowManager.sendExportComplete(window)
+  }
+}
 
 const onOpen = (e: any, data: string) => {
   const window = BrowserWindow.fromWebContents(e.sender);
@@ -81,6 +99,7 @@ const registerAppEvents = () => {
   ipcMain.on(ipcMessages.saveSettings, onSaveSettings);
   ipcMain.on(ipcMessages.settings, onGetSettings);
   ipcMain.on(ipcMessages.recentFolders, onRecentFolders);
+  ipcMain.on(ipcMessages.createXls, createXLS);
 
   app.on('open-file', onOpenFile);
   app.on('will-finish-launching', () => {
