@@ -4,7 +4,6 @@ import { promisify } from 'util';
 import nodeWatch from 'node-watch';
 import * as _ from 'lodash/fp';
 import * as xlsx from 'xlsx';
-import * as path from 'path';
 
 import { LoadedFolder, LoadedGroup, LoadedPath, ParsedFile } from '../common/types';
 import { loadFolder, saveFile, parseXlsx } from './pluginManager';
@@ -20,6 +19,7 @@ import {
 } from './windowManager'
 
 const existsAsync = promisify(exists);
+let watcher: any;
 
 export const openFolder = async (folderPath: string) => {
   const window = getAvailableWindow() || createWindow();
@@ -41,14 +41,15 @@ export const openFile = async (filePath: string) => {
     });
     if (canceled) { return; }
     const savePath = filePaths[0];
-    settings.removeRecentFolder(savePath);
     const parsedData = await parseXlsx(filePath, savePath);
     if (parsedData.length) {
-      await sendOpen(window, path.parse(filePath).dir, parsedData);
+      await sendOpen(window, savePath, parsedData);
+      sendSave(window);
+      watchFolder(window, savePath);
+
       app.addRecentDocument(savePath);
       const recentFolders = settings.addRecentFolder(savePath);
       sendRecentFolders(window, recentFolders);
-      sendSave(window);
     } else {
       dialog.showMessageBox(window, {
         type: 'error',
@@ -142,11 +143,20 @@ const getParsedFiles = (data: LoadedPath[]): ParsedFile[] =>
     )
     .flat();
 
+export const closeFolderWatcher = function () {
+  if (typeof watcher !== undefined) {
+    if (watcher && typeof watcher.close !== undefined) {
+      watcher.close();
+    }
+  }
+}
+
 const watchFolder = (window: Electron.BrowserWindow, folderPath: string) => {
   const handleFileUpdate = _.debounce(1000, async () => {
     const parsedFiles = await loadFolder(folderPath);
     sendRefreshFolder(window, parsedFiles);
   });
 
-  nodeWatch(folderPath, { recursive: true }, handleFileUpdate);
+  closeFolderWatcher();
+  watcher = nodeWatch(folderPath, { recursive: true }, handleFileUpdate);
 };

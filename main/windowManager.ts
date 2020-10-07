@@ -6,6 +6,7 @@ import * as ipcMessages from '../common/ipcMessages';
 import { LoadedPath } from '../common/types';
 import { getFormattedFoldersPaths } from './pathUtils';
 import * as settings from './Settings';
+import { closeFolderWatcher } from './fileManager'
 
 export const hasWindows = (): boolean => BrowserWindow.getAllWindows().length > 0;
 
@@ -73,6 +74,7 @@ export const sendRecentFolders = (window: BrowserWindow, data: string[]) => {
 };
 
 export const sendClose = (window: BrowserWindow) => {
+  closeFolderWatcher();
   sendToIpc(window, ipcMessages.closeFolder, {});
 };
 

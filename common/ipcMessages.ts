@@ -14,5 +14,5 @@ export const recentFolders = 'recentFolders';
 export const closeFolder = 'closeFolder';
 export const refreshFolder = 'refreshFolder';
 export const showExport = 'showExport';
-export const createXls = 'createXls'
-export const exportComplete = 'exportComplete'
+export const createXls = 'createXls';
+export const exportComplete = 'exportComplete';

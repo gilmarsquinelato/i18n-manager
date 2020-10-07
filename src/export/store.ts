@@ -32,6 +32,6 @@ export default class ExportModule extends VuexModule {
 
   @Mutation
   hideLoading() {
-    this.isLoading = false
+    this.isLoading = false;
   }
 }
