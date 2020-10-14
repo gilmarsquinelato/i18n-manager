@@ -2,10 +2,12 @@ import * as fs from 'fs';
 import * as _ from 'lodash';
 import * as path from 'path';
 import * as util from 'util';
+import * as xlsx from 'xlsx';
 
 import { getLocale } from '../common/language';
 import { LoadedFolder, LoadedGroup, LoadedPath, ParsedFile } from '../common/types';
 import getPlugins, { IPlugin } from './plugins';
+import { setWith, omit } from 'lodash';
 
 const readdirAsync = util.promisify(fs.readdir);
 const readFileAsync = util.promisify(fs.readFile);
@@ -25,6 +27,59 @@ export const loadFolder = async (folderPath: string): Promise<LoadedPath[]> => {
   const subFolders = await getSubFolders(folderPath, folderContent, stats);
 
   return groupedFiles.concat(groupedLanguageFolders).concat(subFolders);
+};
+
+export const parseXlsx = async (filePath: string, savePath: string): Promise<LoadedGroup[]> => {
+  try {
+    const workbook = await xlsx.readFile(filePath, {
+      cellHTML: false,
+    });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const sheetJson = xlsx.utils.sheet_to_json(sheet);
+    const sheetObject: { [key: string]: { [key: string]: ParsedFile } } = {};
+    await sheetJson.map((row: any) => {
+      let filename: any = row.filename;
+      let label: any = row.label;
+      const languages: any = omit(row, ['filename', 'label']);
+      for (const lang in languages) {
+        if (!sheetObject[filename]) {
+          sheetObject[filename] = {};
+        }
+        if (!sheetObject[filename][lang]) {
+          sheetObject[filename][lang] = {
+            fileName: filename + '_' + lang,
+            filePath: savePath + '\\' + filename + '_' + lang + '.json',
+            prefix: filename,
+            language: lang,
+            extension: '.json',
+            data: {},
+          } as ParsedFile;
+
+          try {
+            writeFileAsync(savePath + '\\' + filename + '_' + lang + '.json', '{}');
+          } catch (e) {}
+
+        }
+        setWith(sheetObject[filename][lang].data, label, languages[lang], Object);
+      }
+    });
+    const parsedFiles: LoadedGroup[] = [];
+    const files = Object.keys(sheetObject);
+    await files.map((filename) => {
+      const items: ParsedFile[] = [];
+      for (const k in sheetObject[filename]) {
+        items.push(sheetObject[filename][k]);
+      }
+      parsedFiles.push({
+        type: 'file',
+        name: filename,
+        items: items,
+      } as LoadedGroup);
+    });
+    return parsedFiles;
+  } catch (e) {
+    return [];
+  }
 };
 
 export const parseFile = async (filePath: string): Promise<any> => {
@@ -52,7 +107,6 @@ export const saveFile = async (parsedFile: ParsedFile): Promise<boolean> => {
     const fileContent = await readFileAsync(parsedFile.filePath);
     const data = await plugin.parse(fileContent.toString());
     const updatedData = mergeDrop(data, parsedFile.data);
-
 
     const serializedContent = await plugin.serialize(updatedData);
     if (serializedContent === null) {

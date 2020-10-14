@@ -6,6 +6,7 @@ import fileMenu from './file';
 import helpMenu from './help';
 import viewMenu from './view';
 import windowMenu from './window';
+import importMenu from './import'
 
 
 import MenuItem = Electron.MenuItem;
@@ -18,6 +19,7 @@ if (Object.keys(appMenu).length > 0) {
 }
 menuTemplate.push(fileMenu);
 menuTemplate.push(editMenu);
+menuTemplate.push(importMenu);
 menuTemplate.push(viewMenu);
 menuTemplate.push(windowMenu);
 menuTemplate.push(helpMenu);

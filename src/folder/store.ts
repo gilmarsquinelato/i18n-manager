@@ -68,6 +68,7 @@ export default class FolderModule extends VuexModule {
     commit('setSelectedItem', null);
     commit('setModifiedContent', false);
     commit('setClipboard', { item: null, action: null });
+    await dispatch('createLanguageList');
     await dispatch('sendModifiedContent');
   }
 

@@ -85,10 +85,21 @@ export class IpcModule extends VuexModule {
   @Action
   closeFolder() {
     this.context.dispatch('folder/closeFolder', undefined, { root: true });
+    this.context.commit('export/hideExport', undefined, { root: true });
   }
 
   @Action
   refreshFolder(data: LoadedPath[]) {
     this.context.dispatch('folder/refreshFolder', data, { root: true });
+  }
+
+  @Action
+  showExport() {
+    this.context.commit('export/showExport', undefined, { root: true });
+  }
+
+  @Action
+  exportComplete() {
+    this.context.commit('export/hideLoading', undefined, { root: true });
   }
 }

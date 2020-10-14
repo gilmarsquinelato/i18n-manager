@@ -5,6 +5,7 @@
     </v-content>
 
     <Settings />
+    <Export />
   </v-app>
 </template>
 
@@ -12,11 +13,13 @@
   import { provideStore } from '@/store/utils';
   import { defineComponent } from '@vue/composition-api';
   import Settings from '@/settings/views/Settings.vue';
+  import Export from '@/export/Export.vue';
 
   export default defineComponent({
     name: 'App',
     components: {
       Settings,
+      Export
     },
     setup(props, ctx) {
       provideStore(ctx.root.$store);
